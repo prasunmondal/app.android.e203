@@ -10,27 +10,36 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
+
+    val submitFormURL: String = "https://docs.google.com/forms/d/e/1FAIpQLSdYzijpIalsSmnyQ53tkZawzOM40yYYR92O0TPfAhSRcgo9Wg/viewform?usp=sf_link";
+    val detailsFormURL: String = "https://docs.google.com/forms/d/e/1FAIpQLSfpjgKBlK678ncJGTRV1-iwCzGuYsKXea71k7uQtJficGD7kw/viewform";
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         val myWebView: WebView = findViewById(R.id.formView)
-        myWebView.loadUrl("https://docs.google.com/forms/d/e/1FAIpQLSdYzijpIalsSmnyQ53tkZawzOM40yYYR92O0TPfAhSRcgo9Wg/viewform?usp=sf_link")
+        myWebView.loadUrl(submitFormURL);
 
         val webSettings = myWebView.settings
         webSettings.javaScriptEnabled = true
 
-
-
         val button: FloatingActionButton = findViewById(R.id.addButton2)
-//        myWebView.loadUrl("https://docs.google.com/forms/d/e/1FAIpQLSdYzijpIalsSmnyQ53tkZawzOM40yYYR92O0TPfAhSRcgo9Wg/viewform?usp=sf_link")
-
         button.bringToFront();
     }
 
     fun onClickOnceMoreAdd(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
-        myWebView.loadUrl("https://docs.google.com/forms/d/e/1FAIpQLSdYzijpIalsSmnyQ53tkZawzOM40yYYR92O0TPfAhSRcgo9Wg/viewform?usp=sf_link")
+        myWebView.loadUrl(submitFormURL)
+
+        val webSettings = myWebView.settings
+        webSettings.javaScriptEnabled = true
+    }
+
+    fun onClickRefresh(view: View) {
+        val myWebView: WebView = findViewById(R.id.formView)
+        myWebView.loadUrl(detailsFormURL);
 
         val webSettings = myWebView.settings
         webSettings.javaScriptEnabled = true
