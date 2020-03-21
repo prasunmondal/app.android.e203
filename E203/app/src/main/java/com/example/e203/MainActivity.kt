@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     val submitFormURL: String = "https://docs.google.com/forms/d/e/1FAIpQLSdYzijpIalsSmnyQ53tkZawzOM40yYYR92O0TPfAhSRcgo9Wg/viewform?usp=sf_link";
     val detailsFormURL: String = "https://docs.google.com/forms/d/e/1FAIpQLSfpjgKBlK678ncJGTRV1-iwCzGuYsKXea71k7uQtJficGD7kw/viewform";
+    val enlistFormURL: String = "https://docs.google.com/forms/d/e/1FAIpQLSdoq9CzHE7t2CY85VG7MXLDSphCZhgnXli3blmOE5k-FT04mw/viewform"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,14 @@ class MainActivity : AppCompatActivity() {
     fun onClickRefresh(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
         myWebView.loadUrl(detailsFormURL);
+
+        val webSettings = myWebView.settings
+        webSettings.javaScriptEnabled = true
+    }
+
+    fun onClickEnlist(view: View) {
+        val myWebView: WebView = findViewById(R.id.formView)
+        myWebView.loadUrl(enlistFormURL);
 
         val webSettings = myWebView.settings
         webSettings.javaScriptEnabled = true
