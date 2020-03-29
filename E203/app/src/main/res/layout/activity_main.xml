@@ -51,6 +51,6 @@
         android:onClick="onClickEnlist"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/detailsButton"
-        app:srcCompat="@drawable/enlist" />
+        app:srcCompat="@drawable/edit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
