@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     val submitFormURL: String = "https://docs.google.com/forms/d/e/1FAIpQLSdYzijpIalsSmnyQ53tkZawzOM40yYYR92O0TPfAhSRcgo9Wg/viewform?usp=sf_link";
     val detailsFormURL: String = "https://docs.google.com/forms/d/e/1FAIpQLSfpjgKBlK678ncJGTRV1-iwCzGuYsKXea71k7uQtJficGD7kw/viewform";
     val enlistFormURL: String = "https://docs.google.com/forms/d/e/1FAIpQLSdoq9CzHE7t2CY85VG7MXLDSphCZhgnXli3blmOE5k-FT04mw/viewform";
-    val editPage = "https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vTNeBkwIApUOgpvyu6Aj39vAqf3XVzhMbLBCPajD3zFvNecm3P_wfJ25Ig4jNyR2wj2AFeJtbDFCLLq/pubhtml";
+    val editPage = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pubhtml?gid=16104355&single=true";
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
