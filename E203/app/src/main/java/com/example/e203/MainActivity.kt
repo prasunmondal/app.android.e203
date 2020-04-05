@@ -1,9 +1,11 @@
 package com.example.e203
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -24,6 +26,29 @@ class MainActivity : AppCompatActivity() {
         myWebView.webViewClient = MyWebViewClient()
         val webSettings = myWebView.settings
         webSettings.javaScriptEnabled = true
+
+        myWebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
+
+        myWebView.getSettings().setBuiltInZoomControls(true)
+        myWebView.getSettings().setUseWideViewPort(true)
+        myWebView.getSettings().setLoadWithOverviewMode(true)
+
+        var progressDialog = ProgressDialog(this)
+        progressDialog!!.setMessage("Loading...")
+        progressDialog!!.show()
+
+        myWebView.setWebViewClient(object : WebViewClient() {
+            override fun onPageFinished(view: WebView, url: String) {
+                if (progressDialog!!.isShowing()) {
+                    progressDialog!!.dismiss()
+                }
+            }
+
+            override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
+                Toast.makeText(this@MainActivity, "Error:$description", Toast.LENGTH_SHORT).show()
+
+            }
+        })
 
         myWebView.loadUrl(submitFormURL);
 
@@ -60,6 +85,7 @@ private class MyWebViewClient : WebViewClient() {
 
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
 
-            return false
+        return false
     }
 }
+
