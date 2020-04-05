@@ -3,6 +3,7 @@ package com.example.e203
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity() {
         webView.getSettings().setBuiltInZoomControls(true)
         webView.getSettings().setUseWideViewPort(true)
         webView.getSettings().setLoadWithOverviewMode(true)
+        webView.setWebViewClient(WebViewClient())
+        webView.setWebChromeClient(WebChromeClient())
 
         loadPage(webView, submitFormURL)
     }
