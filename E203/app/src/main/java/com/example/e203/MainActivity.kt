@@ -29,15 +29,26 @@ class MainActivity : AppCompatActivity() {
 
         myWebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
 
-        myWebView.getSettings().setBuiltInZoomControls(true)
-        myWebView.getSettings().setUseWideViewPort(true)
-        myWebView.getSettings().setLoadWithOverviewMode(true)
+
+
+        myWebView.loadUrl(submitFormURL);
+
+        val button: FloatingActionButton = findViewById(R.id.addButton2)
+        button.bringToFront();
+    }
+
+    fun loadPage(view: WebView, url: String) {
+//        val myWebView: WebView = findViewById(R.id.formView)
+
+        view.getSettings().setBuiltInZoomControls(true)
+        view.getSettings().setUseWideViewPort(true)
+        view.getSettings().setLoadWithOverviewMode(true)
 
         var progressDialog = ProgressDialog(this)
         progressDialog!!.setMessage("Loading...")
         progressDialog!!.show()
 
-        myWebView.setWebViewClient(object : WebViewClient() {
+        view.setWebViewClient(object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
                 if (progressDialog!!.isShowing()) {
                     progressDialog!!.dismiss()
@@ -50,41 +61,28 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        myWebView.loadUrl(submitFormURL);
-
-        val button: FloatingActionButton = findViewById(R.id.addButton2)
-        button.bringToFront();
+        view.loadUrl(url)
     }
 
     fun onClickOnceMoreAdd(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
-        myWebView.loadUrl(submitFormURL)
-
-        val webSettings = myWebView.settings
-        webSettings.javaScriptEnabled = true
+        loadPage(myWebView, submitFormURL);
     }
 
     fun onClickRefresh(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
-        myWebView.loadUrl(detailsFormURL);
-
-        val webSettings = myWebView.settings
-        webSettings.javaScriptEnabled = true
+        loadPage(myWebView, detailsFormURL);
     }
 
     fun onClickEnlist(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
-        myWebView.loadUrl(editPage);
-
-        val webSettings = myWebView.settings
-        webSettings.javaScriptEnabled = true
+        loadPage(myWebView, editPage);
     }
 }
 
 private class MyWebViewClient : WebViewClient() {
 
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-
         return false
     }
 }
