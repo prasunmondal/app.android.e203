@@ -43,12 +43,12 @@ class MainActivity : AppCompatActivity() {
     fun loadPage(webView: WebView, url: String) {
         var progressDialog = ProgressDialog(this)
         progressDialog!!.setMessage("Loading...")
-        progressDialog!!.show()
+//        progressDialog!!.show()
 
         webView.setWebViewClient(object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
                 if (progressDialog!!.isShowing()) {
-                    progressDialog!!.dismiss()
+//                    progressDialog!!.dismiss()
                 }
             }
 
