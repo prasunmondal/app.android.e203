@@ -1,13 +1,22 @@
 package com.example.e203
 
+import android.Manifest
+import android.app.DownloadManager
 import android.app.ProgressDialog
+import android.content.Context
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         "https://docs.google.com/forms/d/e/1FAIpQLSdoq9CzHE7t2CY85VG7MXLDSphCZhgnXli3blmOE5k-FT04mw/viewform";
     val editPage =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pubhtml?gid=16104355&single=true";
+    val apklink = "https://github.com/prasunmondal/app_E203/blob/E203_v4/E203_v4.apk?raw=true";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +47,17 @@ class MainActivity : AppCompatActivity() {
         webView.setWebViewClient(WebViewClient())
         webView.setWebChromeClient(WebChromeClient())
 
+        haveStoragePermission()
+
         loadPage(webView, submitFormURL)
     }
 
     fun loadPage(webView: WebView, url: String) {
         var progressDialog = ProgressDialog(this)
         progressDialog!!.setMessage("Loading...")
+        Log.d("dirty: ",webView.isDirty.toString());
+        webView.stopLoading();
+//        webView.
 //        progressDialog!!.show()
 
         webView.setWebViewClient(object : WebViewClient() {
@@ -65,9 +80,49 @@ class MainActivity : AppCompatActivity() {
         webView.loadUrl(url)
     }
 
+    fun haveStoragePermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= 23) {
+            return if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED
+            ) {
+                Log.e("Permission error", "You have permission")
+                true
+            } else {
+                Log.e("Permission error", "You have asked for permission")
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    1
+                )
+                false
+            }
+        } else { //you dont need to worry about these stuff below api level 23
+            Log.e("Permission error", "You already have the permission")
+            return true
+        }
+    }
+
+
     fun onClickOnceMoreAdd(view: View) {
-        val myWebView: WebView = findViewById(R.id.formView)
-        loadPage(myWebView, submitFormURL);
+        val downloadManager =
+            this.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val Download_Uri =
+            Uri.parse(apklink)
+
+        val request = DownloadManager.Request(Download_Uri)
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+        request.setAllowedOverRoaming(false)
+        request.setTitle("GadgetSaint Downloading " + "Sample" + ".apk")
+        request.setDescription("Downloading " + "Sample" + ".apk")
+        request.setVisibleInDownloadsUi(true)
+        request.setDestinationInExternalPublicDir(
+            Environment.DIRECTORY_DOWNLOADS,
+            "/E203/" + "/" + "e203v4" + ".apk"
+        )
+
+
+
+        val refid = downloadManager.enqueue(request)
     }
 
     fun onClickRefresh(view: View) {
@@ -82,9 +137,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 private class MyWebViewClient : WebViewClient() {
-
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         return false
     }
 }
-
