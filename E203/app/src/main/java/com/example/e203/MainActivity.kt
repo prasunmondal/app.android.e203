@@ -45,8 +45,6 @@ class MainActivity : AppCompatActivity() {
         webView.webViewClient = MyWebViewClient()
         val webSettings = webView.settings
         webSettings.javaScriptEnabled = true
-        webView.scrollBarStyle = View.SCROLLBARS_OUTSIDE_OVERLAY
-        webView.settings.builtInZoomControls = true
         webView.settings.useWideViewPort = true
         webView.settings.loadWithOverviewMode = true
         webView.webViewClient = WebViewClient()
