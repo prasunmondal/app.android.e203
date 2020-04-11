@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     val editPage =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pubhtml?gid=16104355&single=true";
     val apklink = "https://github.com/prasunmondal/app_E203/blob/master/E203/app/src/main/E203_v5.apk?raw=true";
+    val detailCSV="https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pub?gid=1890587816&single=true&output=csv"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,9 +108,21 @@ class MainActivity : AppCompatActivity() {
         Log.d("Download: ","started")
     }
 
+    fun downloadAndUpdateInfo() {
+        val apkUrl =
+//            apklink
+            detailCSV
+        downloadControllerInfo = DownloadControllerInfo(this, apkUrl)
+        Log.d("Download: ", "calling....")
+        checkStoragePermission()
+        downloadControllerInfo.enqueueDownload()
+        Log.d("Download: ","started")
+    }
+
     fun onClickRefresh(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
         loadPage(myWebView, detailsFormURL);
+        downloadAndUpdateInfo()
     }
 
     fun onClickEnlist(view: View) {
@@ -123,6 +136,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     lateinit var downloadController: DownloadController
+    lateinit var downloadControllerInfo: DownloadControllerInfo
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
