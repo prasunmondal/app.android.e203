@@ -9,6 +9,10 @@ class AppSetting {
     fun getValue(key: AppSetting_PARAMS) {
         values.get(key.value)
     }
+
+    fun getValue(key: String) {
+        values.get(key)
+    }
 }
 
 enum class AppSetting_PARAMS(var value: String) {
