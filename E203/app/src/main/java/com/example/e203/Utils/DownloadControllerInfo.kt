@@ -71,11 +71,12 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
                     val reader = CSVReader(FileReader(File(destination)))
                     var nextLine: Array<String> = arrayOf<String>("")
                     var i = 0
-                    nextLine = reader.readNext()
+//                    nextLine = reader.readNext()
                     while (reader.peek() != null) {
                         // nextLine[] is an array of values from the line
                         nextLine = reader.readNext()
-                        println(nextLine[0])
+                        println(nextLine[0] + " - " + nextLine[1])
+//                        println(nextLine[0])
                     }
                 } catch (e: IOException) {
                 }
