@@ -2,7 +2,11 @@ package com.example.e203
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.ProgressDialog
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +16,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import com.example.e203.Utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -49,6 +54,24 @@ class MainActivity : AppCompatActivity() {
         loadPage(submitFormURL)
 
         downloadAndUpdateInfo()
+        showNot()
+    }
+
+    private fun showNot() {
+
+        val mBuilder = NotificationCompat.Builder(this)
+            .setSmallIcon(R.drawable.ic_launcher_background) // notification icon
+            .setContentTitle("E203") // title for notification
+            .setContentText("New Transaction Added...") // message for notification
+            .setAutoCancel(true) // clear notification after click
+
+        val intent = Intent(this, MainActivity::class.java)
+        val pi =
+            PendingIntent.getActivity(this, 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK)
+        mBuilder.setContentIntent(pi)
+        val mNotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        mNotificationManager.notify(0, mBuilder.build())
     }
 
     private fun loadPage(url: String) {
