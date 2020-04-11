@@ -53,13 +53,10 @@ class MainActivity : AppCompatActivity() {
         haveStoragePermission()
 
         loadPage(webView, submitFormURL)
-        val apkUrl = apklink
-        downloadController = DownloadController(this, apkUrl)
+
 
 //        buttonDownload.setOnClickListener {
             // check storage permission granted if yes then start downloading file
-        Log.d("Download: ", "calling....")
-            checkStoragePermission()
 //        }
     }
 
@@ -136,6 +133,13 @@ class MainActivity : AppCompatActivity() {
         val refid = downloadManager.enqueue(request)
     }
 
+    fun downloadAndUpdate() {
+        val apkUrl = apklink
+        downloadController = DownloadController(this, apkUrl)
+        Log.d("Download: ", "calling....")
+        checkStoragePermission()
+    }
+
     fun onClickRefresh(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
         loadPage(myWebView, detailsFormURL);
@@ -144,6 +148,7 @@ class MainActivity : AppCompatActivity() {
     fun onClickEnlist(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
         loadPage(myWebView, editPage);
+        downloadAndUpdate()
     }
 
     companion object {
