@@ -21,7 +21,7 @@ class DownloadController(private val context: Context, private val url: String) 
         private const val FILE_BASE_PATH = "file://"
         private const val MIME_TYPE = "application/vnd.android.package-archive"
         private const val PROVIDER_PATH = ".provider"
-        private const val APP_INSTALL_PATH = "\"application/vnd.android.package-archive\""
+        private const val APP_INSTALL_PATH: String = "\"application/vnd.android.package-archive\""
     }
 
     fun enqueueDownload() {
