@@ -6,7 +6,6 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -16,7 +15,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.example.e203.Utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -49,15 +47,7 @@ class MainActivity : AppCompatActivity() {
         webView.getSettings().setLoadWithOverviewMode(true)
         webView.setWebViewClient(WebViewClient())
         webView.setWebChromeClient(WebChromeClient())
-
-        haveStoragePermission()
-
         loadPage(webView, submitFormURL)
-
-
-//        buttonDownload.setOnClickListener {
-            // check storage permission granted if yes then start downloading file
-//        }
     }
 
     fun loadPage(webView: WebView, url: String) {
@@ -88,29 +78,6 @@ class MainActivity : AppCompatActivity() {
         webView.loadUrl(url)
     }
 
-    fun haveStoragePermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= 23) {
-            return if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED
-            ) {
-                Log.e("Permission error", "You have permission")
-                true
-            } else {
-                Log.e("Permission error", "You have asked for permission")
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    1
-                )
-                false
-            }
-        } else { //you dont need to worry about these stuff below api level 23
-            Log.e("Permission error", "You already have the permission")
-            return true
-        }
-    }
-
-
     fun onClickOnceMoreAdd(view: View) {
         val downloadManager =
             this.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -128,8 +95,6 @@ class MainActivity : AppCompatActivity() {
             "/E203/" + "/" + "e203v4" + ".apk"
         )
 
-
-
         val refid = downloadManager.enqueue(request)
     }
 
@@ -138,6 +103,8 @@ class MainActivity : AppCompatActivity() {
         downloadController = DownloadController(this, apkUrl)
         Log.d("Download: ", "calling....")
         checkStoragePermission()
+        downloadController.enqueueDownload()
+        Log.d("Download: ","started")
     }
 
     fun onClickRefresh(view: View) {
@@ -177,16 +144,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkStoragePermission() {
         // Check if the storage permission has been granted
-        if (checkSelfPermissionCompat(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-            PackageManager.PERMISSION_GRANTED
-        ) {
-            // start downloading
-            downloadController.enqueueDownload()
-            Log.d("Download: ","started")
-        } else {
-            // Permission is missing and must be requested.
+        if (checkSelfPermissionCompat(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
             requestStoragePermission()
-        }
     }
 
     private fun requestStoragePermission() {
