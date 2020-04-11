@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         downloadControllerInfo = DownloadControllerInfo(this, apkUrl)
         Log.d("Download: ", "calling....")
         checkStoragePermission()
-        downloadControllerInfo.enqueueDownload()
+        downloadControllerInfo.enqueueDownload(findViewById(R.id.formView))
         Log.d("Download: ","started")
     }
 

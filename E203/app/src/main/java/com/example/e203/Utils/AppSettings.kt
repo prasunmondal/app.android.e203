@@ -6,12 +6,12 @@ class AppSetting {
         values.put(key, value)
     }
 
-    fun getValue(key: AppSetting_PARAMS) {
-        values.get(key.value)
+    fun getValue(key: AppSetting_PARAMS): String? {
+        return values.get(key.value)
     }
 
-    fun getValue(key: String) {
-        values.get(key)
+    fun getValue(key: String): String? {
+        return values.get(key)
     }
 }
 

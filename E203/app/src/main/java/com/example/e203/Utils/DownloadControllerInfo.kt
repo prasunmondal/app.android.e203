@@ -1,5 +1,6 @@
 package com.example.e203.Utils
 
+import android.Manifest
 import com.opencsv.CSVReader;
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
@@ -8,8 +9,14 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
+import android.view.View
 import android.widget.Toast
+import com.example.e203.BuildConfig
+import com.example.e203.MainActivity
 import com.example.e203.R
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileReader
 import java.io.IOException
@@ -17,6 +24,7 @@ import java.io.IOException
 class DownloadControllerInfo(private val context: Context, private val url: String) {
 
 	companion object {
+		val appSetting: AppSetting = AppSetting();
 		private const val FILE_NAME = "details.csv"
 		private const val FILE_BASE_PATH = "file://"
 		private const val MIME_TYPE = "application/vnd.android.package-archive"
@@ -24,7 +32,7 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 		private const val APP_INSTALL_PATH = "\"application/vnd.android.package-archive\""
 	}
 
-	fun enqueueDownload() {
+	fun enqueueDownload(view: View) {
 
 		var destination =
 			context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + "/"
@@ -45,7 +53,7 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 		// set destination
 		request.setDestinationUri(uri)
 
-		showInstallOption(destination, uri)
+		showInstallOption(destination, view)
 		// Enqueue a new download and same the referenceId
 		downloadManager.enqueue(request)
 		Toast.makeText(context, context.getString(R.string.downloading), Toast.LENGTH_LONG)
@@ -56,7 +64,7 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 
 	private fun showInstallOption(
 		destination: String,
-		uri: Uri
+		view: View
 	) {
 		// set BroadcastReceiver to install app when .apk is downloaded
 		val onComplete = object : BroadcastReceiver() {
@@ -71,10 +79,40 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 						// nextLine[] is an array of values from the line
 						nextLine = reader.readNext()
 						println(nextLine[0] + " - " + nextLine[1])
-						val appSetting: AppSetting = AppSetting();
 						appSetting.putValue(nextLine[0], nextLine[1])
 					}
 				} catch (e: IOException) {
+				}
+
+
+				// UPDATE REQUIRED?
+
+
+//				val snack = Snackbar.make(findViewById(R.id.formView),"This is a simple Snackbar",Snackbar.LENGTH_LONG)
+//				snack.show()
+				Log.d("Available version: ",appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS))
+				Log.d("Current version: ",BuildConfig.VERSION_CODE.toString())
+				var availableVers = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS);
+				val currentVers = BuildConfig.VERSION_CODE
+				if(availableVers == null) {
+					availableVers = currentVers.toString();
+				}
+				if (availableVers.toInt() > currentVers) {
+					view.showSnackbar(
+						R.string.updateAvailable,
+						Snackbar.LENGTH_INDEFINITE, R.string.update
+					) {
+//						requestPermissionsCompat(
+//							arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+//							MainActivity.PERMISSION_REQUEST_STORAGE
+//						)
+					}
+
+				} else {
+//					requestPermissionsCompat(
+//						arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+//						MainActivity.PERMISSION_REQUEST_STORAGE
+//					)
 				}
 			}
 		}
