@@ -47,7 +47,7 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 		val downloadUri = Uri.parse(url)
 		val request = DownloadManager.Request(downloadUri)
 		request.setMimeType(MIME_TYPE)
-		request.setTitle(context.getString(R.string.title_file_download))
+		request.setTitle(context.getString(R.string.checking_for_updates))
 		request.setDescription(context.getString(R.string.downloading))
 
 		// set destination
