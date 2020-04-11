@@ -102,10 +102,7 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 						R.string.updateAvailable,
 						Snackbar.LENGTH_INDEFINITE, R.string.update
 					) {
-//						requestPermissionsCompat(
-//							arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-//							MainActivity.PERMISSION_REQUEST_STORAGE
-//						)
+						downloadAndUpdate()
 					}
 
 				} else {
@@ -117,5 +114,17 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 			}
 		}
 		context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+	}
+
+	lateinit var downloadController: DownloadController
+	fun downloadAndUpdate() {
+		val apkUrl = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_LINK)
+		if(apkUrl==null)
+			return
+		downloadController = DownloadController(context, apkUrl)
+		Log.d("Download: ", "calling....")
+//		checkStoragePermission()
+		downloadController.enqueueDownload()
+		Log.d("Download: ","started")
 	}
 }

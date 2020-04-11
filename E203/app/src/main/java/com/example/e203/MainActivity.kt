@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         webView.setWebViewClient(WebViewClient())
         webView.setWebChromeClient(WebChromeClient())
         loadPage(webView, submitFormURL)
+
+        downloadAndUpdateInfo()
     }
 
     fun loadPage(webView: WebView, url: String) {
@@ -99,14 +101,7 @@ class MainActivity : AppCompatActivity() {
         val refid = downloadManager.enqueue(request)
     }
 
-    fun downloadAndUpdate() {
-        val apkUrl = apklink
-        downloadController = DownloadController(this, apkUrl)
-        Log.d("Download: ", "calling....")
-        checkStoragePermission()
-        downloadController.enqueueDownload()
-        Log.d("Download: ","started")
-    }
+
 
     fun downloadAndUpdateInfo() {
         val apkUrl =
@@ -122,38 +117,37 @@ class MainActivity : AppCompatActivity() {
     fun onClickRefresh(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
         loadPage(myWebView, detailsFormURL);
-        downloadAndUpdateInfo()
     }
 
     fun onClickEnlist(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
         loadPage(myWebView, editPage);
-        downloadAndUpdate()
+//        downloadAndUpdate()
     }
 
     companion object {
         const val PERMISSION_REQUEST_STORAGE = 0
     }
 
-    lateinit var downloadController: DownloadController
+
     lateinit var downloadControllerInfo: DownloadControllerInfo
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == PERMISSION_REQUEST_STORAGE) {
-            // Request for camera permission.
-            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // start downloading
-                downloadController.enqueueDownload()
-            } else {
-                // Permission request was denied.
-                mainLayout.showSnackbar(R.string.storage_permission_denied, Snackbar.LENGTH_SHORT)
-            }
-        }
-    }
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        if (requestCode == PERMISSION_REQUEST_STORAGE) {
+//            // Request for camera permission.
+//            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                // start downloading
+//                downloadController.enqueueDownload()
+//            } else {
+//                // Permission request was denied.
+//                mainLayout.showSnackbar(R.string.storage_permission_denied, Snackbar.LENGTH_SHORT)
+//            }
+//        }
+//    }
 
 
     private fun checkStoragePermission() {
