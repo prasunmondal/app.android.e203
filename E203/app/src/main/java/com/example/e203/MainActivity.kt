@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         "https://docs.google.com/forms/d/e/1FAIpQLSdoq9CzHE7t2CY85VG7MXLDSphCZhgnXli3blmOE5k-FT04mw/viewform";
     val editPage =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pubhtml?gid=16104355&single=true";
-    val apklink = "https://github.com/prasunmondal/app_E203/blob/E203_v4/E203_v4.apk?raw=true";
+    val apklink = "https://github.com/prasunmondal/app_E203/blob/master/E203/app/src/main/E203_v5.apk?raw=true";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
 
 //        buttonDownload.setOnClickListener {
             // check storage permission granted if yes then start downloading file
+        Log.d("Download: ", "calling....")
             checkStoragePermission()
 //        }
     }
