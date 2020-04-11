@@ -75,8 +75,8 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 				} catch (e: IOException) {
 				}
 
-				Log.d("Available version: ",appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS.toString()))
-				Log.d("Current version: ",BuildConfig.VERSION_CODE.toString())
+//				Log.d("Available version: ",appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS.toString()))
+//				Log.d("Current version: ",BuildConfig.VERSION_CODE.toString())
 				var availableVers = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS);
 				val currentVers = BuildConfig.VERSION_CODE
 				if(availableVers == null) {
