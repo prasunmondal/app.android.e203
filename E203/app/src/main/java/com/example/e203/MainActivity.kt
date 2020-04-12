@@ -1,16 +1,14 @@
 package com.example.e203
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.e203.Utils.*
+import com.example.e203.utils.DownloadControllerInfo
 import com.example.e203.utils.showNotification
 
 class MainActivity : AppCompatActivity() {
@@ -48,10 +46,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadPage(url: String) {
         val webView: WebView = findViewById(R.id.formView)
-        val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Loading...")
-        Log.d("dirty: ",webView.isDirty.toString())
-        webView.stopLoading()
+//        val progressDialog = ProgressDialog(this)
+//        progressDialog.setMessage("Loading...")
+//        webView.stopLoading()
 //        progressDialog!!.show()
 
         webView.webViewClient = object : WebViewClient() {
