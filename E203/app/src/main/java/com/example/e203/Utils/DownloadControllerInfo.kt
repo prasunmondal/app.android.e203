@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Environment
-import android.util.Log
 import android.view.View
 import com.example.e203.BuildConfig
 import com.example.e203.R
@@ -82,7 +81,7 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 
 	private fun promptAndInitiateUpdate(view: View)
 	{
-		var availableVers = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS);
+		var availableVers = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS)
 		val currentVers = BuildConfig.VERSION_CODE
 		if(availableVers == null) {
 			availableVers = currentVers.toString()
