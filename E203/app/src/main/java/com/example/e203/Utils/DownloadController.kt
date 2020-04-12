@@ -54,17 +54,10 @@ class DownloadController(private val context: Context, private val url: String) 
 
     }
 
-    private fun showInstallOption(
-        destination: String,
-        uri: Uri
-    ) {
-
+    private fun showInstallOption(destination: String, uri: Uri) {
         // set BroadcastReceiver perform action after download is complete
         val onComplete = object : BroadcastReceiver() {
-            override fun onReceive(
-                context: Context,
-                intent: Intent
-            ) {
+            override fun onReceive(context: Context, intent: Intent) {
                 installUpadte(this, destination, uri)
             }
         }
