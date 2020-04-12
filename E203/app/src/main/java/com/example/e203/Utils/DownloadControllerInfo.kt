@@ -53,10 +53,7 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 //		Toast.makeText(context, context.getString(R.string.checkingForUpdates), Toast.LENGTH_LONG).show()
 	}
 
-	private fun showInstallOption(
-		destination: String,
-		view: View
-	) {
+	private fun showInstallOption(destination: String, view: View) {
 		// read the update values when file is downloaded
 		val onComplete = object : BroadcastReceiver() {
 			override fun onReceive(context: Context, intent: Intent) {
@@ -66,12 +63,7 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 		context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 	}
 
-	private lateinit var downloadController: DownloadController
-	fun downloadAndUpdate() {
-		val apkUrl = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_LINK) ?: return
-		downloadController = DownloadController(context, apkUrl)
-		downloadController.enqueueDownload()
-	}
+	
 
 	fun readCSVandPopulateAppSettings(destination: String, view: View) {
 		try {
@@ -85,7 +77,11 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 			}
 		} catch (e: IOException) {
 		}
+		promptAndInitiateUpdate(view)
+	}
 
+	private fun promptAndInitiateUpdate(view: View)
+	{
 		var availableVers = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS);
 		val currentVers = BuildConfig.VERSION_CODE
 		if(availableVers == null) {
@@ -98,7 +94,11 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 			) {
 				downloadAndUpdate()
 			}
-
 		}
+	}
+
+	private fun downloadAndUpdate() {
+		val apkUrl = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_LINK) ?: return
+		DownloadController(context, apkUrl).enqueueDownload()
 	}
 }
