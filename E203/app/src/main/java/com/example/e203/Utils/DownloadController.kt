@@ -59,39 +59,41 @@ class DownloadController(private val context: Context, private val url: String) 
         uri: Uri
     ) {
 
-        // set BroadcastReceiver to install app when .apk is downloaded
+        // set BroadcastReceiver perform action after download is complete
         val onComplete = object : BroadcastReceiver() {
             override fun onReceive(
                 context: Context,
                 intent: Intent
             ) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    val contentUri = FileProvider.getUriForFile(
-                        context,
-                        BuildConfig.APPLICATION_ID + PROVIDER_PATH,
-                        File(destination)
-                    )
-                    val install = Intent(Intent.ACTION_VIEW)
-                    install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    install.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    install.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
-                    install.data = contentUri
-                    context.startActivity(install)
-                    context.unregisterReceiver(this)
-                    // finish()
-                } else {
-                    val install = Intent(Intent.ACTION_VIEW)
-                    install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    install.setDataAndType(
-                        uri,
-                        APP_INSTALL_PATH
-                    )
-                    context.startActivity(install)
-                    context.unregisterReceiver(this)
-                    // finish()
-                }
+                installUpadte(this, destination, uri)
             }
         }
         context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+    }
+
+    private fun installUpadte(This: BroadcastReceiver, destination: String, uri: Uri) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val contentUri = FileProvider.getUriForFile(
+                context,
+                BuildConfig.APPLICATION_ID + PROVIDER_PATH,
+                File(destination)
+            )
+            val install = Intent(Intent.ACTION_VIEW)
+            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            install.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            install.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+            install.data = contentUri
+            context.startActivity(install)
+            context.unregisterReceiver(This)
+        } else {
+            val install = Intent(Intent.ACTION_VIEW)
+            install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            install.setDataAndType(
+                uri,
+                APP_INSTALL_PATH
+            )
+            context.startActivity(install)
+            context.unregisterReceiver(This)
+        }
     }
 }
