@@ -1,17 +1,7 @@
 package com.example.e203
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.ProgressDialog
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.media.RingtoneManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -20,10 +10,8 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import com.example.e203.Utils.*
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.e203.utils.showNotification
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,39 +43,7 @@ class MainActivity : AppCompatActivity() {
         loadPage(submitFormURL)
 
         downloadAndUpdateInfo()
-        ShowNotification("E203","A new record has been added!")
-    }
-
-    private fun ShowNotification(title: String, messageBody: String) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT
-        )
-        val channelId ="1"
-        val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder =
-            NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle(title)
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent)
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "E203: Updates",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        showNotification(this, "E203","A new record has been added!")
     }
 
     private fun loadPage(url: String) {
@@ -127,23 +83,18 @@ class MainActivity : AppCompatActivity() {
     fun loadAddForm(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
         myWebView.loadUrl(submitFormURL)
-        ShowNotification("E203","A new record has been added 1!")
+//        showNotification("E203","A new record has been added 1!")
     }
 
     fun loadDetails(view: View) {
         loadPage(detailsFormURL)
-        ShowNotification("E203","A new record has been added 2!")
+//        showNotification("E203","A new record has been added 2!")
     }
 
     fun loadEditPage(view: View) {
         loadPage(editPage)
-        ShowNotification("E203","A new record has been added 3!")
+        showNotification(this,"E203","A new record has been added 3!")
     }
-
-
-    // Other Utils
-
-
 
     private lateinit var downloadControllerInfo: DownloadControllerInfo
 }
