@@ -25,7 +25,6 @@ import com.example.e203.Utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AppCompatActivity() {
 
 
@@ -119,13 +118,8 @@ class MainActivity : AppCompatActivity() {
         webView.loadUrl(url)
     }
 
-
-
-
-
     private fun downloadAndUpdateInfo() {
         val url = detailCSV
-        checkStoragePermission()
         downloadControllerInfo = DownloadControllerInfo(this, url)
         downloadControllerInfo.enqueueDownload(findViewById(R.id.formView))
     }
@@ -149,38 +143,9 @@ class MainActivity : AppCompatActivity() {
 
     // Other Utils
 
-    companion object {
-        const val PERMISSION_REQUEST_STORAGE = 0
-    }
+
 
     private lateinit var downloadControllerInfo: DownloadControllerInfo
-
-    private fun checkStoragePermission() {
-        // Check if the storage permission has been granted
-        if (checkSelfPermissionCompat(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            requestStoragePermission()
-    }
-
-    private fun requestStoragePermission() {
-
-        if (shouldShowRequestPermissionRationaleCompat(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            mainLayout.showSnackbar(
-                R.string.storage_access_required,
-                Snackbar.LENGTH_INDEFINITE, R.string.ok
-            ) {
-                requestPermissionsCompat(
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    PERMISSION_REQUEST_STORAGE
-                )
-            }
-
-        } else {
-            requestPermissionsCompat(
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                PERMISSION_REQUEST_STORAGE
-            )
-        }
-    }
 }
 
 private class MyWebViewClient : WebViewClient() {
