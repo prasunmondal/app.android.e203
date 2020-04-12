@@ -1,4 +1,4 @@
-package com.example.e203.utils
+package com.example.e203.Utils
 
 import com.opencsv.CSVReader
 import android.app.DownloadManager
@@ -77,7 +77,7 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 
 //				Log.d("Available version: ",appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS.toString()))
 //				Log.d("Current version: ",BuildConfig.VERSION_CODE.toString())
-				var availableVers = appSetting.getValue(AppSettingPARAMS.APK_DOWNLOAD_VERS)
+				var availableVers = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS);
 				val currentVers = BuildConfig.VERSION_CODE
 				if(availableVers == null) {
 					availableVers = currentVers.toString()
@@ -98,7 +98,7 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 
 	private lateinit var downloadController: DownloadController
 	fun downloadAndUpdate() {
-		val apkUrl = appSetting.getValue(AppSettingPARAMS.APK_DOWNLOAD_LINK) ?: return
+		val apkUrl = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_LINK) ?: return
 		downloadController = DownloadController(context, apkUrl)
 		Log.d("Download: ", "calling....")
 //		checkStoragePermission()

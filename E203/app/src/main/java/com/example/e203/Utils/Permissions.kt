@@ -1,4 +1,4 @@
-package com.example.e203.utils
+package com.example.e203
 
 //import android.Manifest
 //import android.content.pm.PackageManager

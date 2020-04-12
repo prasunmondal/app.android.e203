@@ -1,4 +1,4 @@
-package com.example.e203.utils
+package com.example.e203.Utils
 
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
@@ -25,6 +25,7 @@ class DownloadController(private val context: Context, private val url: String) 
     }
 
     fun enqueueDownload() {
+
         var destination =
             context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + "/"
         destination += FILE_NAME
@@ -45,10 +46,10 @@ class DownloadController(private val context: Context, private val url: String) 
         request.setDestinationUri(uri)
 
         showInstallOption(destination, uri)
-
         // Enqueue a new download and same the referenceId
         downloadManager.enqueue(request)
-        Toast.makeText(context, context.getString(R.string.downloading), Toast.LENGTH_LONG).show()
+        Toast.makeText(context, context.getString(R.string.downloading), Toast.LENGTH_LONG)
+            .show()
 
 
     }
