@@ -59,38 +59,8 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 	) {
 		// read the update values when file is downloaded
 		val onComplete = object : BroadcastReceiver() {
-			override fun onReceive(
-				context: Context,
-				intent: Intent
-			) {
-				try {
-					val reader = CSVReader(FileReader(File(destination)))
-					var nextLine: Array<String>
-					while (reader.peek() != null) {
-						// nextLine[] is an array of values from the line
-						nextLine = reader.readNext()
-						println(nextLine[0] + " - " + nextLine[1])
-						appSetting.putValue(nextLine[0], nextLine[1])
-					}
-				} catch (e: IOException) {
-				}
-
-//				Log.d("Available version: ",appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS.toString()))
-//				Log.d("Current version: ",BuildConfig.VERSION_CODE.toString())
-				var availableVers = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS);
-				val currentVers = BuildConfig.VERSION_CODE
-				if(availableVers == null) {
-					availableVers = currentVers.toString()
-				}
-				if (availableVers.toInt() > currentVers) {
-					view.showSnackbar(
-						R.string.updateAvailable,
-						Snackbar.LENGTH_INDEFINITE, R.string.update
-					) {
-						downloadAndUpdate()
-					}
-
-				}
+			override fun onReceive(context: Context, intent: Intent) {
+				readCSVandPopulateAppSettings(destination, view)
 			}
 		}
 		context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
@@ -100,9 +70,35 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 	fun downloadAndUpdate() {
 		val apkUrl = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_LINK) ?: return
 		downloadController = DownloadController(context, apkUrl)
-		Log.d("Download: ", "calling....")
-//		checkStoragePermission()
 		downloadController.enqueueDownload()
-		Log.d("Download: ","started")
+	}
+
+	fun readCSVandPopulateAppSettings(destination: String, view: View) {
+		try {
+			val reader = CSVReader(FileReader(File(destination)))
+			var nextLine: Array<String>
+			while (reader.peek() != null) {
+				// nextLine[] is an array of values from the line
+				nextLine = reader.readNext()
+				println(nextLine[0] + " - " + nextLine[1])
+				appSetting.putValue(nextLine[0], nextLine[1])
+			}
+		} catch (e: IOException) {
+		}
+
+		var availableVers = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS);
+		val currentVers = BuildConfig.VERSION_CODE
+		if(availableVers == null) {
+			availableVers = currentVers.toString()
+		}
+		if (availableVers.toInt() > currentVers) {
+			view.showSnackbar(
+				R.string.updateAvailable,
+				Snackbar.LENGTH_INDEFINITE, R.string.update
+			) {
+				downloadAndUpdate()
+			}
+
+		}
 	}
 }
