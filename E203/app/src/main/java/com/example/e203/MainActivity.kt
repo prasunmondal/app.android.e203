@@ -47,6 +47,13 @@ class MainActivity : AppCompatActivity() {
         loadPage(submitFormURL)
 
         downloadAndUpdateInfo()
+
+//        toolbar = (Toolbar) findViewById(R.id.parent);
+//        setSupportActionBar(toolbar);
+        supportActionBar!!.setDisplayShowTitleEnabled(true);
+//add app icon inside the Toolbar
+        supportActionBar!!.setDisplayShowHomeEnabled(true);
+        supportActionBar!!.setIcon(R.mipmap.ic_launcher);
 //        showNotification(this, "E203","A new record has been added!")
     }
 
