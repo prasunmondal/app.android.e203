@@ -2,7 +2,6 @@ package com.example.e203
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,11 +10,13 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e203.Utils.AppConfig
 import com.example.e203.Utils.DownloadControllerInfo
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileWriter
-import java.io.InputStreamReader
+import com.example.e203.sessionData.AppContexts
+import com.example.e203.Utils.DataFiles
+
+//import com.example.e203.utils.DataFiles
+//import com.example.e203.utils.DataFiles.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         loadPage(submitFormURL)
 
         downloadAndUpdateInfo()
+        AppContexts.Singleton.instance.setMainActivity(this)
 
 //        toolbar = (Toolbar) findViewById(R.id.parent);
 //        setSupportActionBar(toolbar);
@@ -95,13 +97,14 @@ class MainActivity : AppCompatActivity() {
         val myWebView: WebView = findViewById(R.id.formView)
         myWebView.loadUrl(submitFormURL)
         var name: String = "Title"
-        writeFileOnInternalStorage(this, name, "Message1212")
-        ReadBtn(name,view)
+        DataFiles.Singleton.instance.writeToInternalFile(name, "Message1212")
+        DataFiles.Singleton.instance.readFromInternalFile(name)
 //        showNotification("E203","A new record has been added 1!")
     }
 
     fun loadDetails(view: View) {
         loadPage(detailsFormURL)
+        AppConfig.appConfig.instance.writeConfigToFile()
 //        showNotification("E203","A new record has been added 2!")
     }
 
@@ -111,50 +114,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var downloadControllerInfo: DownloadControllerInfo
-
-    fun writeFileOnInternalStorage(
-        This: Context,
-        sFileName: String?,
-        sBody: String?
-    ) {
-        val file = File(This.getFilesDir(), "mydir")
-        if (!file.exists()) {
-            file.mkdir()
-        }
-        Log.d("File Path: ", file.absolutePath)
-        try {
-            val gpxfile = File(file, sFileName)
-            val writer = FileWriter(gpxfile)
-            writer.append(sBody)
-            writer.flush()
-            writer.close()
-            Log.d("File: ", "Write Successful")
-        } catch (e: Exception) {
-            Log.d("File: ", "Write Failed")
-            e.printStackTrace()
-        }
-    }
-
-    fun ReadBtn(sFileName: String, v: View?) {
-        //reading text from file
-        try {
-            val fileIn: FileInputStream = FileInputStream(File("/data/user/0/com.example.e203/files/mydir/" + sFileName))
-            val InputRead = InputStreamReader(fileIn)
-            val inputBuffer = CharArray(1024)
-            var s: String? = ""
-            var charRead: Int = 0
-            while (InputRead.read(inputBuffer).also({ charRead = it }) > 0) {
-                val readstring = String(inputBuffer, 0, charRead)
-                s += readstring
-            }
-            InputRead.close()
-//            textmsg.setText(s)
-            Log.d("File Output: ", s)
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-        }
-    }
-
 }
 
 private class MyWebViewClient : WebViewClient() {
