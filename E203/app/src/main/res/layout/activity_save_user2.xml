@@ -21,7 +21,7 @@
         tools:layout_editor_absoluteX="1dp" />
 
     <Button
-        android:id="@+id/saveUserButton"
+        android:id="@+id/saveuser_saveButton"
         android:layout_width="98dp"
         android:layout_height="53dp"
         android:onClick="onClickSaveUsername"
@@ -40,8 +40,8 @@
         android:textColor="#33b5e5"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/saveUserButton"
-        app:layout_constraintEnd_toStartOf="@+id/saveUserButton"
-        app:layout_constraintTop_toTopOf="@+id/saveUserButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/saveuser_saveButton"
+        app:layout_constraintEnd_toStartOf="@+id/saveuser_saveButton"
+        app:layout_constraintTop_toTopOf="@+id/saveuser_saveButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
