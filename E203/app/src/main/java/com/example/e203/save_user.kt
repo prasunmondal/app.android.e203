@@ -1,12 +1,16 @@
 package com.example.e203
 
+import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.webkit.WebView
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_save_user.*
+
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -51,7 +55,7 @@ class save_user : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_save_user)
+        setContentView(com.example.e203.R.layout.activity_save_user)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mVisible = true
@@ -106,7 +110,12 @@ class save_user : AppCompatActivity() {
     }
 
     fun saveUser(view: View) {
-        Log.d("Event Registered: ", "Clicked on Dummy Button")
+        val myWebView: EditText = findViewById(com.example.e203.R.id.userNameSelection)
+        Log.d("Username: ", myWebView.getText().toString())
+        goToMainPage()
+    }
+
+    fun goToMainPage() {
         val i = Intent(this@save_user, MainActivity::class.java)
         startActivity(i)
         finish()
