@@ -22,11 +22,26 @@
 
     <Button
         android:id="@+id/saveUserButton"
-        android:layout_width="153dp"
-        android:layout_height="wrap_content"
+        android:layout_width="98dp"
+        android:layout_height="53dp"
         android:onClick="onClickSaveUsername"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userNameSelection" />
+
+    <TextView
+        android:id="@+id/saveuser_skipButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40dp"
+        android:onClick="onClick_SaveUSer_skipButton"
+        android:text="Later"
+        android:textAlignment="viewStart"
+        android:textColor="#33b5e5"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/saveUserButton"
+        app:layout_constraintEnd_toStartOf="@+id/saveUserButton"
+        app:layout_constraintTop_toTopOf="@+id/saveUserButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

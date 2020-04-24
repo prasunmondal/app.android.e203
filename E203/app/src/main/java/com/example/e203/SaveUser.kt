@@ -21,12 +21,16 @@ class SaveUser : AppCompatActivity() {
         val username = myWebView.getText().toString()
         Log.d("Username: ", username)
 
-        isValidUserName(username)
-        var writeSuccessful = writeUsernameToFile(username)
-        Log.d("WriteStatus_Username: ", writeSuccessful.toString())
 
-        if(writeSuccessful) goToMainPage()
+        if(isValidUserName(username)) {
+            if (writeUsernameToFile(username)) goToMainPage()
+            else Toast.makeText(this@SaveUser, "Error: Save Failed!", Toast.LENGTH_SHORT).show()
+        }
         else Toast.makeText(this@SaveUser, "Error: Please Enter a Valid Name!", Toast.LENGTH_SHORT).show()
+    }
+
+    fun onClick_SaveUSer_skipButton(view: View) {
+       goToMainPage()
     }
 
     fun goToMainPage() {
@@ -36,10 +40,10 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun writeUsernameToFile(username: String): Boolean {
-        return false
+        return true
     }
 
     fun isValidUserName(username: String): Boolean {
-        return true
+        return username.equals("Prasun")
     }
 }
