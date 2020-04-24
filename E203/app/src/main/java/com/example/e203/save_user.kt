@@ -107,10 +107,9 @@ class save_user : AppCompatActivity() {
 
     fun saveUser(view: View) {
         Log.d("Event Registered: ", "Clicked on Dummy Button")
-//        var inte = Intent()
-//        inte
         val i = Intent(this@save_user, MainActivity::class.java)
         startActivity(i)
+        finish()
     }
 
     /**
