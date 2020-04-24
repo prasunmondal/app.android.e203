@@ -19,20 +19,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".save_user"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="E203"
-            android:theme="@style/FullscreenTheme">
+        <activity android:name=".SaveUser">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".save_user"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/FullscreenTheme">
 
         </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".utils.Notification" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
