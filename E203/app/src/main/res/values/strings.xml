@@ -8,4 +8,8 @@
     <string name="ok">OK</string>
     <string name="update">Update</string>
     <string name="updateAvailable">Update Available...</string>
+
+    <string name="title_activity_save_user">save_user</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
