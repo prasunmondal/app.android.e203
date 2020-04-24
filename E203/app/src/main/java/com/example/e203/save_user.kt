@@ -1,9 +1,11 @@
 package com.example.e203
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_save_user.*
 
 /**
@@ -73,11 +75,11 @@ class save_user : AppCompatActivity() {
     }
 
     private fun toggle() {
-        if (mVisible) {
-            hide()
-        } else {
+//        if (mVisible) {
+//            hide()
+//        } else {
             show()
-        }
+//        }
     }
 
     private fun hide() {
@@ -101,6 +103,14 @@ class save_user : AppCompatActivity() {
         // Schedule a runnable to display UI elements after a delay
         mHideHandler.removeCallbacks(mHidePart2Runnable)
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY.toLong())
+    }
+
+    fun saveUser(view: View) {
+        Log.d("Event Registered: ", "Clicked on Dummy Button")
+//        var inte = Intent()
+//        inte
+        val i = Intent(this@save_user, MainActivity::class.java)
+        startActivity(i)
     }
 
     /**
