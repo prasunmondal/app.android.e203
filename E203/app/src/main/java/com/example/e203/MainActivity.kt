@@ -11,7 +11,7 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utils.AppConfig
-import com.example.e203.Utils.DownloadControllerInfo
+import com.example.e203.Utils.DownloadUpdateMetadataInfo
 import com.example.e203.sessionData.AppContexts
 import com.example.e203.Utils.DataFiles
 
@@ -89,8 +89,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun downloadAndUpdateInfo() {
         val url = detailCSV
-        downloadControllerInfo = DownloadControllerInfo(this, url)
-        downloadControllerInfo.enqueueDownload(findViewById(R.id.formView))
+        downloadUpdateMetadataInfo = DownloadUpdateMetadataInfo(this, url)
+        downloadUpdateMetadataInfo.enqueueDownload(findViewById(R.id.formView))
     }
 
     fun loadAddForm(view: View) {
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
 //        showNotification(this,"E203","A new record has been added 3!")
     }
 
-    private lateinit var downloadControllerInfo: DownloadControllerInfo
+    private lateinit var downloadUpdateMetadataInfo: DownloadUpdateMetadataInfo
 }
 
 private class MyWebViewClient : WebViewClient() {

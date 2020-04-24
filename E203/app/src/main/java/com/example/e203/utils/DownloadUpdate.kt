@@ -14,7 +14,7 @@ import com.example.e203 .R
 import com.example.e203.BuildConfig
 import java.io.File
 
-class DownloadController(private val context: Context, private val url: String) {
+class DownloadUpdate(private val context: Context, private val url: String) {
 
     companion object {
         private const val FILE_NAME = "SampleDownloadApp.apk"
@@ -50,8 +50,6 @@ class DownloadController(private val context: Context, private val url: String) 
         downloadManager.enqueue(request)
         Toast.makeText(context, context.getString(R.string.downloading), Toast.LENGTH_LONG)
             .show()
-
-
     }
 
     private fun showInstallOption(destination: String, uri: Uri) {

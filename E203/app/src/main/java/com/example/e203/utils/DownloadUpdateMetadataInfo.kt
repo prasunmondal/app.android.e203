@@ -16,7 +16,7 @@ import java.io.File
 import java.io.FileReader
 import java.io.IOException
 
-class DownloadControllerInfo(private val context: Context, private val url: String) {
+class DownloadUpdateMetadataInfo(private val context: Context, private val url: String) {
 
 	companion object {
 		val appSetting: AppSetting = AppSetting()
@@ -98,6 +98,6 @@ class DownloadControllerInfo(private val context: Context, private val url: Stri
 
 	private fun downloadAndUpdate() {
 		val apkUrl = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_LINK) ?: return
-		DownloadController(context, apkUrl).enqueueDownload()
+		DownloadUpdate(context, apkUrl).enqueueDownload()
 	}
 }
