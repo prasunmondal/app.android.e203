@@ -1,7 +1,7 @@
-package com.example.e203.appData
+package com.example.e203.unusedCodes
 
-import android.util.Log
 import com.example.e203.Utils.DataFiles
+import com.example.e203.utils.FilePaths
 
 class InitiallizationData {
 

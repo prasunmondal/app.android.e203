@@ -8,12 +8,17 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.example.e203.Utils.showSnackbar
+import com.example.e203.appData.FileManagerUtil
+import com.example.e203.Utils.WriteFileUtils
+import com.example.e203.sessionData.AppContexts
 
 class SaveUser : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_save_user2)
+
+        AppContexts.Singleton.instance.setSaveUserActivity(this)
     }
 
     fun onClickSaveUsername(view: View) {
@@ -21,6 +26,7 @@ class SaveUser : AppCompatActivity() {
         val username = myWebView.getText().toString()
         Log.d("Username: ", username)
 
+        WriteFileUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorageSaveUser, "username,Prasun")
 
         if(isValidUserName(username)) {
             if (writeUsernameToFile(username)) goToMainPage()

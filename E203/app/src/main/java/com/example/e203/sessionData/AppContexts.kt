@@ -9,6 +9,7 @@ class AppContexts {
     }
 
     private lateinit var mainActivity: Context
+    private lateinit var saveUserActivity: Context
 
     fun getMainActivity(): Context {
         return this.mainActivity
@@ -16,5 +17,13 @@ class AppContexts {
 
     fun setMainActivity(value: Context) {
         this.mainActivity = value
+    }
+
+    fun getSaveUserActivity(): Context {
+        return this.saveUserActivity
+    }
+
+    fun setSaveUserActivity(value: Context) {
+        this.saveUserActivity = value
     }
 }
