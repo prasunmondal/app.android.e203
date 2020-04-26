@@ -21,7 +21,7 @@ class FileManagerUtil {
     object Singleton {
         var instance = FileManagerUtil()
     }
+    var rootFromContext = AppContexts.Singleton.instance.getSaveUserActivity().filesDir.absolutePath
 
-//    var localConfigurationStorage = FilePathsP(AppContexts.Singleton.instance.getMainActivity().filesDir.absolutePath, "AppData", "AppConfigurationData")
-    var localConfigurationStorageSaveUser = FilePathsP(AppContexts.Singleton.instance.getSaveUserActivity().filesDir.absolutePath, "AppData", "AppConfigurationData")
+    var localConfigurationStorage = FilePathsP(rootFromContext, "AppData", "AppConfigurationData")
 }
