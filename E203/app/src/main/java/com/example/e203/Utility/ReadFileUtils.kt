@@ -6,7 +6,7 @@ import java.io.File
 import java.io.FileReader
 import java.io.IOException
 
-class FileReadUtils {
+class ReadFileUtils {
 
     fun readPairCSVnPopulateMap(map: MutableMap<String, String>, fileName: FilePathsP, refresh: Boolean) {
         try {

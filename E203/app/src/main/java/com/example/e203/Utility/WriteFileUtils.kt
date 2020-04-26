@@ -5,7 +5,7 @@ import com.example.e203.appData.FilePathsP
 import java.io.File
 import java.io.FileWriter
 
-class FileWriteUtils {
+class WriteFileUtils {
 
     fun writeToInternalFile(filepath: FilePathsP, writeString: String): Boolean {
         val file = File(filepath.rootDir, filepath.childDir)
