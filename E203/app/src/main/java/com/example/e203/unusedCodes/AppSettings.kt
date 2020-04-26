@@ -1,4 +1,4 @@
-package com.example.e203.utils
+package com.example.e203.Utils
 
 class AppSetting {
     var appUpdateMetadata:MutableMap<String, String> = mutableMapOf()

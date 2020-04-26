@@ -1,4 +1,4 @@
-package com.example.e203.utils
+package com.example.e203.Utils
 
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
