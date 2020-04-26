@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#000000"
     tools:context=".SaveUser">
 
     <EditText
@@ -12,11 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_marginTop="40dp"
         android:inputType="textPersonName"
-        android:text="Name"
-        android:textColor="#33b5e5"
-        android:textSize="50sp"
+        android:textColor="#1a73e8"
+        android:textSize="30sp"
         android:textStyle="bold"
+        android:hint="Name"
+        android:textColorHint="#292828"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="1dp" />
 
@@ -26,6 +28,8 @@
         android:layout_height="53dp"
         android:onClick="onClickSaveUsername"
         android:text="Save"
+        android:background="#000000"
+        android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userNameSelection" />
 
@@ -33,15 +37,22 @@
         android:id="@+id/saveuser_skipButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="40dp"
+        android:layout_marginRight="20dp"
         android:onClick="onClick_SaveUSer_skipButton"
         android:text="Later"
         android:textAlignment="viewStart"
-        android:textColor="#33b5e5"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="@+id/saveuser_saveButton"
         app:layout_constraintEnd_toStartOf="@+id/saveuser_saveButton"
         app:layout_constraintTop_toTopOf="@+id/saveuser_saveButton" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="245dp"
+        android:layout_height="309dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/start_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

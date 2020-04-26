@@ -21,7 +21,7 @@ class SaveUser : AppCompatActivity() {
         AppContexts.Singleton.instance.setSaveUserActivity(this)
 
         if(localConfig.Singleton.instance.getValue("username")!=null) {
-            goToMainPage()
+//            goToMainPage()
         }
     }
 
