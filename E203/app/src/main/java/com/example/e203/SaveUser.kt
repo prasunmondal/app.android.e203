@@ -20,8 +20,9 @@ class SaveUser : AppCompatActivity() {
 
         AppContexts.Singleton.instance.setSaveUserActivity(this)
 
-        if(localConfig.Singleton.instance.getValue("username")!=null) {
-//            goToMainPage()
+        var username =localConfig.Singleton.instance.getValue("username")
+        if(username!=null && isValidUserName(username)) {
+            goToMainPage()
         }
     }
 
@@ -56,6 +57,6 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun isValidUserName(username: String): Boolean {
-        return username.equals("Prasun")
+        return username.equals("Prasun") or username.equals("Mondal")
     }
 }
