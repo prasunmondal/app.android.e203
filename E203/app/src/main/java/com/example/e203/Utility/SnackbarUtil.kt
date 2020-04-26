@@ -1,4 +1,4 @@
-package com.example.e203.Utils
+package com.example.e203.Utility
 
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity

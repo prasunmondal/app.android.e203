@@ -31,9 +31,7 @@ class SaveUser : AppCompatActivity() {
         val username = myWebView.text.toString()
         Log.d("Username: ", username)
 
-        FileWriteUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorage,
-            "username,$username"
-        )
+        localConfig.Singleton.instance.setValue("username", username)
 
         if(isValidUserName(username)) {
             if (writeUsernameToFile(username)) goToMainPage()

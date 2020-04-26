@@ -10,8 +10,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.e203.Utils.DownloadUpdateMetadataInfo
+import com.example.e203.Utility.DownloadUpdateMetadataInfo
 import com.example.e203.sessionData.AppContexts
+import com.example.e203.sessionData.localConfig
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        Toast.makeText(this@MainActivity, "Logged in as: " + localConfig.Singleton.instance.getValue("username"), Toast.LENGTH_SHORT).show()
 
         val webView: WebView = findViewById(R.id.formView)
         webView.webViewClient = MyWebViewClient()

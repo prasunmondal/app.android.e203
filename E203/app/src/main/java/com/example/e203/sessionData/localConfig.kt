@@ -1,6 +1,7 @@
 package com.example.e203.sessionData
 
-import com.example.e203.Utils.FileReadUtils
+import com.example.e203.Utility.FileReadUtils
+import com.example.e203.Utility.FileWriteUtils
 import com.example.e203.appData.FileManagerUtil
 
 class localConfig {
@@ -14,11 +15,12 @@ class localConfig {
         localConfigMap[key] = value
 
         // write to file
+        FileWriteUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorage,
+            "$key,$value"
+        )
     }
 
     fun getValue(key: String) : String? {
-
-        // read from file
         FileReadUtils().readPairCSVnPopulateMap(localConfigMap,
             FileManagerUtil.Singleton.instance.localConfigurationStorage, true)
 

@@ -1,4 +1,4 @@
-package com.example.e203.Utils
+package com.example.e203.Utility
 
 import com.opencsv.CSVReader
 import android.app.DownloadManager
@@ -11,8 +11,6 @@ import android.os.Environment
 import android.view.View
 import com.example.e203.BuildConfig
 import com.example.e203.R
-import com.example.e203.Utility.AppSetting
-import com.example.e203.Utility.AppSetting_PARAMS
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileReader
