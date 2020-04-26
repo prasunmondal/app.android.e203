@@ -13,10 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utils.AppConfig
 import com.example.e203.Utils.DownloadUpdateMetadataInfo
 import com.example.e203.sessionData.AppContexts
-import com.example.e203.Utils.DataFiles
-
-//import com.example.e203.utils.DataFiles
-//import com.example.e203.utils.DataFiles.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -97,14 +93,11 @@ class MainActivity : AppCompatActivity() {
         val myWebView: WebView = findViewById(R.id.formView)
         myWebView.loadUrl(submitFormURL)
         var name: String = "Title"
-        DataFiles.Singleton.instance.writeToInternalFile(name, "Message1212")
-        DataFiles.Singleton.instance.readFromInternalFile(name)
 //        showNotification("E203","A new record has been added 1!")
     }
 
     fun loadDetails(view: View) {
         loadPage(detailsFormURL)
-        AppConfig.appConfig.instance.writeConfigToFile()
 //        showNotification("E203","A new record has been added 2!")
     }
 

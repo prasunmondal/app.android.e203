@@ -25,21 +25,11 @@ class AppConfig {
     fun setValue(key: String, value: String): Boolean {
         // set to map
         ConfigValues.put(key, value)
-
-        // write to file
-        return writeConfigToFile()
         return true
     }
 
     fun readConfigFromFile() {
         // read value
-    }
-
-    fun writeConfigToFile(): Boolean {
-        var writeString = ""
-            for ((key, value) in ConfigValues)
-                writeString+= ("$key,$value\n")
-        return DataFiles.Singleton.instance.writeToInternalFile(FILE_NAME, writeString)
     }
 }
 
