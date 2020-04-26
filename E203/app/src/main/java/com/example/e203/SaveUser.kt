@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.example.e203.Utility.WriteFileUtils
+import com.example.e203.Utility.FileWriteUtils
 import com.example.e203.appData.FileManagerUtil
 import com.example.e203.sessionData.AppContexts
 import com.example.e203.sessionData.localConfig
@@ -30,7 +30,7 @@ class SaveUser : AppCompatActivity() {
         val username = myWebView.text.toString()
         Log.d("Username: ", username)
 
-        WriteFileUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorage,
+        FileWriteUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorage,
             "username,$username"
         )
 
