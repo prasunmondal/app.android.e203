@@ -11,6 +11,7 @@ import com.example.e203.Utils.showSnackbar
 import com.example.e203.appData.FileManagerUtil
 import com.example.e203.Utils.WriteFileUtils
 import com.example.e203.sessionData.AppContexts
+import com.example.e203.utils.ReadFileUtils
 
 class SaveUser : AppCompatActivity() {
 
@@ -26,7 +27,9 @@ class SaveUser : AppCompatActivity() {
         val username = myWebView.getText().toString()
         Log.d("Username: ", username)
 
+        var temp_map:MutableMap<String, String> = mutableMapOf()
         WriteFileUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorageSaveUser, "username,Prasun")
+        ReadFileUtils().readPairCSVnPopulateMap(temp_map,FileManagerUtil.Singleton.instance.localConfigurationStorageSaveUser, true)
 
         if(isValidUserName(username)) {
             if (writeUsernameToFile(username)) goToMainPage()
