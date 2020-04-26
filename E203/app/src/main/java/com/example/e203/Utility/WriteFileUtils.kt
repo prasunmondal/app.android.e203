@@ -1,4 +1,4 @@
-package com.example.e203.Utils
+package com.example.e203.Utility
 
 import android.util.Log
 import com.example.e203.appData.FilePathsP

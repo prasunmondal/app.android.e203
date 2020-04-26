@@ -33,7 +33,7 @@
 
         </activity>
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".utils.Notification" />
+        <activity android:name=".Utility.Notification" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

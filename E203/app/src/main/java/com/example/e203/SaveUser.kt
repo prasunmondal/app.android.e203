@@ -7,11 +7,10 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.example.e203.Utils.showSnackbar
+import com.example.e203.Utility.WriteFileUtils
 import com.example.e203.appData.FileManagerUtil
-import com.example.e203.Utils.WriteFileUtils
 import com.example.e203.sessionData.AppContexts
-import com.example.e203.Utils.ReadFileUtils
+import com.example.e203.sessionData.localConfig
 
 class SaveUser : AppCompatActivity() {
 
@@ -20,6 +19,10 @@ class SaveUser : AppCompatActivity() {
         setContentView(R.layout.activity_save_user2)
 
         AppContexts.Singleton.instance.setSaveUserActivity(this)
+
+        if(localConfig.Singleton.instance.getValue("username")!=null) {
+            goToMainPage()
+        }
     }
 
     fun onClickSaveUsername(view: View) {
@@ -27,11 +30,9 @@ class SaveUser : AppCompatActivity() {
         val username = myWebView.text.toString()
         Log.d("Username: ", username)
 
-        var temp_map:MutableMap<String, String> = mutableMapOf()
         WriteFileUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorage,
             "username,$username"
         )
-        ReadFileUtils().readPairCSVnPopulateMap(temp_map,FileManagerUtil.Singleton.instance.localConfigurationStorage, true)
 
         if(isValidUserName(username)) {
             if (writeUsernameToFile(username)) goToMainPage()

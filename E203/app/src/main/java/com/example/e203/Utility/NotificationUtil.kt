@@ -1,4 +1,4 @@
-package com.example.e203.utils
+package com.example.e203.Utility
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
