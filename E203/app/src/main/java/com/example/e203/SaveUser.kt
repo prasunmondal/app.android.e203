@@ -7,11 +7,11 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.example.e203.Utils.showSnackbar
+import com.example.e203.utils.showSnackbar
 import com.example.e203.appData.FileManagerUtil
-import com.example.e203.Utils.WriteFileUtils
+import com.example.e203.utils.WriteFileUtils
 import com.example.e203.sessionData.AppContexts
-import com.example.e203.Utils.ReadFileUtils
+import com.example.e203.utils.ReadFileUtils
 
 class SaveUser : AppCompatActivity() {
 

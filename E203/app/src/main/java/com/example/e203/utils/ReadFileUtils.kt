@@ -1,4 +1,4 @@
-package com.example.e203.Utils
+package com.example.e203.utils
 
 import com.example.e203.appData.FilePathsP
 import com.opencsv.CSVReader

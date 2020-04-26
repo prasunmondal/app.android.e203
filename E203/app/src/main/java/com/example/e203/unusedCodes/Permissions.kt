@@ -10,7 +10,7 @@
 //import android.Manifest
 //import android.content.pm.PackageManager
 //import androidx.appcompat.app.AppCompatActivity
-//import com.example.e203.Utils.*
+//import com.example.e203.utils.*
 //import com.google.android.material.snackbar.Snackbar
 //import kotlinx.android.synthetic.main.activity_main.*
 //
