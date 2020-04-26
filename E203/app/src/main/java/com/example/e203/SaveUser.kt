@@ -23,12 +23,14 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun onClickSaveUsername(view: View) {
-        val myWebView: EditText = findViewById(com.example.e203.R.id.userNameSelection)
-        val username = myWebView.getText().toString()
+        val myWebView: EditText = findViewById(R.id.userNameSelection)
+        val username = myWebView.text.toString()
         Log.d("Username: ", username)
 
         var temp_map:MutableMap<String, String> = mutableMapOf()
-        WriteFileUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorage, "username,Prasun")
+        WriteFileUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorage,
+            "username,$username"
+        )
         ReadFileUtils().readPairCSVnPopulateMap(temp_map,FileManagerUtil.Singleton.instance.localConfigurationStorage, true)
 
         if(isValidUserName(username)) {
