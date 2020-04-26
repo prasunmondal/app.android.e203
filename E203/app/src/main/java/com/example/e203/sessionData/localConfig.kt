@@ -14,10 +14,8 @@ class localConfig {
     fun setValue(key: String, value: String) {
         localConfigMap[key] = value
 
-        // write to file
         FileWriteUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorage,
-            "$key,$value"
-        )
+            FileWriteUtils.Singleton.instance.deseriallizeFromMap(localConfigMap))
     }
 
     fun getValue(key: String) : String? {

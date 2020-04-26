@@ -7,6 +7,10 @@ import java.io.FileWriter
 
 class FileWriteUtils {
 
+    object Singleton {
+        var instance = FileWriteUtils()
+    }
+
     fun writeToInternalFile(filepath: FilePathsP, writeString: String): Boolean {
         val file = File(filepath.rootDir, filepath.childDir)
         if (!file.exists()) { file.mkdir() }
@@ -23,5 +27,14 @@ class FileWriteUtils {
             return false
         }
         return true
+    }
+
+
+    fun deseriallizeFromMap(map: MutableMap<String, String>): String {
+        var deseriallizingString = ""
+        for ((key, value) in map) {
+            deseriallizingString += "$key,$value\n"
+        }
+        return deseriallizingString
     }
 }
