@@ -8,7 +8,11 @@ import java.io.IOException
 
 class FileReadUtils {
 
-    fun readPairCSVnPopulateMap(map: MutableMap<String, String>, fileName: FilePathsP, refresh: Boolean) {
+    object Singleton {
+        var instance = FileReadUtils()
+    }
+
+    fun readPairCSVnPopulateMap(map: MutableMap<String, String>, fileName: FilePathsP) {
         try {
             val reader = CSVReader(FileReader(File(fileName.destination)))
             var nextLine: Array<String>
@@ -18,6 +22,8 @@ class FileReadUtils {
                 map[nextLine[0]] = nextLine[1]
             }
         } catch (e: IOException) {
+            println(e)
+            throw (e)
         }
     }
 }

@@ -23,7 +23,7 @@ class SaveUser : AppCompatActivity() {
 
         var username =localConfig.Singleton.instance.getValue("username")
         if(username!=null && isValidUserName(username)) {
-//            goToMainPage()
+            goToMainPage()
         }
     }
 

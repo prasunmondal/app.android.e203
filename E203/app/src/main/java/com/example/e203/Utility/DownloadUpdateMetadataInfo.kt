@@ -11,6 +11,7 @@ import android.os.Environment
 import android.view.View
 import com.example.e203.BuildConfig
 import com.example.e203.R
+import com.example.e203.appData.FileManagerUtil
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileReader
@@ -56,7 +57,8 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		// read the update values when file is downloaded
 		val onComplete = object : BroadcastReceiver() {
 			override fun onReceive(context: Context, intent: Intent) {
-				readCSVandPopulateAppSettings(destination, view)
+				readCSVandPopulateAppSettings(destination)
+				promptAndInitiateUpdate(view)
 			}
 		}
 		context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
@@ -64,7 +66,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 
 	
 
-	fun readCSVandPopulateAppSettings(destination: String, view: View) {
+	fun readCSVandPopulateAppSettings(destination: String) {
 		try {
 			val reader = CSVReader(FileReader(File(destination)))
 			var nextLine: Array<String>
@@ -76,7 +78,9 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 			}
 		} catch (e: IOException) {
 		}
-		promptAndInitiateUpdate(view)
+		println("asdfghjkl")
+		var ding: MutableMap<String, String> = mutableMapOf()
+		FileReadUtils.Singleton.instance.readPairCSVnPopulateMap(ding, FileManagerUtil.Singleton.instance.fetchedMetadataStorage)
 	}
 
 	private fun promptAndInitiateUpdate(view: View)

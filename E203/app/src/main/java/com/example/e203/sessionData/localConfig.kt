@@ -20,7 +20,7 @@ class localConfig {
 
     fun getValue(key: String) : String? {
         FileReadUtils().readPairCSVnPopulateMap(localConfigMap,
-            FileManagerUtil.Singleton.instance.localConfigurationStorage, true)
+            FileManagerUtil.Singleton.instance.localConfigurationStorage)
 
         return localConfigMap[key]
     }
