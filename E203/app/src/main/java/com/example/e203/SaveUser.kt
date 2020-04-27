@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.example.e203.Utility.FileWriteUtils
+import com.example.e203.Utility.UPIActivity
 import com.example.e203.appData.FileManagerUtil
 import com.example.e203.sessionData.AppContexts
 import com.example.e203.sessionData.localConfig
@@ -41,11 +42,17 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun onClick_SaveUSer_skipButton(view: View) {
-       goToMainPage()
+       goToPayPage()
     }
 
     fun goToMainPage() {
         val i = Intent(this@SaveUser, MainActivity::class.java)
+        startActivity(i)
+        finish()
+    }
+
+    fun goToPayPage() {
+        val i = Intent(this@SaveUser, UPIActivity::class.java)
         startActivity(i)
         finish()
     }
