@@ -28,17 +28,9 @@ class UPIActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upi)
-
-
-
         initializeViews()
 
-
         send.setOnClickListener {
-
-
-
-
             //Getting the values from the EditTexts
             val amount = amountEt.text.toString()
             val note = noteEt.text.toString()
