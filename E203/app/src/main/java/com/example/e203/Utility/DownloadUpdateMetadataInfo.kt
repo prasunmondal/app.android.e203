@@ -1,6 +1,5 @@
 package com.example.e203.Utility
 
-import com.opencsv.CSVReader
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -12,25 +11,21 @@ import android.view.View
 import com.example.e203.BuildConfig
 import com.example.e203.R
 import com.example.e203.appData.FileManagerUtil
+import com.example.e203.sessionData.fetchedMetaData
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
-import java.io.FileReader
-import java.io.IOException
 
 class DownloadUpdateMetadataInfo(private val context: Context, private val url: String) {
 
 	companion object {
 		val appSetting: AppSetting = AppSetting()
-		private const val FILE_NAME = "details.csv"
 		private const val FILE_BASE_PATH = "file://"
 		private const val MIME_TYPE = "application/vnd.android.package-archive"
 	}
 
 	fun enqueueDownload(view: View) {
 
-		var destination =
-			context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + "/"
-		destination += FILE_NAME
+		var destination = FileManagerUtil.Singleton.instance.fetchedMetadataStorage.destination
 
 		val uri = Uri.parse("$FILE_BASE_PATH$destination")
 
@@ -57,36 +52,17 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		// read the update values when file is downloaded
 		val onComplete = object : BroadcastReceiver() {
 			override fun onReceive(context: Context, intent: Intent) {
-				readCSVandPopulateAppSettings(destination)
 				promptAndInitiateUpdate(view)
 			}
 		}
 		context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 	}
 
-	
-
-	fun readCSVandPopulateAppSettings(destination: String) {
-		try {
-			val reader = CSVReader(FileReader(File(destination)))
-			var nextLine: Array<String>
-			while (reader.peek() != null) {
-				// nextLine[] is an array of values from the line
-				nextLine = reader.readNext()
-				println(nextLine[0] + " - " + nextLine[1])
-				appSetting.putValue(nextLine[0], nextLine[1])
-			}
-		} catch (e: IOException) {
-		}
-		println("asdfghjkl")
-		var ding: MutableMap<String, String> = mutableMapOf()
-		FileReadUtils.Singleton.instance.readPairCSVnPopulateMap(ding, FileManagerUtil.Singleton.instance.fetchedMetadataStorage)
-	}
-
 	private fun promptAndInitiateUpdate(view: View)
 	{
-		var availableVers = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_VERS)
+		var availableVers = fetchedMetaData.Singleton.instance.getValue("app_versCode")
 		val currentVers = BuildConfig.VERSION_CODE
+		println("current value: " + currentVers.toString())
 		if(availableVers == null) {
 			availableVers = currentVers.toString()
 		}

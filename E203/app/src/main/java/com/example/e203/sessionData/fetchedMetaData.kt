@@ -10,10 +10,10 @@ class fetchedMetaData {
         var instance = fetchedMetaData()
     }
 
-    fun getValue(): String {
+    fun getValue(key: String): String? {
         FileReadUtils.Singleton.instance.readPairCSVnPopulateMap(
             fetchedDataMap,
             FileManagerUtil.Singleton.instance.fetchedMetadataStorage)
-        return ""
+        return fetchedDataMap[key]
     }
 }
