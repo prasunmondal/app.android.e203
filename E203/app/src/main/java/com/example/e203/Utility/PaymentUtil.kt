@@ -12,6 +12,6 @@ class PaymentUtil {
     fun isPayOptionEnabled(): Boolean {
         val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
         val payBill = fetchedMetaData.Singleton.instance.getValue("pendingBill_" + username)
-        return (payBill != null && payBill.toInt()>0)
+        return (payBill != null && payBill.length>0 && payBill.toInt()>0)
     }
 }
