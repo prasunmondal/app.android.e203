@@ -6,11 +6,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import android.view.View
 import android.widget.Button
+import androidx.annotation.StyleRes
 import com.example.e203.BuildConfig
-import com.example.e203.MainActivity
 import com.example.e203.R
 import com.example.e203.appData.FileManagerUtil
 import com.example.e203.sessionData.localConfig
@@ -95,21 +97,35 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 
 		println("Pay Bill: " + payBill)
 		println("Outstanding Bal: " + outstandingBal)
-		if(isPayOptionEnabled()) {
-			showString = "PAY BILL: $payBill"
-		} else if(outstandingBal != null && outstandingBal.toInt()>0) {
+
+		val pay_bill_button =
+			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
+		if(payBill != null) {
+			if(payBill.toInt() > 0) {
+				showString = "You Pay: $payBill"
+				pay_bill_button.backgroundTintList =
+					ColorStateList.valueOf(Color.rgb(204, 0, 0))
+				pay_bill_button.setTextColor(Color.rgb(255, 255, 255))
+			} else {
+				showString = "You Get: " + (-1 * payBill.toInt()).toString()
+				pay_bill_button.backgroundTintList =
+					ColorStateList.valueOf(Color.rgb(39,78,19))
+				pay_bill_button.setTextColor(Color.rgb(255,255,255))
+			}
+		} else if(outstandingBal != null && outstandingBal.length>0) {
 			showString = "Outstanding Bal: $outstandingBal"
+			if(outstandingBal.toInt() > 0) {
+				pay_bill_button.backgroundTintList =
+					ColorStateList.valueOf(Color.rgb(244, 204, 204))
+				pay_bill_button.setTextColor(Color.rgb(153, 0, 0))
+			} else {
+				pay_bill_button.backgroundTintList =
+					ColorStateList.valueOf(Color.rgb(183, 225, 205))
+				pay_bill_button.setTextColor(Color.rgb(19, 79, 92))
+			}
 		} else {
 			showString = "Couldn't fetch data..."
 		}
-		val pay_bill_button =
-			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
 		pay_bill_button.setText(showString)
-	}
-
-	fun isPayOptionEnabled(): Boolean {
-		val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
-		val payBill = fetchedMetadatas.getValue("pendingBill_" + username)
-		return (payBill != null && payBill.toInt()>0)
 	}
 }

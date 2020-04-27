@@ -16,7 +16,9 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
+import com.example.e203.Utility.PaymentUtil
 import com.example.e203.sessionData.AppContexts
+import com.example.e203.sessionData.fetchedMetaData
 import com.example.e203.sessionData.localConfig
 import java.util.ArrayList
 
@@ -113,12 +115,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun payPrasun(view: View) {
-        val amount = "100"
+        val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
+        val amount = fetchedMetaData.Singleton.instance.getValue("pendingBill_" + username)!!
         val note = "note"
         val name = "prasun"
         val upiId = "prsnmondal@upi"
         println("Pay button clicked...")
-        payUsingUpi(amount, upiId, name, note)
+        if(PaymentUtil.Singleton.instance.isPayOptionEnabled())
+            payUsingUpi(amount, upiId, name, note)
     }
 
     fun loadEditPage(view: View) {
