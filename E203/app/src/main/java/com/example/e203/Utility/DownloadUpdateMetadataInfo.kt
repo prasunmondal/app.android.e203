@@ -87,14 +87,14 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 	}
 
 	fun updateButtonData() {
-//		fetchedMetaData.Singleton.instance.getValue("pendingBill_prasun")
-
-		val username = localConfig.Singleton.instance.getValue("username")
+		val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
 		var showString = ""
-		val payBill = fetchedMetadatas.getValue("pendingbill_" + username)
+		val payBill = fetchedMetadatas.getValue("pendingBill_" + username)
 		val outstandingBal = fetchedMetadatas.getValue("currentOutstanding_" + username)
 
-		if(payBill != null && payBill.toInt()>0) {
+		println("Pay Bill: " + payBill)
+		println("Outstanding Bal: " + outstandingBal)
+		if(isPayOptionEnabled()) {
 			showString = "PAY BILL: $payBill"
 		} else if(outstandingBal != null && outstandingBal.toInt()>0) {
 			showString = "Outstanding Bal: $outstandingBal"
@@ -104,5 +104,14 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		val pay_bill_button =
 			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
 		pay_bill_button.setText(showString)
+		pay_bill_button.setOnClickListener(View.OnClickListener {
+//			UPIActivity().payUsingUpi(payBill!!, "prsnmondal@ybl", "Prasun Mondal", "Rent for March")
+		})
+	}
+
+	fun isPayOptionEnabled(): Boolean {
+		val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
+		val payBill = fetchedMetadatas.getValue("pendingBill_" + username)
+		return (payBill != null && payBill.toInt()>0)
 	}
 }
