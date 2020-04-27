@@ -54,4 +54,17 @@
         app:layout_constraintEnd_toStartOf="@+id/detailsButton"
         app:srcCompat="@drawable/edit" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:textAlignment="center"
+        android:text="TextView"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/enlistButton"
+        app:layout_constraintEnd_toStartOf="@+id/enlistButton"
+        app:layout_constraintStart_toStartOf="@+id/formView"
+        app:layout_constraintTop_toTopOf="@+id/enlistButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
