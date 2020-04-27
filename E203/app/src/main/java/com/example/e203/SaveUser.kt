@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import com.example.e203.Utility.FileReadUtils
 import com.example.e203.Utility.FileWriteUtils
 import com.example.e203.Utility.UPIActivity
 import com.example.e203.appData.FileManagerUtil
+import com.example.e203.appData.FilePathsP
 import com.example.e203.sessionData.AppContexts
 import com.example.e203.sessionData.localConfig
 
@@ -21,9 +23,11 @@ class SaveUser : AppCompatActivity() {
 
         AppContexts.Singleton.instance.setSaveUserActivity(this)
 
-        var username =localConfig.Singleton.instance.getValue("username")
-        if(username!=null && isValidUserName(username)) {
-            goToMainPage()
+        if(FileReadUtils.Singleton.instance.doesFileExist(FileManagerUtil.Singleton.instance.localConfigurationStorage)) {
+            var username = localConfig.Singleton.instance.getValue("username")
+            if (username != null && isValidUserName(username)) {
+                goToMainPage()
+            }
         }
     }
 
@@ -62,6 +66,6 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun isValidUserName(username: String): Boolean {
-        return username.equals("Prasun") or username.equals("Mondal")
+        return username.equals("Prasun Mondal") or username.equals("Mondal")
     }
 }

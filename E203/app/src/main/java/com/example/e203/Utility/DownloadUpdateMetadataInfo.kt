@@ -12,9 +12,10 @@ import android.widget.Button
 import com.example.e203.BuildConfig
 import com.example.e203.R
 import com.example.e203.appData.FileManagerUtil
-import com.example.e203.sessionData.fetchedMetaData
+import com.example.e203.sessionData.localConfig
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
+import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetchedMetadatas
 
 
 class DownloadUpdateMetadataInfo(private val context: Context, private val url: String) {
@@ -64,7 +65,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 
 	private fun promptAndInitiateUpdate(view: View)
 	{
-		var availableVers = fetchedMetaData.Singleton.instance.getValue("app_versCode")
+		var availableVers = fetchedMetadatas.getValue("app_versCode")
 		val currentVers = BuildConfig.VERSION_CODE
 		println("current value: $currentVers")
 		if(availableVers == null) {
@@ -86,8 +87,22 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 	}
 
 	fun updateButtonData() {
+//		fetchedMetaData.Singleton.instance.getValue("pendingBill_prasun")
+
+		val username = localConfig.Singleton.instance.getValue("username")
+		var showString = ""
+		val payBill = fetchedMetadatas.getValue("pendingbill_" + username)
+		val outstandingBal = fetchedMetadatas.getValue("currentOutstanding_" + username)
+
+		if(payBill != null && payBill.toInt()>0) {
+			showString = "PAY BILL: $payBill"
+		} else if(outstandingBal != null && outstandingBal.toInt()>0) {
+			showString = "Outstanding Bal: $outstandingBal"
+		} else {
+			showString = "Couldn't fetch data..."
+		}
 		val pay_bill_button =
 			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
-		pay_bill_button.setText("Out Bal.: 90")
+		pay_bill_button.setText(showString)
 	}
 }
