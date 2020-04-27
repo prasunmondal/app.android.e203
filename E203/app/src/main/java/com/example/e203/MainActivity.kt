@@ -1,9 +1,7 @@
 package com.example.e203
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -50,19 +48,19 @@ class MainActivity : AppCompatActivity() {
 
 //        toolbar = (Toolbar) findViewById(R.id.parent);
 //        setSupportActionBar(toolbar);
-        supportActionBar!!.setDisplayShowTitleEnabled(true);
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
 //add app icon inside the Toolbar
-        supportActionBar!!.setDisplayShowHomeEnabled(true);
-        supportActionBar!!.setIcon(R.mipmap.ic_launcher);
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
 //        showNotification(this, "E203","A new record has been added!")
     }
 
     private fun loadPage(url: String) {
         val webView: WebView = findViewById(R.id.formView)
-        val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Loading...")
-        Log.d("dirty: ",webView.isDirty.toString())
-        webView.stopLoading()
+//        val progressDialog = ProgressDialog(this)
+//        progressDialog.setMessage("Loading...")
+//        Log.d("dirty: ",webView.isDirty.toString())
+//        webView.stopLoading()
 //        progressDialog!!.show()
 
         webView.webViewClient = object : WebViewClient() {

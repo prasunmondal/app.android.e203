@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
-import android.os.Environment
 import android.view.View
 import com.example.e203.BuildConfig
 import com.example.e203.R
@@ -25,7 +24,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 
 	fun enqueueDownload(view: View) {
 
-		var destination = FileManagerUtil.Singleton.instance.fetchedMetadataStorage.destination
+		val destination = FileManagerUtil.Singleton.instance.fetchedMetadataStorage.destination
 
 		val uri = Uri.parse("$FILE_BASE_PATH$destination")
 
@@ -42,13 +41,13 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		// set destination
 		request.setDestinationUri(uri)
 
-		showInstallOption(destination, view)
+		showInstallOption(view)
 		// Enqueue a new download and same the referenceId
 		downloadManager.enqueue(request)
 //		Toast.makeText(context, context.getString(R.string.checkingForUpdates), Toast.LENGTH_LONG).show()
 	}
 
-	private fun showInstallOption(destination: String, view: View) {
+	private fun showInstallOption(view: View) {
 		// read the update values when file is downloaded
 		val onComplete = object : BroadcastReceiver() {
 			override fun onReceive(context: Context, intent: Intent) {
@@ -62,7 +61,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 	{
 		var availableVers = fetchedMetaData.Singleton.instance.getValue("app_versCode")
 		val currentVers = BuildConfig.VERSION_CODE
-		println("current value: " + currentVers.toString())
+		println("current value: $currentVers")
 		if(availableVers == null) {
 			availableVers = currentVers.toString()
 		}

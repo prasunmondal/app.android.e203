@@ -21,6 +21,7 @@ class FileReadUtils {
                 println(nextLine[0] + " - " + nextLine[1])
                 map[nextLine[0]] = nextLine[1]
             }
+            println(map)
         } catch (e: IOException) {
             println(e)
             throw (e)

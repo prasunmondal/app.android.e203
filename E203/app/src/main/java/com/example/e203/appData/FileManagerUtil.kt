@@ -3,16 +3,10 @@ package com.example.e203.appData
 import android.os.Environment
 import com.example.e203.sessionData.AppContexts
 
-class FilePathsP {
-    var rootDir: String
-    var childDir: String
-    var fileName: String
+class FilePathsP(var rootDir: String, var childDir: String, var fileName: String) {
     var destination: String
 
-    constructor(rootDir: String, childDir: String,fileName: String) {
-        this.rootDir = rootDir
-        this.childDir = childDir
-        this.fileName = fileName
+    init {
         this.destination = "$rootDir/$childDir/$fileName"
     }
 }
