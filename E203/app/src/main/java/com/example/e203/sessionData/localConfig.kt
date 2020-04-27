@@ -4,11 +4,11 @@ import com.example.e203.Utility.FileReadUtils
 import com.example.e203.Utility.FileWriteUtils
 import com.example.e203.appData.FileManagerUtil
 
-class LocalConfig {
+class localConfig {
     private var localConfigMap: MutableMap<String, String> = mutableMapOf()
 
     object Singleton {
-        var instance = LocalConfig()
+        var instance = localConfig()
     }
 
     fun setValue(key: String, value: String) {
