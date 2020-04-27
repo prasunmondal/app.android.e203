@@ -18,7 +18,6 @@ class FileReadUtils {
             var nextLine: Array<String>
             while (reader.peek() != null) {
                 nextLine = reader.readNext()
-                println(nextLine[0] + " - " + nextLine[1])
                 map[nextLine[0]] = nextLine[1]
             }
             println(map)
