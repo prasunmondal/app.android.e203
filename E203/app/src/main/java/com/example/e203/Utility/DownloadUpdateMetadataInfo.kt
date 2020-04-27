@@ -10,6 +10,7 @@ import android.net.Uri
 import android.view.View
 import android.widget.Button
 import com.example.e203.BuildConfig
+import com.example.e203.MainActivity
 import com.example.e203.R
 import com.example.e203.appData.FileManagerUtil
 import com.example.e203.sessionData.localConfig
@@ -57,7 +58,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 			override fun onReceive(context: Context, intent: Intent) {
 				println("Metadata Received!")
 				promptAndInitiateUpdate(view)
-				updateButtonData()
+				updateButtonData(view)
 			}
 		}
 		context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
@@ -86,7 +87,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		DownloadUpdate(context, apkUrl).enqueueDownload()
 	}
 
-	fun updateButtonData() {
+	fun updateButtonData(view: View) {
 		val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
 		var showString = ""
 		val payBill = fetchedMetadatas.getValue("pendingBill_" + username)
@@ -104,9 +105,6 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		val pay_bill_button =
 			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
 		pay_bill_button.setText(showString)
-		pay_bill_button.setOnClickListener(View.OnClickListener {
-//			UPIActivity().payUsingUpi(payBill!!, "prsnmondal@ybl", "Prasun Mondal", "Rent for March")
-		})
 	}
 
 	fun isPayOptionEnabled(): Boolean {

@@ -50,7 +50,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
         android:clickable="true"
-        android:onClick="loadEditPage"
+        android:onClick="payPrasun"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/detailsButton"
         app:srcCompat="@drawable/edit" />
@@ -65,6 +65,7 @@
         android:backgroundTint="@color/colorAccent"
         android:textColor="#ffffff"
         android:textStyle="bold"
+        android:onClick="payPrasun"
         app:layout_constraintBottom_toBottomOf="@+id/enlistButton"
         app:layout_constraintEnd_toStartOf="@+id/enlistButton"
         app:layout_constraintStart_toStartOf="@+id/formView"
