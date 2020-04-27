@@ -1,5 +1,6 @@
 package com.example.e203.Utility
 
+import android.app.Activity
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,12 +8,14 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.view.View
+import android.widget.Button
 import com.example.e203.BuildConfig
 import com.example.e203.R
 import com.example.e203.appData.FileManagerUtil
 import com.example.e203.sessionData.fetchedMetaData
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
+
 
 class DownloadUpdateMetadataInfo(private val context: Context, private val url: String) {
 
@@ -51,7 +54,9 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		// read the update values when file is downloaded
 		val onComplete = object : BroadcastReceiver() {
 			override fun onReceive(context: Context, intent: Intent) {
+				println("Metadata Received!")
 				promptAndInitiateUpdate(view)
+				updateButtonData()
 			}
 		}
 		context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
@@ -78,5 +83,11 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 	private fun downloadAndUpdate() {
 		val apkUrl = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_LINK) ?: return
 		DownloadUpdate(context, apkUrl).enqueueDownload()
+	}
+
+	fun updateButtonData() {
+		val pay_bill_button =
+			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
+		pay_bill_button.setText("Out Bal.: 90")
 	}
 }

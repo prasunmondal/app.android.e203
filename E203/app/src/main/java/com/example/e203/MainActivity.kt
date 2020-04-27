@@ -14,7 +14,6 @@ import com.example.e203.sessionData.localConfig
 
 class MainActivity : AppCompatActivity() {
 
-
     private val submitFormURL: String =
         "https://docs.google.com/forms/d/e/1FAIpQLSdYzijpIalsSmnyQ53tkZawzOM40yYYR92O0TPfAhSRcgo9Wg/viewform?usp=sf_link"
     private val detailsFormURL: String =
