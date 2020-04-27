@@ -10,7 +10,7 @@ import android.view.View
 import com.example.e203.BuildConfig
 import com.example.e203.R
 import com.example.e203.appData.FileManagerUtil
-import com.example.e203.sessionData.fetchedMetaData
+import com.example.e203.sessionData.FetchedMetaData
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
@@ -59,7 +59,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 
 	private fun promptAndInitiateUpdate(view: View)
 	{
-		var availableVers = fetchedMetaData.Singleton.instance.getValue("app_versCode")
+		var availableVers = FetchedMetaData.Singleton.instance.getValue("app_versCode")
 		val currentVers = BuildConfig.VERSION_CODE
 		println("current value: $currentVers")
 		if(availableVers == null) {
