@@ -24,7 +24,6 @@ import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetche
 class DownloadUpdateMetadataInfo(private val context: Context, private val url: String) {
 
 	companion object {
-		val appSetting: AppSetting = AppSetting()
 		private const val FILE_BASE_PATH = "file://"
 		private const val MIME_TYPE = "application/vnd.android.package-archive"
 	}
@@ -68,7 +67,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 
 	private fun promptAndInitiateUpdate(view: View)
 	{
-		var availableVers = fetchedMetadatas.getValue("app_versCode")
+		var availableVers = fetchedMetadatas.getValue(fetchedMetadatas.APP_DOWNLOAD_VERSION)
 		val currentVers = BuildConfig.VERSION_CODE
 		println("current value: $currentVers")
 		if(availableVers == null) {
@@ -85,7 +84,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 	}
 
 	private fun downloadAndUpdate() {
-		val apkUrl = appSetting.getValue(AppSetting_PARAMS.APK_DOWNLOAD_LINK) ?: return
+		val apkUrl = fetchedMetadatas.getValue(fetchedMetadatas.APP_DOWNLOAD_LINK) ?: return
 		DownloadUpdate(context, apkUrl).enqueueDownload()
 	}
 
