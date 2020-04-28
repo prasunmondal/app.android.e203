@@ -10,7 +10,7 @@ class PaymentUtil {
     }
 
     fun isPayOptionEnabled(): Boolean {
-        if (fetchedMetadatas.isDataFetched()) {
+        if (localConfigs.doesUsernameExists() && fetchedMetadatas.isDataFetched()) {
             val currentUser = localConfigs.getValue(localConfigs.USERNAME)!!.toLowerCase()
             val payBill =
                 fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_PENDING_BILL, currentUser)
