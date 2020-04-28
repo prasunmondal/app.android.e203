@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Show_Payment_Options"></activity>
+        <activity android:name=".ShowPaymentOptions"></activity>
         <activity android:name=".Utility.UPIActivity" />
         <activity android:name=".SaveUser">
             <intent-filter>

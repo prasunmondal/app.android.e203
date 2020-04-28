@@ -2,7 +2,6 @@ package com.example.e203
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Spinner
 import android.widget.Toast
@@ -14,7 +13,7 @@ class SaveUser : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_save_user2)
+        setContentView(R.layout.activity_save_user)
 
         AppContexts.setSaveUserActivity(this)
 

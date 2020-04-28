@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun goToPaymentOptionsPage() {
-        val i = Intent(this@MainActivity, Show_Payment_Options::class.java)
+        val i = Intent(this@MainActivity, ShowPaymentOptions::class.java)
         startActivity(i)
     }
 }
