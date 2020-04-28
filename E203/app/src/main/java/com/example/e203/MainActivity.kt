@@ -17,8 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
 import com.example.e203.Utility.PaymentUtil
 import com.example.e203.sessionData.AppContexts
-import com.example.e203.sessionData.fetchedMetaData
-import com.example.e203.sessionData.localConfig
+import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetchedMetaDataInstance
+import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigInstance
 import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
@@ -43,8 +43,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(localConfig.Singleton.instance.doesUsernameExists())
-            Toast.makeText(this@MainActivity, "Logged in as: " + localConfig.Singleton.instance.getValue("username"), Toast.LENGTH_SHORT).show()
+        if(localConfigInstance.doesUsernameExists())
+            Toast.makeText(this@MainActivity, "Logged in as: " + localConfigInstance.getValue(localConfigInstance.USERNAME), Toast.LENGTH_SHORT).show()
 
         val webView: WebView = findViewById(R.id.formView)
         webView.webViewClient = MyWebViewClient()
@@ -115,8 +115,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun payPrasun(view: View) {
-        val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
-        val amount = fetchedMetaData.Singleton.instance.getValue("pendingBill_" + username)!!
+        val username = localConfigInstance.getValue(localConfigInstance.USERNAME)!!.toLowerCase()
+        val amount = fetchedMetaDataInstance.getValue(fetchedMetaDataInstance.TAG_PENDING_BILL + localConfigInstance.USERNAME)!!
         val note = "note"
         val name = "prasun"
         val upiId = "prsnmondal@upi"

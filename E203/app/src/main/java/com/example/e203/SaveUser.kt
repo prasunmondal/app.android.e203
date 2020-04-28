@@ -7,11 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.example.e203.Utility.FileReadUtils
-import com.example.e203.appData.FileManagerUtil
 import com.example.e203.sessionData.AppContexts
-import com.example.e203.sessionData.fetchedMetaData
-import com.example.e203.sessionData.localConfig
+import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigs
 
 class SaveUser : AppCompatActivity() {
 
@@ -21,8 +18,8 @@ class SaveUser : AppCompatActivity() {
 
         AppContexts.Singleton.instance.setSaveUserActivity(this)
 
-        if(localConfig.Singleton.instance.doesUsernameExists()) {
-            var username = localConfig.Singleton.instance.getValue("username")
+        if(localConfigs.doesUsernameExists()) {
+            var username = localConfigs.getValue("username")
             if (username != null && isValidUserName(username)) {
                 goToMainPage()
             }
@@ -34,7 +31,7 @@ class SaveUser : AppCompatActivity() {
         val username = myWebView.text.toString()
         Log.d("Username: ", username)
 
-        localConfig.Singleton.instance.setValue("username", username)
+        localConfigs.setValue("username", username)
 
         if(isValidUserName(username)) {
             if (writeUsernameToFile(username)) goToMainPage()

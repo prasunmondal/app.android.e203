@@ -11,11 +11,10 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.View
 import android.widget.Button
-import androidx.annotation.StyleRes
 import com.example.e203.BuildConfig
 import com.example.e203.R
-import com.example.e203.appData.FileManagerUtil
-import com.example.e203.sessionData.localConfig
+import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigs
+import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagers
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetchedMetadatas
@@ -31,7 +30,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 
 	fun enqueueDownload(view: View) {
 
-		val destination = FileManagerUtil.Singleton.instance.fetchedMetadataStorage.destination
+		val destination = FileManagers.fetchedMetadataStorage.destination
 
 		val uri = Uri.parse("$FILE_BASE_PATH$destination")
 
@@ -94,7 +93,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
 		var showString = ""
 		if(PaymentUtil.Singleton.instance.isAmountButtonVisible()) {
-			val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
+			val username = localConfigs.getValue("username")!!.toLowerCase()
 			val payBill = fetchedMetadatas.getValue("pendingBill_" + username)
 			val outstandingBal = fetchedMetadatas.getValue("currentOutstanding_" + username)
 

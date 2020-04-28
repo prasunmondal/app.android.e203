@@ -1,8 +1,8 @@
 package com.example.e203.sessionData
 
-import com.example.e203.Utility.FileReadUtils
-import com.example.e203.Utility.FileWriteUtils
-import com.example.e203.appData.FileManagerUtil
+import com.example.e203.Utility.FileReadUtils.Singleton.instance as FileReadUtilsInstance
+import com.example.e203.Utility.FileWriteUtils.Singleton.instance as FileWriteUtilsInstance
+import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagerUtilInstance
 
 class localConfig {
 
@@ -17,23 +17,23 @@ class localConfig {
     fun setValue(key: String, value: String) {
         localConfigMap[key] = value
 
-        FileWriteUtils().writeToInternalFile(FileManagerUtil.Singleton.instance.localConfigurationStorage,
-            FileWriteUtils.Singleton.instance.deseriallizeFromMap(localConfigMap))
+        FileWriteUtilsInstance.writeToInternalFile(FileManagerUtilInstance.localConfigurationStorage,
+            FileWriteUtilsInstance.deseriallizeFromMap(localConfigMap))
     }
 
     fun getValue(key: String) : String? {
-        FileReadUtils().readPairCSVnPopulateMap(localConfigMap,
-            FileManagerUtil.Singleton.instance.localConfigurationStorage)
+        FileReadUtilsInstance.readPairCSVnPopulateMap(localConfigMap,
+            FileManagerUtilInstance.localConfigurationStorage)
 
         return localConfigMap[key]
     }
 
     fun doesUsernameExists(): Boolean {
-        if(FileReadUtils.Singleton.instance.doesFileExist(FileManagerUtil.Singleton.instance.localConfigurationStorage)) {
+        if(FileReadUtilsInstance.doesFileExist(FileManagerUtilInstance.localConfigurationStorage)) {
             println("doesUsernameExists: File Exists!")
-            val username = getValue("username")
-            println("Value for username: " + username)
-            if(username != null && username.length > 0) {
+            val username = getValue(USERNAME)
+            println("Value for username: $username")
+            if(username != null && username.isNotEmpty()) {
                 println("doesUsernameExists: true")
                 return true
             }

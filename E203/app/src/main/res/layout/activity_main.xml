@@ -50,7 +50,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
         android:clickable="true"
-        android:onClick="payPrasun"
+        android:onClick="loadEditPage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/detailsButton"
         app:srcCompat="@drawable/edit" />

@@ -1,7 +1,7 @@
 package com.example.e203.Utility
 
-import com.example.e203.sessionData.fetchedMetaData
-import com.example.e203.sessionData.localConfig
+import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetchedMetadatas
+import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigInstance
 
 class PaymentUtil {
 
@@ -10,12 +10,12 @@ class PaymentUtil {
     }
 
     fun isPayOptionEnabled(): Boolean {
-        val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
-        val payBill = fetchedMetaData.Singleton.instance.getValue("pendingBill_" + username)
+        val username = localConfigInstance.getValue("username")!!.toLowerCase()
+        val payBill = fetchedMetadatas.getValue("pendingBill_" + username)
         return (payBill != null && payBill.length>0 && payBill.toInt()>0)
     }
 
     fun isAmountButtonVisible(): Boolean {
-        return localConfig.Singleton.instance.doesUsernameExists()
+        return localConfigInstance.doesUsernameExists()
     }
 }

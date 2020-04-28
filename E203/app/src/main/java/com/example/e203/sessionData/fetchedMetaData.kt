@@ -10,8 +10,8 @@ class fetchedMetaData {
     val PAYMENT_UPI_PAY_LINK= "upi_paymentID"
     val PAYMENT_UPI_PAY_DESCRIPTION= "upi_paymentDescription"
 
-    private val TAG_CURRENT_OUTSTANDING = "currentOutstanding_"
-    private val TAG_PENDING_BILL = "pendingBill_"
+    val TAG_CURRENT_OUTSTANDING = "currentOutstanding_"
+    val TAG_PENDING_BILL = "pendingBill_"
 
     private var fetchedDataMap: MutableMap<String, String> = mutableMapOf()
     object Singleton {
@@ -25,7 +25,7 @@ class fetchedMetaData {
         return fetchedDataMap[key]
     }
 
-    fun getLabel(pre: String, post: String): String {
-        return pre + post
+    fun getValueByLabel(pre: String, post: String): String {
+        return getValue((pre + post))!!
     }
 }
