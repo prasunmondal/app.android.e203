@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.setDisplayShowTitleEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
+//        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
     }
 
     private fun loadPage(url: String) {
