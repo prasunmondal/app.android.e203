@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
-import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
+import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigs
 
 class SaveUser : AppCompatActivity() {
 

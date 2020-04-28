@@ -14,11 +14,11 @@ import android.view.View
 import android.widget.Button
 import com.example.e203.BuildConfig
 import com.example.e203.R
-import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
+import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigs
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagers
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
-import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetadatas
+import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetchedMetadatas
 
 
 class DownloadUpdateMetadataInfo(private val context: Context, private val url: String) {

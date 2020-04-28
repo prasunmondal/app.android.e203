@@ -1,7 +1,7 @@
 package com.example.e203.Utility
 
-import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetadatas
-import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
+import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetchedMetadatas
+import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigs
 
 class PaymentUtil {
 

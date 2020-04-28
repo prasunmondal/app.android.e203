@@ -4,14 +4,14 @@ import com.example.e203.Utility.FileReadUtil.Singleton.instance as FileReadUtils
 import com.example.e203.Utility.FileWriteUtil.Singleton.instance as FileWriteUtils
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagerUtils
 
-class LocalConfig {
+class localConfig {
 
     val USERNAME= "username"
 
     private var localConfigMap: MutableMap<String, String> = mutableMapOf()
 
     object Singleton {
-        var instance = LocalConfig()
+        var instance = localConfig()
     }
 
     fun setValue(key: String, value: String) {
