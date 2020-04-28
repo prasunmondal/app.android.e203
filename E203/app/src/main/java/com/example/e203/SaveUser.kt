@@ -48,7 +48,6 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun isValidUserName(username: String): Boolean {
-        return true
-//        return username.equals("Prasun Mondal") or username.equals("Mondal")
+        return !username.equals("Select Your Name")
     }
 }

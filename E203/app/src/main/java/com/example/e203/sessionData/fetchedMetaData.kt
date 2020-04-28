@@ -27,7 +27,7 @@ class FetchedMetaData {
     }
 
     fun getValueByLabel(pre: String, post: String): String {
-        return getValue((pre + post))!!
+        return getValue((pre + post.toLowerCase()))!!
     }
 
     fun isDataFetched(): Boolean {
