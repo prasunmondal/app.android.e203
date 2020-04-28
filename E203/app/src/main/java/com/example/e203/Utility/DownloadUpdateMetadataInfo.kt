@@ -43,7 +43,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		val request = DownloadManager.Request(downloadUri)
 		request.setMimeType(MIME_TYPE)
 		request.setTitle(context.getString(R.string.checking_for_updates))
-		request.setDescription(context.getString(R.string.downloading))
+		request.setDescription(context.getString(R.string.metadata_downloading))
 
 		// set destination
 		request.setDestinationUri(uri)
