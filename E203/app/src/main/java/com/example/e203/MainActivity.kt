@@ -189,15 +189,15 @@ class MainActivity : AppCompatActivity() {
 
             if (status == "success") {
                 //Code to handle successful transaction here.
-                Toast.makeText(this@MainActivity, "Transaction successful.", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity, "Transaction successful.", Toast.LENGTH_SHORT).show()
                 Log.d("UPI", "responseStr: $approvalRefNo")
             } else if ("Payment cancelled by user." == paymentCancel) {
-                Toast.makeText(this@MainActivity, "Payment cancelled by user.", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity, "Payment cancelled by user.", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this@MainActivity, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show()
             }
         } else {
-            Toast.makeText(this@MainActivity, "Internet connection is not available. Please check and try again", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this@MainActivity, "Internet connection is not available. Please check and try again", Toast.LENGTH_SHORT).show()
         }
     }
 
