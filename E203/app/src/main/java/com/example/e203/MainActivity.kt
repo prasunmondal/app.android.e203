@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
 import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
-import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetchedMetaDataInstance
+import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetchedMetaDatas
 import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigInstance
 import java.util.ArrayList
 
@@ -103,12 +103,12 @@ class MainActivity : AppCompatActivity() {
             val currentUser =
                 localConfigInstance.getValue(localConfigInstance.USERNAME)!!.toLowerCase()
             val amount =
-                fetchedMetaDataInstance.getValue(fetchedMetaDataInstance.TAG_PENDING_BILL + currentUser)!!
-            val note = "note"
-            val name = "prasun"
-            val upiId = "prsnmondal@upi"
+                fetchedMetaDatas.getValue(fetchedMetaDatas.TAG_PENDING_BILL + currentUser)!!
+            val note = fetchedMetaDatas.getValue(fetchedMetaDatas.PAYMENT_UPI_PAY_DESCRIPTION)
+            val name = fetchedMetaDatas.getValue(fetchedMetaDatas.PAYMENT_UPI_PAY_NAME)
+            val upiId = fetchedMetaDatas.getValue(fetchedMetaDatas.PAYMENT_UPI_PAY_UPIID)
             println("Pay button clicked...")
-            payUsingUpi(amount, upiId, name, note)
+            payUsingUpi(amount, upiId!!, name!!, note!!)
         }
     }
 

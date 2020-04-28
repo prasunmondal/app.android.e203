@@ -8,7 +8,8 @@ class fetchedMetaData {
 
     val APP_DOWNLOAD_LINK= "app_download_link"
     val APP_DOWNLOAD_VERSION= "app_versCode"
-    val PAYMENT_UPI_PAY_LINK= "upi_paymentID"
+    val PAYMENT_UPI_PAY_UPIID= "upi_paymentID"
+    val PAYMENT_UPI_PAY_NAME = "upi_paymentReceivePersonName"
     val PAYMENT_UPI_PAY_DESCRIPTION= "upi_paymentDescription"
 
     val TAG_CURRENT_OUTSTANDING = "currentOutstanding_"
