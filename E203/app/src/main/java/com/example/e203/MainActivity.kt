@@ -15,6 +15,8 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
+import com.example.e203.appData.FileManagerUtil
+import java.io.File
 import com.example.e203.sessionData.HardData.Singleton.instance as HardDatas
 import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
@@ -105,6 +107,10 @@ class MainActivity : AppCompatActivity() {
 
     fun loadEditPage(view: View) {
         loadPage(HardDatas.editPage)
+
+        var destination = FileManagerUtil.Singleton.instance.localConfigurationStorage.destination
+        val file = File(destination)
+        if (file.exists()) file.delete()
 //        showNotification(this,"E203","A new record has been added 3!")
     }
 
