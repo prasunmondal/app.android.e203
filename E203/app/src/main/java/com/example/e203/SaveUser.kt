@@ -19,10 +19,9 @@ class SaveUser : AppCompatActivity() {
         AppContexts.setSaveUserActivity(this)
 
         if(localConfigs.doesUsernameExists()) {
-            var username = localConfigs.getValue("username")
-            if (username != null && isValidUserName(username)) {
+            val username = localConfigs.getValue("username")
+            if (username != null && isValidUserName(username))
                 goToMainPage()
-            }
         }
     }
 
@@ -34,13 +33,12 @@ class SaveUser : AppCompatActivity() {
         localConfigs.setValue("username", username)
 
         if(isValidUserName(username)) {
-            if (writeUsernameToFile(username)) goToMainPage()
-            else Toast.makeText(this@SaveUser, "Error: Save Failed!", Toast.LENGTH_SHORT).show()
+            goToMainPage()
         }
         else Toast.makeText(this@SaveUser, "Error: Please Enter a Valid Name!", Toast.LENGTH_SHORT).show()
     }
 
-    fun onClick_SaveUSer_skipButton(view: View) {
+    fun onClickSaveUserSkipButton(view: View) {
        goToMainPage()
     }
 
@@ -48,10 +46,6 @@ class SaveUser : AppCompatActivity() {
         val i = Intent(this@SaveUser, MainActivity::class.java)
         startActivity(i)
         finish()
-    }
-
-    fun writeUsernameToFile(username: String): Boolean {
-        return true
     }
 
     fun isValidUserName(username: String): Boolean {

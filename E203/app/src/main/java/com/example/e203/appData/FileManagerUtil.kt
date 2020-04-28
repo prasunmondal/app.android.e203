@@ -4,11 +4,7 @@ import android.os.Environment
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 
 class FilePaths(var rootDir: String, var childDir: String, var fileName: String) {
-    var destination: String
-
-    init {
-        this.destination = "$rootDir/$childDir/$fileName"
-    }
+    var destination: String = "$rootDir/$childDir/$fileName"
 }
 
 class FileManagerUtil {
@@ -24,5 +20,4 @@ class FileManagerUtil {
         .getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
         "",
         "details.csv")
-
 }
