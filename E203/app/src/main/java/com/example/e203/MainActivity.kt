@@ -15,6 +15,7 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
+import com.example.e203.sessionData.HardData.Singleton.instance as HardDatas
 import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetaDatas
@@ -26,17 +27,6 @@ class MainActivity : AppCompatActivity() {
     object Singleton {
         var instance = MainActivity()
     }
-
-    private val submitFormURL: String =
-        "https://docs.google.com/forms/d/e/1FAIpQLSdYzijpIalsSmnyQ53tkZawzOM40yYYR92O0TPfAhSRcgo9Wg/viewform?usp=sf_link"
-    private val detailsFormURL: String =
-        "https://docs.google.com/forms/d/e/1FAIpQLSfpjgKBlK678ncJGTRV1-iwCzGuYsKXea71k7uQtJficGD7kw/viewform"
-//    private val enlistFormURL: String =
-//        "https://docs.google.com/forms/d/e/1FAIpQLSdoq9CzHE7t2CY85VG7MXLDSphCZhgnXli3blmOE5k-FT04mw/viewform"
-    private val editPage =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pubhtml?gid=16104355&single=true"
-//    private val apkLink = "https://github.com/prasunmondal/app_E203/blob/master/E203/app/src/main/E203_v5.apk?raw=true"
-    private val detailCSV="https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pub?gid=1321322233&single=true&output=csv"
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         webView.settings.loadWithOverviewMode = true
         webView.webViewClient = WebViewClient()
         webView.webChromeClient = WebChromeClient()
-        loadPage(submitFormURL)
+        loadPage(HardDatas.submitFormURL)
 
         downloadAndUpdateInfo()
         AppContexts.setMainActivity(this)
@@ -81,24 +71,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun downloadAndUpdateInfo() {
-        val url = detailCSV
-        downloadUpdateMetadataInfo = DownloadUpdateMetadataInfo(this, url)
+        downloadUpdateMetadataInfo = DownloadUpdateMetadataInfo(this, HardDatas.detailCSV)
         downloadUpdateMetadataInfo.enqueueDownload(findViewById(R.id.formView))
     }
 
     fun loadAddForm(view: View) {
         val myWebView: WebView = findViewById(R.id.formView)
-        myWebView.loadUrl(submitFormURL)
-        var name: String = "Title"
+        myWebView.loadUrl(HardDatas.submitFormURL)
 //        showNotification("E203","A new record has been added 1!")
     }
 
     fun loadDetails(view: View) {
-        loadPage(detailsFormURL)
+        loadPage(HardDatas.detailsFormURL)
 //        showNotification("E203","A new record has been added 2!")
     }
 
-    fun payPrasun(view: View) {
+    @SuppressLint("DefaultLocale")
+    fun onClickPayButton(view: View) {
         if(PaymentUtils.isPayOptionEnabled()) {
             val currentUser =
                 localConfigInstance.getValue(localConfigInstance.USERNAME)!!.toLowerCase()
@@ -113,7 +102,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadEditPage(view: View) {
-        loadPage(editPage)
+        loadPage(HardDatas.editPage)
 //        showNotification(this,"E203","A new record has been added 3!")
     }
 
@@ -139,7 +128,6 @@ class MainActivity : AppCompatActivity() {
         val chooser = Intent.createChooser(upiPayIntent, "Pay with")
 
         // check if intent resolves
-        println("PackageManager: " + packageManager);
         if (null != chooser.resolveActivity(packageManager)) {
             startActivityForResult(chooser, UPI_PAYMENT)
         } else {
@@ -174,6 +162,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private fun upiPaymentDataOperation(data: ArrayList<String>) {
         if (isConnectionAvailable(this@MainActivity)) {
             var str: String? = data[0]
@@ -212,6 +201,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
+        @Suppress("DEPRECATION")
         fun isConnectionAvailable(context: Context): Boolean {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             if (connectivityManager != null) {
