@@ -91,6 +91,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("DefaultLocale")
     fun onClickPayButton(view: View) {
         if(PaymentUtils.isPayOptionEnabled()) {
+            goToPaymentOptionsPage()
             val currentUser =
                 localConfigInstance.getValue(localConfigInstance.USERNAME)!!.toLowerCase()
             val amount =
@@ -222,6 +223,11 @@ class MainActivity : AppCompatActivity() {
             }
             return false
         }
+    }
+
+    fun goToPaymentOptionsPage() {
+        val i = Intent(this@MainActivity, Show_Payment_Options::class.java)
+        startActivity(i)
     }
 }
 
