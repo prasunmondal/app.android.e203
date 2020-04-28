@@ -65,7 +65,7 @@
         android:backgroundTint="@color/gray"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:onClick="onClickPayButton"
+        android:onClick="payPrasun"
         app:layout_constraintBottom_toBottomOf="@+id/enlistButton"
         app:layout_constraintEnd_toStartOf="@+id/enlistButton"
         app:layout_constraintStart_toStartOf="@+id/formView"
