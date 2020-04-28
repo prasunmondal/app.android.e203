@@ -17,8 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
 import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
-import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetchedMetaDatas
-import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigInstance
+import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetaDatas
+import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigInstance
 import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
