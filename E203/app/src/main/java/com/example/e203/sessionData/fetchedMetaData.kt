@@ -1,10 +1,9 @@
 package com.example.e203.sessionData
 
-import com.example.e203.appData.FilePaths
 import com.example.e203.Utility.FileReadUtil.Singleton.instance as FileReadUtils
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagers
 
-class fetchedMetaData {
+class FetchedMetaData {
 
     val APP_DOWNLOAD_LINK= "app_download_link"
     val APP_DOWNLOAD_VERSION= "app_versCode"
@@ -17,7 +16,7 @@ class fetchedMetaData {
 
     private var fetchedDataMap: MutableMap<String, String> = mutableMapOf()
     object Singleton {
-        var instance = fetchedMetaData()
+        var instance = FetchedMetaData()
     }
 
     fun getValue(key: String): String? {
