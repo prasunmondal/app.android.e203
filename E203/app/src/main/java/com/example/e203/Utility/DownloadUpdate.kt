@@ -7,17 +7,16 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.example.e203 .R
 import com.example.e203.BuildConfig
+import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagerUtils
 import java.io.File
 
 class DownloadUpdate(private val context: Context, private val url: String) {
 
     companion object {
-        private const val FILE_NAME = "SampleDownloadApp.apk"
         private const val FILE_BASE_PATH = "file://"
         private const val MIME_TYPE = "application/vnd.android.package-archive"
         private const val PROVIDER_PATH = ".provider"
@@ -26,9 +25,7 @@ class DownloadUpdate(private val context: Context, private val url: String) {
 
     fun enqueueDownload() {
 
-        var destination =
-            context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + "/"
-        destination += FILE_NAME
+        var destination = FileManagerUtils.downloadLink_UpdateAPK.destination
 
         val uri = Uri.parse("$FILE_BASE_PATH$destination")
 
@@ -56,13 +53,13 @@ class DownloadUpdate(private val context: Context, private val url: String) {
         // set BroadcastReceiver perform action after download is complete
         val onComplete = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                installUpadte(this, destination, uri)
+                installUpdate(this, destination, uri)
             }
         }
         context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 
-    private fun installUpadte(This: BroadcastReceiver, destination: String, uri: Uri) {
+    private fun installUpdate(This: BroadcastReceiver, destination: String, uri: Uri) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val contentUri = FileProvider.getUriForFile(
                 context,
