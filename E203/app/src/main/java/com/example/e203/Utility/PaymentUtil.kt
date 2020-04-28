@@ -14,4 +14,8 @@ class PaymentUtil {
         val payBill = fetchedMetaData.Singleton.instance.getValue("pendingBill_" + username)
         return (payBill != null && payBill.length>0 && payBill.toInt()>0)
     }
+
+    fun isAmountButtonVisible(): Boolean {
+        return localConfig.Singleton.instance.doesUsernameExists()
+    }
 }

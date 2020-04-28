@@ -12,7 +12,6 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
@@ -44,7 +43,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Toast.makeText(this@MainActivity, "Logged in as: " + localConfig.Singleton.instance.getValue("username"), Toast.LENGTH_SHORT).show()
+        if(localConfig.Singleton.instance.doesUsernameExists())
+            Toast.makeText(this@MainActivity, "Logged in as: " + localConfig.Singleton.instance.getValue("username"), Toast.LENGTH_SHORT).show()
 
         val webView: WebView = findViewById(R.id.formView)
         webView.webViewClient = MyWebViewClient()

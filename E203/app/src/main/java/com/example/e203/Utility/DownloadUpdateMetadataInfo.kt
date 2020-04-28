@@ -90,42 +90,46 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 	}
 
 	fun updateButtonData(view: View) {
-		val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
-		var showString = ""
-		val payBill = fetchedMetadatas.getValue("pendingBill_" + username)
-		val outstandingBal = fetchedMetadatas.getValue("currentOutstanding_" + username)
-
-		println("Pay Bill: " + payBill)
-		println("Outstanding Bal: " + outstandingBal)
-
 		val pay_bill_button =
 			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
-		if(payBill != null && payBill.length>0) {
-			if(payBill.toInt() > 0) {
-				showString = "You Pay: Rs $payBill"
-				showString += "\n(click to pay)"
-				pay_bill_button.backgroundTintList =
-					ColorStateList.valueOf(Color.rgb(204, 0, 0))
-				pay_bill_button.setTextColor(Color.rgb(255, 255, 255))
+		var showString = ""
+		if(PaymentUtil.Singleton.instance.isAmountButtonVisible()) {
+			val username = localConfig.Singleton.instance.getValue("username")!!.toLowerCase()
+			val payBill = fetchedMetadatas.getValue("pendingBill_" + username)
+			val outstandingBal = fetchedMetadatas.getValue("currentOutstanding_" + username)
+
+			println("Pay Bill: " + payBill)
+			println("Outstanding Bal: " + outstandingBal)
+
+			if (payBill != null && payBill.length > 0) {
+				if (payBill.toInt() > 0) {
+					showString = "You Pay: Rs $payBill"
+					showString += "\n(click to pay)"
+					pay_bill_button.backgroundTintList =
+						ColorStateList.valueOf(Color.rgb(204, 0, 0))
+					pay_bill_button.setTextColor(Color.rgb(255, 255, 255))
+				} else {
+					showString = "You Get\nRs " + (-1 * payBill.toInt()).toString()
+					pay_bill_button.backgroundTintList =
+						ColorStateList.valueOf(Color.rgb(39, 78, 19))
+					pay_bill_button.setTextColor(Color.rgb(255, 255, 255))
+				}
+			} else if (outstandingBal != null && outstandingBal.length > 0) {
+				showString = "Outstanding Bal\nRs $outstandingBal"
+				if (outstandingBal.toInt() > 0) {
+					pay_bill_button.backgroundTintList =
+						ColorStateList.valueOf(Color.rgb(244, 204, 204))
+					pay_bill_button.setTextColor(Color.rgb(153, 0, 0))
+				} else {
+					pay_bill_button.backgroundTintList =
+						ColorStateList.valueOf(Color.rgb(183, 225, 205))
+					pay_bill_button.setTextColor(Color.rgb(19, 79, 92))
+				}
 			} else {
-				showString = "You Get\nRs " + (-1 * payBill.toInt()).toString()
-				pay_bill_button.backgroundTintList =
-					ColorStateList.valueOf(Color.rgb(39,78,19))
-				pay_bill_button.setTextColor(Color.rgb(255,255,255))
-			}
-		} else if(outstandingBal != null && outstandingBal.length>0) {
-			showString = "Outstanding Bal\nRs $outstandingBal"
-			if(outstandingBal.toInt() > 0) {
-				pay_bill_button.backgroundTintList =
-					ColorStateList.valueOf(Color.rgb(244, 204, 204))
-				pay_bill_button.setTextColor(Color.rgb(153, 0, 0))
-			} else {
-				pay_bill_button.backgroundTintList =
-					ColorStateList.valueOf(Color.rgb(183, 225, 205))
-				pay_bill_button.setTextColor(Color.rgb(19, 79, 92))
+				showString = "Couldn't fetch data..."
 			}
 		} else {
-			showString = "Couldn't fetch data..."
+			showString = "No User Configured..."
 		}
 		pay_bill_button.setText(showString)
 	}

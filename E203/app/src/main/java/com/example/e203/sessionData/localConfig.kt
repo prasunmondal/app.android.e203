@@ -24,4 +24,18 @@ class localConfig {
 
         return localConfigMap[key]
     }
+
+    fun doesUsernameExists(): Boolean {
+        if(FileReadUtils.Singleton.instance.doesFileExist(FileManagerUtil.Singleton.instance.localConfigurationStorage)) {
+            println("doesUsernameExists: File Exists!")
+            val username = getValue("username")
+            println("Value for username: " + username)
+            if(username != null && username.length > 0) {
+                println("doesUsernameExists: true")
+                return true
+            }
+        }
+        println("doesUsernameExists: false")
+        return false
+    }
 }

@@ -8,11 +8,9 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.example.e203.Utility.FileReadUtils
-import com.example.e203.Utility.FileWriteUtils
-import com.example.e203.Utility.UPIActivity
 import com.example.e203.appData.FileManagerUtil
-import com.example.e203.appData.FilePathsP
 import com.example.e203.sessionData.AppContexts
+import com.example.e203.sessionData.fetchedMetaData
 import com.example.e203.sessionData.localConfig
 
 class SaveUser : AppCompatActivity() {
@@ -23,7 +21,7 @@ class SaveUser : AppCompatActivity() {
 
         AppContexts.Singleton.instance.setSaveUserActivity(this)
 
-        if(FileReadUtils.Singleton.instance.doesFileExist(FileManagerUtil.Singleton.instance.localConfigurationStorage)) {
+        if(localConfig.Singleton.instance.doesUsernameExists()) {
             var username = localConfig.Singleton.instance.getValue("username")
             if (username != null && isValidUserName(username)) {
                 goToMainPage()
@@ -46,17 +44,11 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun onClick_SaveUSer_skipButton(view: View) {
-       goToPayPage()
+       goToMainPage()
     }
 
     fun goToMainPage() {
         val i = Intent(this@SaveUser, MainActivity::class.java)
-        startActivity(i)
-        finish()
-    }
-
-    fun goToPayPage() {
-        val i = Intent(this@SaveUser, UPIActivity::class.java)
         startActivity(i)
         finish()
     }
@@ -66,6 +58,7 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun isValidUserName(username: String): Boolean {
-        return username.equals("Prasun Mondal") or username.equals("Mondal")
+        return true
+//        return username.equals("Prasun Mondal") or username.equals("Mondal")
     }
 }
