@@ -5,6 +5,14 @@ import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManage
 
 class fetchedMetaData {
 
+    val APP_DOWNLOAD_LINK= "app_download_link"
+    val APP_DOWNLOAD_VERSION= "app_versCode"
+    val PAYMENT_UPI_PAY_LINK= "upi_paymentID"
+    val PAYMENT_UPI_PAY_DESCRIPTION= "upi_paymentDescription"
+
+    private val TAG_CURRENT_OUTSTANDING = "currentOutstanding_"
+    private val TAG_PENDING_BILL = "pendingBill_"
+
     private var fetchedDataMap: MutableMap<String, String> = mutableMapOf()
     object Singleton {
         var instance = fetchedMetaData()
@@ -15,5 +23,9 @@ class fetchedMetaData {
             fetchedDataMap,
             FileManagerInstance.fetchedMetadataStorage)
         return fetchedDataMap[key]
+    }
+
+    fun getLabel(pre: String, post: String): String {
+        return pre + post
     }
 }

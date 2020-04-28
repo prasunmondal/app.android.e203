@@ -5,6 +5,9 @@ import com.example.e203.Utility.FileWriteUtils
 import com.example.e203.appData.FileManagerUtil
 
 class localConfig {
+
+    val USERNAME= "username"
+
     private var localConfigMap: MutableMap<String, String> = mutableMapOf()
 
     object Singleton {
