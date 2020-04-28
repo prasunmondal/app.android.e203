@@ -99,14 +99,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun payPrasun(view: View) {
-        val username = localConfigInstance.getValue(localConfigInstance.USERNAME)!!.toLowerCase()
-        val amount = fetchedMetaDataInstance.getValue(fetchedMetaDataInstance.TAG_PENDING_BILL + localConfigInstance.USERNAME)!!
-        val note = "note"
-        val name = "prasun"
-        val upiId = "prsnmondal@upi"
-        println("Pay button clicked...")
-        if(PaymentUtils.isPayOptionEnabled())
+        if(PaymentUtils.isPayOptionEnabled()) {
+            val currentUser =
+                localConfigInstance.getValue(localConfigInstance.USERNAME)!!.toLowerCase()
+            val amount =
+                fetchedMetaDataInstance.getValue(fetchedMetaDataInstance.TAG_PENDING_BILL + currentUser)!!
+            val note = "note"
+            val name = "prasun"
+            val upiId = "prsnmondal@upi"
+            println("Pay button clicked...")
             payUsingUpi(amount, upiId, name, note)
+        }
     }
 
     fun loadEditPage(view: View) {

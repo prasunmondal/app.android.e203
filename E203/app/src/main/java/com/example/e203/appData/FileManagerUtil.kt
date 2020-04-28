@@ -1,6 +1,7 @@
 package com.example.e203.appData
 
 import android.os.Environment
+import java.io.File
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 
 class FilePaths(var rootDir: String, var childDir: String, var fileName: String) {
@@ -20,4 +21,9 @@ class FileManagerUtil {
         .getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
         "",
         "details.csv")
+
+    fun doesFileExist(filename: FilePaths): Boolean {
+        val file = File(filename.destination)
+        return file.exists()
+    }
 }

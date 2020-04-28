@@ -1,8 +1,8 @@
 package com.example.e203.sessionData
 
-import com.example.e203.Utility.FileReadUtil.Singleton.instance as FileReadUtilsInstance
-import com.example.e203.Utility.FileWriteUtils.Singleton.instance as FileWriteUtilsInstance
-import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagerUtilInstance
+import com.example.e203.Utility.FileReadUtil.Singleton.instance as FileReadUtils
+import com.example.e203.Utility.FileWriteUtil.Singleton.instance as FileWriteUtils
+import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagerUtils
 
 class localConfig {
 
@@ -17,19 +17,19 @@ class localConfig {
     fun setValue(key: String, value: String) {
         localConfigMap[key] = value
 
-        FileWriteUtilsInstance.writeToInternalFile(FileManagerUtilInstance.localConfigurationStorage,
-            FileWriteUtilsInstance.deseriallizeFromMap(localConfigMap))
+        FileWriteUtils.writeToInternalFile(FileManagerUtils.localConfigurationStorage,
+            FileWriteUtils.deseriallizeFromMap(localConfigMap))
     }
 
     fun getValue(key: String) : String? {
-        FileReadUtilsInstance.readPairCSVnPopulateMap(localConfigMap,
-            FileManagerUtilInstance.localConfigurationStorage)
+        FileReadUtils.readPairCSVnPopulateMap(localConfigMap,
+            FileManagerUtils.localConfigurationStorage)
 
         return localConfigMap[key]
     }
 
     fun doesUsernameExists(): Boolean {
-        if(FileReadUtilsInstance.doesFileExist(FileManagerUtilInstance.localConfigurationStorage)) {
+        if(FileManagerUtils.doesFileExist(FileManagerUtils.localConfigurationStorage)) {
             println("doesUsernameExists: File Exists!")
             val username = getValue(USERNAME)
             println("Value for username: $username")

@@ -26,9 +26,4 @@ class FileReadUtil {
             throw (e)
         }
     }
-
-    fun doesFileExist(filename: FilePaths): Boolean {
-        val file = File(filename.destination)
-        return file.exists()
-    }
 }

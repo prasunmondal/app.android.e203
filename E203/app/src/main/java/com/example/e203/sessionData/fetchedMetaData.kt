@@ -1,5 +1,6 @@
 package com.example.e203.sessionData
 
+import com.example.e203.appData.FilePaths
 import com.example.e203.Utility.FileReadUtil.Singleton.instance as FileReadUtils
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagers
 
@@ -27,5 +28,9 @@ class fetchedMetaData {
 
     fun getValueByLabel(pre: String, post: String): String {
         return getValue((pre + post))!!
+    }
+
+    fun isDataFetched(): Boolean {
+        return FileManagers.doesFileExist(FileManagers.fetchedMetadataStorage)
     }
 }

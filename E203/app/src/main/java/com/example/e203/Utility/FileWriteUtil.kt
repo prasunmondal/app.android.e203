@@ -5,10 +5,10 @@ import com.example.e203.appData.FilePaths
 import java.io.File
 import java.io.FileWriter
 
-class FileWriteUtils {
+class FileWriteUtil {
 
     object Singleton {
-        var instance = FileWriteUtils()
+        var instance = FileWriteUtil()
     }
 
     fun writeToInternalFile(filepath: FilePaths, writeString: String): Boolean {
