@@ -16,6 +16,7 @@ import com.example.e203.BuildConfig
 import com.example.e203.R
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagers
+import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetadatas
@@ -93,15 +94,15 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		val payBillBtn =
 			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
 		var showString: String
-		if(PaymentUtil.Singleton.instance.isAmountButtonVisible()) {
+		if(PaymentUtils.isAmountButtonVisible()) {
 			val currentUser = localConfigs.getValue(localConfigs.USERNAME)!!.toLowerCase()
-			val payBill = fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_PENDING_BILL, currentUser)
-			val outstandingBal = fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_CURRENT_OUTSTANDING, currentUser)
+			val payBill = PaymentUtils.getPendingBill(currentUser)
+			val outstandingBal = PaymentUtils.getOutstandingAmount(currentUser)
 
 			println("Pay Bill: $payBill")
 			println("Outstanding Bal: $outstandingBal")
 
-			if (payBill.isNotEmpty()) {
+			if (payBill!=null) {
 				if (payBill.toInt() > 0) {
 					showString = "You Pay: Rs $payBill"
 					showString += "\n(click to pay)"
@@ -114,7 +115,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 						ColorStateList.valueOf(Color.rgb(39, 78, 19))
 					payBillBtn.setTextColor(Color.rgb(255, 255, 255))
 				}
-			} else if (outstandingBal.isNotEmpty()) {
+			} else if (outstandingBal!=null) {
 				showString = "Outstanding Bal\nRs $outstandingBal"
 				if (outstandingBal.toInt() > 0) {
 					payBillBtn.backgroundTintList =

@@ -33,4 +33,8 @@ class FetchedMetaData {
     fun isDataFetched(): Boolean {
         return FileManagers.doesFileExist(FileManagers.downloadLink_Metadata)
     }
+
+    fun onDownloadInitiallizeVariables() {
+
+    }
 }

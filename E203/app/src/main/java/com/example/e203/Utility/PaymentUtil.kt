@@ -22,4 +22,28 @@ class PaymentUtil {
     fun isAmountButtonVisible(): Boolean {
         return localConfigs.doesUsernameExists()
     }
+
+    fun getOutstandingAmount(currentUser: String): Int? {
+        val outstandingBal = fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_CURRENT_OUTSTANDING, currentUser)
+        if(outstandingBal.isNotEmpty())
+            return outstandingBal.toInt()
+        return null
+    }
+
+    fun getPendingBill(currentUser: String): Int? {
+        val payBill = fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_PENDING_BILL, currentUser)
+        if(payBill.isNotEmpty())
+            return payBill.toInt()
+        return null
+    }
+
+    fun isDisplayButtonEnabled(): Boolean {
+        if(localConfigs.doesUsernameExists()) {
+            val currentUser = localConfigs.getValue(localConfigs.USERNAME)!!
+            return (localConfigs.doesUsernameExists()
+                    && (getOutstandingAmount(currentUser) != null
+                    || getPendingBill(currentUser) != null))
+        }
+        return false
+    }
 }
