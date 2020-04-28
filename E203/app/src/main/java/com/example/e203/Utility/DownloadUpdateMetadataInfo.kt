@@ -1,5 +1,6 @@
 package com.example.e203.Utility
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
@@ -59,7 +60,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 			override fun onReceive(context: Context, intent: Intent) {
 				println("Metadata Received!")
 				promptAndInitiateUpdate(view)
-				updateButtonData(view)
+				updateButtonData()
 			}
 		}
 		context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
@@ -88,41 +89,42 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		DownloadUpdate(context, apkUrl).enqueueDownload()
 	}
 
-	fun updateButtonData(view: View) {
-		val pay_bill_button =
+	@SuppressLint("DefaultLocale")
+	fun updateButtonData() {
+		val payBillBtn =
 			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
-		var showString = ""
+		var showString: String
 		if(PaymentUtil.Singleton.instance.isAmountButtonVisible()) {
-			val username = localConfigs.getValue("username")!!.toLowerCase()
-			val payBill = fetchedMetadatas.getValue("pendingBill_" + username)
-			val outstandingBal = fetchedMetadatas.getValue("currentOutstanding_" + username)
+			val currentUser = localConfigs.getValue(localConfigs.USERNAME)!!.toLowerCase()
+			val payBill = fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_PENDING_BILL, currentUser)
+			val outstandingBal = fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_CURRENT_OUTSTANDING, currentUser)
 
-			println("Pay Bill: " + payBill)
-			println("Outstanding Bal: " + outstandingBal)
+			println("Pay Bill: $payBill")
+			println("Outstanding Bal: $outstandingBal")
 
-			if (payBill != null && payBill.length > 0) {
+			if (payBill.isNotEmpty()) {
 				if (payBill.toInt() > 0) {
 					showString = "You Pay: Rs $payBill"
 					showString += "\n(click to pay)"
-					pay_bill_button.backgroundTintList =
+					payBillBtn.backgroundTintList =
 						ColorStateList.valueOf(Color.rgb(204, 0, 0))
-					pay_bill_button.setTextColor(Color.rgb(255, 255, 255))
+					payBillBtn.setTextColor(Color.rgb(255, 255, 255))
 				} else {
 					showString = "You Get\nRs " + (-1 * payBill.toInt()).toString()
-					pay_bill_button.backgroundTintList =
+					payBillBtn.backgroundTintList =
 						ColorStateList.valueOf(Color.rgb(39, 78, 19))
-					pay_bill_button.setTextColor(Color.rgb(255, 255, 255))
+					payBillBtn.setTextColor(Color.rgb(255, 255, 255))
 				}
-			} else if (outstandingBal != null && outstandingBal.length > 0) {
+			} else if (outstandingBal.isNotEmpty()) {
 				showString = "Outstanding Bal\nRs $outstandingBal"
 				if (outstandingBal.toInt() > 0) {
-					pay_bill_button.backgroundTintList =
+					payBillBtn.backgroundTintList =
 						ColorStateList.valueOf(Color.rgb(244, 204, 204))
-					pay_bill_button.setTextColor(Color.rgb(153, 0, 0))
+					payBillBtn.setTextColor(Color.rgb(153, 0, 0))
 				} else {
-					pay_bill_button.backgroundTintList =
+					payBillBtn.backgroundTintList =
 						ColorStateList.valueOf(Color.rgb(183, 225, 205))
-					pay_bill_button.setTextColor(Color.rgb(19, 79, 92))
+					payBillBtn.setTextColor(Color.rgb(19, 79, 92))
 				}
 			} else {
 				showString = "Couldn't fetch data..."
@@ -130,6 +132,6 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		} else {
 			showString = "No User Configured..."
 		}
-		pay_bill_button.setText(showString)
+		payBillBtn.text = showString
 	}
 }
