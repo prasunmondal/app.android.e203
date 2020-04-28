@@ -30,7 +30,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 
 	fun enqueueDownload(view: View) {
 
-		val destination = FileManagers.downloadLink_Metadata.destination
+		val destination = FileManagers.fetchedMetadataStorage.destination
 
 		val uri = Uri.parse("$FILE_BASE_PATH$destination")
 

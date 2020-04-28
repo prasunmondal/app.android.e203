@@ -16,12 +16,11 @@ class FileManagerUtil {
     var rootFromContext = AppContexts.getSaveUserActivity().filesDir.absolutePath
 
     var localConfigurationStorage = FilePaths(rootFromContext, "AppData", "AppConfigurationData")
-
-    var downloadLink_Metadata = FilePaths(
-        AppContexts.getSaveUserActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "details.csv")
-
-    var downloadLink_UpdateAPK = FilePaths(
-        AppContexts.getSaveUserActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "SampleDownloadApp.apk")
+    var fetchedMetadataStorage = FilePaths(
+        AppContexts.getSaveUserActivity()
+        .getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
+        "",
+        "details.csv")
 
     fun doesFileExist(filename: FilePaths): Boolean {
         val file = File(filename.destination)

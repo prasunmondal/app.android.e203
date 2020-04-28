@@ -22,7 +22,7 @@ class FetchedMetaData {
     fun getValue(key: String): String? {
         FileReadUtils.readPairCSVnPopulateMap(
             fetchedDataMap,
-            FileManagers.downloadLink_Metadata)
+            FileManagers.fetchedMetadataStorage)
         return fetchedDataMap[key]
     }
 
@@ -31,6 +31,6 @@ class FetchedMetaData {
     }
 
     fun isDataFetched(): Boolean {
-        return FileManagers.doesFileExist(FileManagers.downloadLink_Metadata)
+        return FileManagers.doesFileExist(FileManagers.fetchedMetadataStorage)
     }
 }
