@@ -1,7 +1,7 @@
 package com.example.e203.sessionData
 
-import com.example.e203.Utility.FileReadUtils.Singleton.instance as FileReadUtilsInstance
-import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagerInstance
+import com.example.e203.Utility.FileReadUtil.Singleton.instance as FileReadUtils
+import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagers
 
 class fetchedMetaData {
 
@@ -19,9 +19,9 @@ class fetchedMetaData {
     }
 
     fun getValue(key: String): String? {
-        FileReadUtilsInstance.readPairCSVnPopulateMap(
+        FileReadUtils.readPairCSVnPopulateMap(
             fetchedDataMap,
-            FileManagerInstance.fetchedMetadataStorage)
+            FileManagers.fetchedMetadataStorage)
         return fetchedDataMap[key]
     }
 

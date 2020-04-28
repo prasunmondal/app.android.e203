@@ -1,7 +1,7 @@
 package com.example.e203.Utility
 
 import android.util.Log
-import com.example.e203.appData.FilePathsP
+import com.example.e203.appData.FilePaths
 import java.io.File
 import java.io.FileWriter
 
@@ -11,7 +11,7 @@ class FileWriteUtils {
         var instance = FileWriteUtils()
     }
 
-    fun writeToInternalFile(filepath: FilePathsP, writeString: String): Boolean {
+    fun writeToInternalFile(filepath: FilePaths, writeString: String): Boolean {
         val file = File(filepath.rootDir, filepath.childDir)
         if (!file.exists()) { file.mkdir() }
         try {

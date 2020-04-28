@@ -1,9 +1,9 @@
 package com.example.e203.appData
 
 import android.os.Environment
-import com.example.e203.sessionData.AppContexts
+import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 
-class FilePathsP(var rootDir: String, var childDir: String, var fileName: String) {
+class FilePaths(var rootDir: String, var childDir: String, var fileName: String) {
     var destination: String
 
     init {
@@ -16,11 +16,11 @@ class FileManagerUtil {
     object Singleton {
         var instance = FileManagerUtil()
     }
-    var rootFromContext = AppContexts.Singleton.instance.getSaveUserActivity().filesDir.absolutePath
+    var rootFromContext = AppContexts.getSaveUserActivity().filesDir.absolutePath
 
-    var localConfigurationStorage = FilePathsP(rootFromContext, "AppData", "AppConfigurationData")
-    var fetchedMetadataStorage = FilePathsP(
-        AppContexts.Singleton.instance.getSaveUserActivity()
+    var localConfigurationStorage = FilePaths(rootFromContext, "AppData", "AppConfigurationData")
+    var fetchedMetadataStorage = FilePaths(
+        AppContexts.getSaveUserActivity()
         .getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
         "",
         "details.csv")

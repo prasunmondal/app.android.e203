@@ -1,6 +1,6 @@
 package com.example.e203.sessionData
 
-import com.example.e203.Utility.FileReadUtils.Singleton.instance as FileReadUtilsInstance
+import com.example.e203.Utility.FileReadUtil.Singleton.instance as FileReadUtilsInstance
 import com.example.e203.Utility.FileWriteUtils.Singleton.instance as FileWriteUtilsInstance
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagerUtilInstance
 

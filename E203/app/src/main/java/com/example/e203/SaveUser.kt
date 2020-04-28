@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.example.e203.sessionData.AppContexts
+import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigs
 
 class SaveUser : AppCompatActivity() {
@@ -16,7 +16,7 @@ class SaveUser : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_save_user2)
 
-        AppContexts.Singleton.instance.setSaveUserActivity(this)
+        AppContexts.setSaveUserActivity(this)
 
         if(localConfigs.doesUsernameExists()) {
             var username = localConfigs.getValue("username")

@@ -1,18 +1,18 @@
 package com.example.e203.Utility
 
-import com.example.e203.appData.FilePathsP
+import com.example.e203.appData.FilePaths
 import com.opencsv.CSVReader
 import java.io.File
 import java.io.FileReader
 import java.io.IOException
 
-class FileReadUtils {
+class FileReadUtil {
 
     object Singleton {
-        var instance = FileReadUtils()
+        var instance = FileReadUtil()
     }
 
-    fun readPairCSVnPopulateMap(map: MutableMap<String, String>, fileName: FilePathsP) {
+    fun readPairCSVnPopulateMap(map: MutableMap<String, String>, fileName: FilePaths) {
         try {
             val reader = CSVReader(FileReader(File(fileName.destination)))
             var nextLine: Array<String>
@@ -27,7 +27,7 @@ class FileReadUtils {
         }
     }
 
-    fun doesFileExist(filename: FilePathsP): Boolean {
+    fun doesFileExist(filename: FilePaths): Boolean {
         val file = File(filename.destination)
         return file.exists()
     }

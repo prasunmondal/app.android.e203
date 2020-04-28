@@ -15,8 +15,8 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
-import com.example.e203.Utility.PaymentUtil
-import com.example.e203.sessionData.AppContexts
+import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
+import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 import com.example.e203.sessionData.fetchedMetaData.Singleton.instance as fetchedMetaDataInstance
 import com.example.e203.sessionData.localConfig.Singleton.instance as localConfigInstance
 import java.util.ArrayList
@@ -57,31 +57,16 @@ class MainActivity : AppCompatActivity() {
         loadPage(submitFormURL)
 
         downloadAndUpdateInfo()
-        AppContexts.Singleton.instance.setMainActivity(this)
+        AppContexts.setMainActivity(this)
 
-//        toolbar = (Toolbar) findViewById(R.id.parent);
-//        setSupportActionBar(toolbar);
         supportActionBar!!.setDisplayShowTitleEnabled(true)
-//add app icon inside the Toolbar
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setIcon(R.mipmap.ic_launcher)
-//        showNotification(this, "E203","A new record has been added!")
     }
 
     private fun loadPage(url: String) {
         val webView: WebView = findViewById(R.id.formView)
-//        val progressDialog = ProgressDialog(this)
-//        progressDialog.setMessage("Loading...")
-//        Log.d("dirty: ",webView.isDirty.toString())
-//        webView.stopLoading()
-//        progressDialog!!.show()
-
         webView.webViewClient = object : WebViewClient() {
-    //            override fun onPageFinished(view: WebView, url: String) {
-    //                if (progressDialog!!.isShowing) {
-    //                    progressDialog!!.dismiss()
-    //                }
-    //            }
 
             override fun onReceivedError(
                 view: WebView,
@@ -92,7 +77,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Error:$description", Toast.LENGTH_SHORT).show()
             }
         }
-
         webView.loadUrl(url)
     }
 
@@ -121,7 +105,7 @@ class MainActivity : AppCompatActivity() {
         val name = "prasun"
         val upiId = "prsnmondal@upi"
         println("Pay button clicked...")
-        if(PaymentUtil.Singleton.instance.isPayOptionEnabled())
+        if(PaymentUtils.isPayOptionEnabled())
             payUsingUpi(amount, upiId, name, note)
     }
 

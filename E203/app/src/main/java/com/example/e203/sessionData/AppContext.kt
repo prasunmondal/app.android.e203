@@ -2,10 +2,10 @@ package com.example.e203.sessionData
 
 import android.content.Context
 
-class AppContexts {
+class AppContext {
 
     object Singleton {
-        val instance = AppContexts()
+        val instance = AppContext()
     }
 
     private lateinit var mainActivity: Context
