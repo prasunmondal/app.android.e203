@@ -98,8 +98,7 @@ class MainActivity : AppCompatActivity() {
             val upiId = fetchedMetaDatas.getValue(fetchedMetaDatas.PAYMENT_UPI_PAY_UPIID)
             println("Pay button clicked...")
             payUsingUpi(amount, upiId!!, name!!, note!!)
-        } else if (fetchedMetaDatas.isDataFetched() &&
-            PaymentUtils.isDisplayButtonEnabled()){
+        } else if (PaymentUtils.isDisplayButtonEnabled()){
             Toast.makeText(this, "No Payment Due!", Toast.LENGTH_SHORT).show()
         }
     }

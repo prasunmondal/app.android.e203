@@ -38,7 +38,7 @@ class PaymentUtil {
     }
 
     fun isDisplayButtonEnabled(): Boolean {
-        if(localConfigs.doesUsernameExists()) {
+        if(localConfigs.doesUsernameExists() && fetchedMetadatas.isDataFetched()) {
             val currentUser = localConfigs.getValue(localConfigs.USERNAME)!!
             return (localConfigs.doesUsernameExists()
                     && (getOutstandingAmount(currentUser) != null
