@@ -9,4 +9,15 @@
     <string name="ok">OK</string>
     <string name="update">Update</string>
     <string name="updateAvailable">New Version Available...</string>
+
+    <string-array name="member_names">
+        <item>Select Your Name</item>
+        <item>Prasun Mondal</item>
+        <item>Sanket Kr. Mali</item>
+        <item>Sayan Jana</item>
+        <item>Shouritra Das</item>
+        <item>Subhajit Karmakar</item>
+        <item>Subhodeep Ghosh</item>
+        <item>Sudipta Roy</item>
+    </string-array>
 </resources>

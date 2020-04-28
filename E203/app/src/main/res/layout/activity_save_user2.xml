@@ -7,17 +7,21 @@
     android:background="#000000"
     tools:context=".SaveUser">
 
-    <EditText
+    <Spinner
         android:id="@+id/userNameSelection"
         android:layout_width="320dp"
         android:layout_height="54dp"
         android:layout_marginTop="40dp"
+        android:background="#35383A"
         android:ems="10"
-        android:hint="Name"
-        android:inputType="textPersonName"
+        android:entries="@array/member_names"
+        android:fadingEdge="horizontal|vertical"
+        android:forceDarkAllowed="true"
+        android:popupBackground="#61666B"
+        android:prompt="@string/app_name"
         android:textColor="#1a73e8"
         android:textColorHint="#292828"
-        android:textSize="30sp"
+        android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/divider"
         app:layout_constraintStart_toStartOf="@+id/divider"

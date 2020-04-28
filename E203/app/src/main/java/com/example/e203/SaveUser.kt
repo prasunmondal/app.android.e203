@@ -1,12 +1,12 @@
 package com.example.e203
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
 
@@ -26,9 +26,8 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun onClickSaveUsername(view: View) {
-        val myWebView: EditText = findViewById(R.id.userNameSelection)
-        val username = myWebView.text.toString()
-        Log.d("Username: ", username)
+        val userSelection: Spinner = findViewById(R.id.userNameSelection)
+        val username: String = userSelection.getSelectedItem().toString()
 
         localConfigs.setValue("username", username)
 
