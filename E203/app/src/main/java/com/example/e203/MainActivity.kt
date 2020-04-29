@@ -16,6 +16,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e203.Utility.DownloadCalculatingSheet
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
 import java.util.*
 import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         loadPage(HardDatas.submitFormURL)
 
         downloadAndUpdateInfo()
+        downloadCalculatingSheet()
         AppContexts.setMainActivity(this)
 
         supportActionBar!!.setDisplayShowTitleEnabled(true)
@@ -79,6 +81,11 @@ class MainActivity : AppCompatActivity() {
     private fun downloadAndUpdateInfo() {
         downloadUpdateMetadataInfo = DownloadUpdateMetadataInfo(this, HardDatas.detailCSV)
         downloadUpdateMetadataInfo.enqueueDownload(findViewById(R.id.formView))
+    }
+
+    private fun downloadCalculatingSheet() {
+        downloadCalculatingSheet = DownloadCalculatingSheet(this, HardDatas.calculateSheet)
+        downloadCalculatingSheet.enqueueDownload(findViewById(R.id.formView))
     }
 
     fun loadAddForm(view: View) {
@@ -118,6 +125,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var downloadUpdateMetadataInfo: DownloadUpdateMetadataInfo
+    private lateinit var downloadCalculatingSheet: DownloadCalculatingSheet
 
 
     private val UPI_PAYMENT = 0

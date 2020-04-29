@@ -20,6 +20,9 @@ class FileManagerUtil {
     var downloadLink_Metadata = FilePaths(
         AppContexts.getSaveUserActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "details.csv")
 
+    var downloadLink_CalculatingSheet = FilePaths(
+        AppContexts.getSaveUserActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv")
+
     var downloadLink_UpdateAPK = FilePaths(
         AppContexts.getSaveUserActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "SampleDownloadApp.apk")
 
