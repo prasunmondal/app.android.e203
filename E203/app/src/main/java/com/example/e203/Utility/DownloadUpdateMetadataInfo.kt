@@ -1,24 +1,17 @@
 package com.example.e203.Utility
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.net.Uri
 import android.view.View
-import android.widget.Button
 import com.example.e203.BuildConfig
 import com.example.e203.R
-import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
-import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagers
-import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
+import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagers
 import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetadatas
 
 
@@ -60,7 +53,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 			override fun onReceive(context: Context, intent: Intent) {
 				println("Metadata Received!")
 				promptAndInitiateUpdate(view)
-				updateButtonData()
+				fetchedMetadatas.updateButtonData()
 			}
 		}
 		context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
@@ -87,51 +80,5 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 	private fun downloadAndUpdate(view: View) {
 		val apkUrl = fetchedMetadatas.getValue(fetchedMetadatas.APP_DOWNLOAD_LINK) ?: return
 		DownloadUpdate(context, apkUrl).enqueueDownload(view)
-	}
-
-	@SuppressLint("DefaultLocale")
-	fun updateButtonData() {
-		val payBillBtn =
-			(context as Activity).findViewById(R.id.pay_bill_btn) as Button
-		var showString: String
-		if(PaymentUtils.isAmountButtonVisible()) {
-			val currentUser = localConfigs.getValue(localConfigs.USERNAME)!!.toLowerCase()
-			val payBill = PaymentUtils.getPendingBill(currentUser)
-			val outstandingBal = PaymentUtils.getOutstandingAmount(currentUser)
-
-			println("Pay Bill: $payBill")
-			println("Outstanding Bal: $outstandingBal")
-
-			if (payBill!=null) {
-				if (payBill.toInt() > 0) {
-					showString = "You Pay: Rs $payBill"
-					showString += "\n(click to pay)"
-					payBillBtn.backgroundTintList =
-						ColorStateList.valueOf(Color.rgb(204, 0, 0))
-					payBillBtn.setTextColor(Color.rgb(255, 255, 255))
-				} else {
-					showString = "You Get\nRs " + (-1 * payBill.toInt()).toString()
-					payBillBtn.backgroundTintList =
-						ColorStateList.valueOf(Color.rgb(39, 78, 19))
-					payBillBtn.setTextColor(Color.rgb(255, 255, 255))
-				}
-			} else if (outstandingBal!=null) {
-				showString = "Outstanding Bal\nRs $outstandingBal"
-				if (outstandingBal.toInt() > 0) {
-					payBillBtn.backgroundTintList =
-						ColorStateList.valueOf(Color.rgb(244, 204, 204))
-					payBillBtn.setTextColor(Color.rgb(153, 0, 0))
-				} else {
-					payBillBtn.backgroundTintList =
-						ColorStateList.valueOf(Color.rgb(183, 225, 205))
-					payBillBtn.setTextColor(Color.rgb(19, 79, 92))
-				}
-			} else {
-				showString = "Couldn't fetch data..."
-			}
-		} else {
-			showString = "No User Configured..."
-		}
-		payBillBtn.text = showString
 	}
 }
