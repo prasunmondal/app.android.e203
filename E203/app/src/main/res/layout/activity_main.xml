@@ -13,25 +13,12 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        style="@style/AppTheme"
+        app:theme="@style/AppTheme"
         android:background="@color/colorPrimary"
+        app:popupTheme="@style/Widget.AppCompat.PopupMenu"
         android:elevation="4dp"
-        >
-
-        <TextView
-            android:id="@+id/title"
-            style="@style/AppTheme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="E203"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="202dp"
-            tools:layout_editor_absoluteY="18dp" />
-
-    </androidx.appcompat.widget.Toolbar>
-
+        />
 
     <WebView
         android:id="@+id/formView"
