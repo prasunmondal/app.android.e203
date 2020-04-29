@@ -14,6 +14,7 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.example.e203.R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
         val mTopToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.my_toolbar)
         setSupportActionBar(mTopToolbar)
@@ -58,6 +59,11 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowTitleEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 //        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
+
+        if(localConfigs.doesUsernameExists()) {
+            val titleBarText: TextView = findViewById<TextView>(R.id.username)
+            titleBarText.text = " - "  + localConfigs.getValue(localConfigs.USERNAME)
+        }
     }
 
     private fun loadPage(url: String) {
