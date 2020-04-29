@@ -31,11 +31,11 @@
         android:id="@+id/saveuser_saveButton"
         android:layout_width="98dp"
         android:layout_height="53dp"
+        android:background="#000000"
         android:onClick="onClickSaveUsername"
         android:text="Save"
-        android:background="#000000"
         android:textColor="#ffffff"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/userNameSelection"
         app:layout_constraintTop_toBottomOf="@+id/userNameSelection" />
 
     <TextView
@@ -68,6 +68,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.426" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
