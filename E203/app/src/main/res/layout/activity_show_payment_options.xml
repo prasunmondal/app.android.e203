@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:onClick="onClickCopyUPI"
-        android:text="prsnmondal@ybl"
+        android:text="9679004046@upi"
         android:textColor="#ffffff"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

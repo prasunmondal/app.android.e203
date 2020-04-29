@@ -46,7 +46,7 @@
         android:onClick="onClickSaveUserSkipButton"
         android:text="Later"
         android:textAlignment="viewStart"
-        android:textColor="#ffffff"
+        android:textColor="#A8A5A5"
         app:layout_constraintBottom_toBottomOf="@+id/saveuser_saveButton"
         app:layout_constraintEnd_toStartOf="@+id/saveuser_saveButton"
         app:layout_constraintTop_toTopOf="@+id/saveuser_saveButton" />
