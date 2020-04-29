@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         webView.settings.loadWithOverviewMode = true
         webView.webViewClient = WebViewClient()
         webView.webChromeClient = WebChromeClient()
+        webView.settings.setAppCacheEnabled(false)
+        webView.settings.setCacheMode(2)
         loadPage(HardDatas.submitFormURL)
 
         downloadAndUpdateInfo()
