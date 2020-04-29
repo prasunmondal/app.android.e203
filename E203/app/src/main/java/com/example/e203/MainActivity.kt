@@ -261,6 +261,11 @@ class MainActivity : AppCompatActivity() {
             downloadAndUpdateInfo(true)
             return true
         }
+        if (id == R.id.paymentOptions) {
+            println("Clicked View Payment Option btn...")
+            goToPaymentOptionsPage()
+            return true
+        }
         return super.onOptionsItemSelected(item)
     }
 

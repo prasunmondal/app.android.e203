@@ -18,4 +18,10 @@
         android:icon="@drawable/defaultusericon"
         app:showAsAction="ifRoom"></item>
 
+    <item
+        android:id="@+id/paymentOptions"
+        android:orderInCategory="300"
+        android:title="Payment Options"
+        app:showAsAction="never"></item>
+
 </menu>
