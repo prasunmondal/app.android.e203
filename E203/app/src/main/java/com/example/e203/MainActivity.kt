@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadDetails(view: View) {
-        loadPage(HardDatas.detailsFormURL)
+        loadPage(HardDatas.detailsFormViewPage)
 //        showNotification("E203","A new record has been added 2!")
     }
 
@@ -108,11 +108,13 @@ class MainActivity : AppCompatActivity() {
 
     fun loadEditPage(view: View) {
         loadPage(HardDatas.editPage)
-
-        var destination = FileManagerUtil.Singleton.instance.localConfigurationStorage.destination
-        val file = File(destination)
-        if (file.exists()) file.delete()
 //        showNotification(this,"E203","A new record has been added 3!")
+
+
+
+//        var destination = FileManagerUtil.Singleton.instance.localConfigurationStorage.destination
+//        val file = File(destination)
+//        if (file.exists()) file.delete()
     }
 
     private lateinit var downloadUpdateMetadataInfo: DownloadUpdateMetadataInfo
