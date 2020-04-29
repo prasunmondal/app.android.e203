@@ -1,6 +1,5 @@
 package com.example.e203.sessionData
 
-import java.io.File
 import com.example.e203.Utility.FileReadUtil.Singleton.instance as FileReadUtils
 import com.example.e203.Utility.FileWriteUtil.Singleton.instance as FileWriteUtils
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagerUtils
@@ -41,11 +40,5 @@ class LocalConfig {
         }
         println("doesUsernameExists: false")
         return false
-    }
-
-    fun deleteData() {
-        var destination = FileManagerUtils.localConfigurationStorage.destination
-        val file = File(destination)
-        if (file.exists()) file.delete()
     }
 }

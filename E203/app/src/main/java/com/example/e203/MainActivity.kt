@@ -1,6 +1,5 @@
 package com.example.e203
 
-import android.R
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -9,8 +8,6 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -18,13 +15,14 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
-import java.util.*
+import com.example.e203.appData.FileManagerUtil
+import java.io.File
+import com.example.e203.sessionData.HardData.Singleton.instance as HardDatas
 import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetaDatas
-import com.example.e203.sessionData.HardData.Singleton.instance as HardDatas
-import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
-
+import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigInstance
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,15 +33,12 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.example.e203.R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-        val mTopToolbar = findViewById<androidx.appcompat.widget.Toolbar>(com.example.e203.R.id.my_toolbar)
-        setSupportActionBar(mTopToolbar)
+        if(localConfigInstance.doesUsernameExists())
+            Toast.makeText(this@MainActivity, "Logged in as: " + localConfigInstance.getValue(localConfigInstance.USERNAME), Toast.LENGTH_SHORT).show()
 
-        if(localConfigs.doesUsernameExists())
-            Toast.makeText(this@MainActivity, "Logged in as: " + localConfigs.getValue(localConfigs.USERNAME), Toast.LENGTH_SHORT).show()
-
-        val webView: WebView = findViewById(com.example.e203.R.id.formView)
+        val webView: WebView = findViewById(R.id.formView)
         webView.webViewClient = MyWebViewClient()
         val webSettings = webView.settings
         webSettings.javaScriptEnabled = true
@@ -62,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        val webView: WebView = findViewById(com.example.e203.R.id.formView)
+        val webView: WebView = findViewById(R.id.formView)
         webView.webViewClient = object : WebViewClient() {
 
             override fun onReceivedError(
@@ -79,11 +74,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun downloadAndUpdateInfo() {
         downloadUpdateMetadataInfo = DownloadUpdateMetadataInfo(this, HardDatas.detailCSV)
-        downloadUpdateMetadataInfo.enqueueDownload(findViewById(com.example.e203.R.id.formView))
+        downloadUpdateMetadataInfo.enqueueDownload(findViewById(R.id.formView))
     }
 
     fun loadAddForm(view: View) {
-        val myWebView: WebView = findViewById(com.example.e203.R.id.formView)
+        val myWebView: WebView = findViewById(R.id.formView)
         myWebView.loadUrl(HardDatas.submitFormURL)
 //        showNotification("E203","A new record has been added 1!")
     }
@@ -98,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         if(PaymentUtils.isPayOptionEnabled()) {
             goToPaymentOptionsPage()
             val currentUser =
-                localConfigs.getValue(localConfigs.USERNAME)!!.toLowerCase()
+                localConfigInstance.getValue(localConfigInstance.USERNAME)!!.toLowerCase()
             val amount =
                 fetchedMetaDatas.getValue(fetchedMetaDatas.TAG_PENDING_BILL + currentUser)!!
             val note = fetchedMetaDatas.getValue(fetchedMetaDatas.PAYMENT_UPI_PAY_DESCRIPTION)
@@ -235,31 +230,6 @@ class MainActivity : AppCompatActivity() {
     fun goToPaymentOptionsPage() {
         val i = Intent(this@MainActivity, ShowPaymentOptions::class.java)
         startActivity(i)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        // Inflate the main_menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(com.example.e203.R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        val id: Int = item.getItemId()
-        if (id == com.example.e203.R.id.action_favorite) {
-            goToSaveUserPage()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    fun goToSaveUserPage() {
-        localConfigs.deleteData()
-        val i = Intent(this@MainActivity, SaveUser::class.java)
-        startActivity(i)
-        finish()
     }
 }
 
