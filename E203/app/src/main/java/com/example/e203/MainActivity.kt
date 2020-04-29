@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
         val mTopToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.my_toolbar)
         setSupportActionBar(mTopToolbar)
 
-        if(localConfigs.doesUsernameExists())
-            Toast.makeText(this@MainActivity, "Logged in as: " + localConfigs.getValue(localConfigs.USERNAME), Toast.LENGTH_SHORT).show()
+//        if(localConfigs.doesUsernameExists())
+//            Toast.makeText(this@MainActivity, "Logged in as: " + localConfigs.getValue(localConfigs.USERNAME), Toast.LENGTH_SHORT).show()
 
         val webView: WebView = findViewById(com.example.e203.R.id.formView)
         webView.webViewClient = MyWebViewClient()
