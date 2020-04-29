@@ -7,10 +7,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
+import android.view.View
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.example.e203 .R
 import com.example.e203.BuildConfig
+import com.google.android.material.snackbar.Snackbar
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManagerUtils
 import java.io.File
 
@@ -23,7 +25,7 @@ class DownloadUpdate(private val context: Context, private val url: String) {
         private const val APP_INSTALL_PATH: String = "\"application/vnd.android.package-archive\""
     }
 
-    fun enqueueDownload() {
+    fun enqueueDownload(view: View) {
 
         var destination = FileManagerUtils.downloadLink_UpdateAPK.destination
 
@@ -45,8 +47,9 @@ class DownloadUpdate(private val context: Context, private val url: String) {
         showInstallOption(destination, uri)
         // Enqueue a new download and same the referenceId
         downloadManager.enqueue(request)
-        Toast.makeText(context, context.getString(R.string.downloading), Toast.LENGTH_LONG)
-            .show()
+        view.showSnackbar(
+            R.string.installWillStart,
+            Snackbar.LENGTH_INDEFINITE, R.string.emptyString) {}
     }
 
     private fun showInstallOption(destination: String, uri: Uri) {

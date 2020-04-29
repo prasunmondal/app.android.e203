@@ -9,6 +9,8 @@
     <string name="ok">OK</string>
     <string name="update">Update</string>
     <string name="updateAvailable">New Version Available...</string>
+    <string name="installWillStart">Downloading... Please Wait! \nInstallation will start once download is complete</string>
+    <string name="emptyString"></string>
 
     <string-array name="member_names">
         <item>Select Your Name</item>

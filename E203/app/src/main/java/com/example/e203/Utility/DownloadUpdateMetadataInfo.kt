@@ -79,14 +79,14 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 				R.string.updateAvailable,
 				Snackbar.LENGTH_INDEFINITE, R.string.update
 			) {
-				downloadAndUpdate()
+				downloadAndUpdate(view)
 			}
 		}
 	}
 
-	private fun downloadAndUpdate() {
+	private fun downloadAndUpdate(view: View) {
 		val apkUrl = fetchedMetadatas.getValue(fetchedMetadatas.APP_DOWNLOAD_LINK) ?: return
-		DownloadUpdate(context, apkUrl).enqueueDownload()
+		DownloadUpdate(context, apkUrl).enqueueDownload(view)
 	}
 
 	@SuppressLint("DefaultLocale")
