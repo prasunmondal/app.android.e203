@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.widget.Button
+import android.widget.Toast
 import com.example.e203.R
 import com.example.e203.Utility.FileReadUtil.Singleton.instance as FileReadUtils
 import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
@@ -48,7 +49,9 @@ class FetchedMetaData {
     }
 
     @SuppressLint("DefaultLocale")
-    fun updateButtonData() {
+    fun updateButtonData(isRefresh: Boolean) {
+        if(isRefresh)
+            Toast.makeText(AppContexts.getMainActivity(), "Refresh Complete", Toast.LENGTH_SHORT).show()
         val payBillBtn =
             (AppContexts.getMainActivity() as Activity).findViewById(R.id.pay_bill_btn) as Button
         var showString: String

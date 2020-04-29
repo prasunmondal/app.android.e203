@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         webView.settings.setCacheMode(2)
         loadPage(HardDatas.submitFormURL)
 
-        downloadAndUpdateInfo()
+        downloadAndUpdateInfo(false)
         AppContexts.setMainActivity(this)
 
         supportActionBar!!.setDisplayShowTitleEnabled(true)
@@ -84,9 +84,9 @@ class MainActivity : AppCompatActivity() {
         webView.loadUrl(url)
     }
 
-    private fun downloadAndUpdateInfo() {
+    private fun downloadAndUpdateInfo(isRefresh: Boolean) {
         downloadUpdateMetadataInfo = DownloadUpdateMetadataInfo(this, HardDatas.detailCSV)
-        downloadUpdateMetadataInfo.enqueueDownload(findViewById(R.id.formView))
+        downloadUpdateMetadataInfo.enqueueDownload(findViewById(R.id.formView), isRefresh)
     }
 
     fun loadAddForm(view: View) {
@@ -253,6 +253,12 @@ class MainActivity : AppCompatActivity() {
         val id: Int = item.getItemId()
         if (id == R.id.action_favorite) {
             goToSaveUserPage()
+            return true
+        }
+        if (id == R.id.refresh) {
+            println("Refrshing...,.......")
+            Toast.makeText(this, "Refreshing data... Sometimes it may take 5 minutes to reflect the data.", Toast.LENGTH_LONG).show()
+            downloadAndUpdateInfo(true)
             return true
         }
         return super.onOptionsItemSelected(item)

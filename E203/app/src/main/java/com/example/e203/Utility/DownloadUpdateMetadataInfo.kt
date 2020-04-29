@@ -22,7 +22,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		private const val MIME_TYPE = "application/vnd.android.package-archive"
 	}
 
-	fun enqueueDownload(view: View) {
+	fun enqueueDownload(view: View, isRefresh: Boolean) {
 
 		val destination = FileManagers.downloadLink_Metadata.destination
 
@@ -41,19 +41,19 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		// set destination
 		request.setDestinationUri(uri)
 
-		showInstallOption(view)
+		showInstallOption(view, isRefresh)
 		// Enqueue a new download and same the referenceId
 		downloadManager.enqueue(request)
 //		Toast.makeText(context, context.getString(R.string.checkingForUpdates), Toast.LENGTH_LONG).show()
 	}
 
-	private fun showInstallOption(view: View) {
+	private fun showInstallOption(view: View, isRefresh: Boolean) {
 		// read the update values when file is downloaded
 		val onComplete = object : BroadcastReceiver() {
 			override fun onReceive(context: Context, intent: Intent) {
 				println("Metadata Received!")
 				promptAndInitiateUpdate(view)
-				fetchedMetadatas.updateButtonData()
+				fetchedMetadatas.updateButtonData(isRefresh)
 			}
 		}
 		context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))

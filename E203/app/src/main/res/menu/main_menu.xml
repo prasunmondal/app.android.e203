@@ -5,6 +5,13 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/refresh"
+        android:icon="@drawable/refresh"
+        android:orderInCategory="300"
+        android:title="User"
+        app:showAsAction="ifRoom"></item>
+
+    <item
         android:id="@+id/action_favorite"
         android:orderInCategory="300"
         android:title="User"
