@@ -9,8 +9,8 @@
 
     <Spinner
         android:id="@+id/userNameSelection"
-        android:layout_width="320dp"
-        android:layout_height="54dp"
+        android:layout_width="381dp"
+        android:layout_height="58dp"
         android:layout_marginTop="40dp"
         android:background="#35383A"
         android:ems="10"
@@ -29,12 +29,13 @@
 
     <Button
         android:id="@+id/saveuser_saveButton"
-        android:layout_width="98dp"
-        android:layout_height="53dp"
+        android:layout_width="78dp"
+        android:layout_height="51dp"
         android:background="#000000"
         android:onClick="onClickSaveUsername"
         android:text="Save"
         android:textColor="#ffffff"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/userNameSelection"
         app:layout_constraintTop_toBottomOf="@+id/userNameSelection" />
 
@@ -42,7 +43,7 @@
         android:id="@+id/saveuser_skipButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="16dp"
         android:onClick="onClickSaveUserSkipButton"
         android:text="Later"
         android:textAlignment="viewStart"
