@@ -1,5 +1,6 @@
 package com.example.e203
 
+import android.R
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(com.example.e203.R.layout.activity_main)
 
-        val mTopToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.my_toolbar)
+        val mTopToolbar = findViewById<androidx.appcompat.widget.Toolbar>(com.example.e203.R.id.my_toolbar)
         setSupportActionBar(mTopToolbar)
 
         if(localConfigs.doesUsernameExists())
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        val webView: WebView = findViewById(R.id.formView)
+        val webView: WebView = findViewById(com.example.e203.R.id.formView)
         webView.webViewClient = object : WebViewClient() {
 
             override fun onReceivedError(
@@ -78,18 +79,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun downloadAndUpdateInfo() {
         downloadUpdateMetadataInfo = DownloadUpdateMetadataInfo(this, HardDatas.detailCSV)
-        downloadUpdateMetadataInfo.enqueueDownload(findViewById(R.id.formView))
+        downloadUpdateMetadataInfo.enqueueDownload(findViewById(com.example.e203.R.id.formView))
     }
 
     fun loadAddForm(view: View) {
-        val myWebView: WebView = findViewById(R.id.formView)
+        val myWebView: WebView = findViewById(com.example.e203.R.id.formView)
         myWebView.loadUrl(HardDatas.submitFormURL)
 //        showNotification("E203","A new record has been added 1!")
     }
 
     fun loadDetails(view: View) {
         loadPage(HardDatas.detailsFormViewPage)
-        Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
 //        showNotification("E203","A new record has been added 2!")
     }
 
@@ -113,15 +113,20 @@ class MainActivity : AppCompatActivity() {
 
     fun loadEditPage(view: View) {
         loadPage(HardDatas.editPage)
-        Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
 //        showNotification(this,"E203","A new record has been added 3!")
+
+
+
+//        var destination = FileManagerUtil.Singleton.instance.localConfigurationStorage.destination
+//        val file = File(destination)
+//        if (file.exists()) file.delete()
     }
 
     private lateinit var downloadUpdateMetadataInfo: DownloadUpdateMetadataInfo
 
 
-    private val UPI_PAYMENT = 0
-    private fun payUsingUpi(amount: String, upiId: String, name: String, note: String) {
+    internal val UPI_PAYMENT = 0
+    fun payUsingUpi(amount: String, upiId: String, name: String, note: String) {
 
         val uri = Uri.parse("upi://pay").buildUpon()
             .appendQueryParameter("pa", upiId)
@@ -234,7 +239,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         // Inflate the main_menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main_menu, menu)
+        menuInflater.inflate(com.example.e203.R.menu.main_menu, menu)
         return true
     }
 
@@ -243,7 +248,7 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         val id: Int = item.getItemId()
-        if (id == R.id.action_favorite) {
+        if (id == com.example.e203.R.id.action_favorite) {
             goToSaveUserPage()
             return true
         }
