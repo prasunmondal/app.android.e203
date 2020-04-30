@@ -255,12 +255,12 @@ class MainActivity : AppCompatActivity() {
             goToSaveUserPage()
             return true
         }
-        if (id == R.id.refresh) {
-            println("Refrshing...,.......")
-            Toast.makeText(this, "Refreshing data... Sometimes it may take 5 minutes to reflect the data.", Toast.LENGTH_LONG).show()
-            downloadAndUpdateInfo(true)
-            return true
-        }
+//        if (id == R.id.refresh) {
+//            println("Refrshing...,.......")
+//            Toast.makeText(this, "Refreshing data... Sometimes it may take 5 minutes to reflect the data.", Toast.LENGTH_LONG).show()
+//            downloadAndUpdateInfo(true)
+//            return true
+//        }
         if (id == R.id.paymentOptions) {
             println("Clicked View Payment Option btn...")
             goToPaymentOptionsPage()
