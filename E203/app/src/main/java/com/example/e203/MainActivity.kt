@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadCalculatingSheet
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
+import com.example.e203.Utility.broadcast_receivers.NotificationEventReceiver
 import java.util.*
 import com.example.e203.Utility.PaymentUtil.Singleton.instance as PaymentUtils
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.setDisplayShowTitleEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
+        NotificationEventReceiver().setupAlarm(this)
 //        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
     }
 

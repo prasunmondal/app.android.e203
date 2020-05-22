@@ -59,7 +59,7 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 		val onComplete = object : BroadcastReceiver() {
 			override fun onReceive(context: Context, intent: Intent) {
 				println("Metadata Received!")
-				promptAndInitiateUpdate(view)
+//				promptAndInitiateUpdate(view)
 				updateButtonData()
 			}
 		}
