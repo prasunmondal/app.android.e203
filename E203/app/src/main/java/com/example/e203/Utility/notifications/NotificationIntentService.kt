@@ -11,7 +11,6 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.legacy.content.WakefulBroadcastReceiver
 import com.example.e203.MainActivity
-import com.example.e203.NotificationSystem
 import com.example.e203.R
 import com.example.e203.Utility.broadcast_receivers.NotificationEventReceiver
 import com.example.e203.Utility.showNotification
@@ -19,7 +18,6 @@ import com.example.e203.Utility.showNotification
 class NotificationIntentService :
     IntentService(NotificationIntentService::class.java.simpleName) {
     override fun onHandleIntent(intent: Intent?) {
-        println("NotificationIntentService: onHandleIntent")
         Log.d(
             javaClass.simpleName,
             "onHandleIntent, started handling a notification event"
@@ -39,7 +37,6 @@ class NotificationIntentService :
     }
 
     private fun processStartNotification() {
-        println("NotificationIntentService: processStartNotification")
         // Do something. For example, fetch fresh data from backend to create a rich notification?
         println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ")
 //        val builder = NotificationCompat.Builder(this)
@@ -64,8 +61,7 @@ class NotificationIntentService :
 //
 //        manager.notify(NOTIFICATION_ID, builder.build())
 
-//        showNotification(this, "Hi, Titel", "hello: message")
-        NotificationSystem().getPendingDuesNotification(this)
+        showNotification(this, "Hi, Titel", "hello: message")
 
     }
 
@@ -74,14 +70,12 @@ class NotificationIntentService :
         private const val ACTION_START = "ACTION_START"
         private const val ACTION_DELETE = "ACTION_DELETE"
         fun createIntentStartNotificationService(context: Context?): Intent {
-            println("NotificationIntentService: createIntentStartNotificationService")
             val intent = Intent(context, NotificationIntentService::class.java)
             intent.action = ACTION_START
             return intent
         }
 
         fun createIntentDeleteNotification(context: Context?): Intent {
-            println("NotificationIntentService: createIntentDeleteNotification")
             val intent = Intent(context, NotificationIntentService::class.java)
             intent.action = ACTION_DELETE
             return intent
