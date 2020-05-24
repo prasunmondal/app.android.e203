@@ -20,4 +20,5 @@
         <item>Subhodeep Ghosh</item>
         <item>Sudipta Roy</item>
     </string-array>
+    <string name="title_activity_transactions_listing">TransactionsListing</string>
 </resources>

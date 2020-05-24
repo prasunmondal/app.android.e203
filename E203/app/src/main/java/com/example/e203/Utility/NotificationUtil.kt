@@ -19,7 +19,7 @@ fun showNotification(This: Context, title: String, message: String) {
 class Notification : AppCompatActivity() {
 
     fun showNotification(This: Context, title: String, messageBody: String) {
-        val intent = Intent(This, Notification::class.java)
+        var intent = Intent(This, Notification::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity (
             This, 0 /* Request code */, intent,

@@ -25,7 +25,6 @@ import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetche
 import com.example.e203.sessionData.HardData.Singleton.instance as HardDatas
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
 
-
 class MainActivity : AppCompatActivity() {
 
     object Singleton {
