@@ -1,6 +1,7 @@
 package com.example.e203.appData
 
 import android.os.Environment
+import com.example.e203.portable_utils.DownloadableFiles
 import java.io.File
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 
@@ -13,18 +14,25 @@ class FileManagerUtil {
     object Singleton {
         var instance = FileManagerUtil()
     }
-    var rootFromContext = AppContexts.getSaveUserActivity().filesDir.absolutePath
+    var rootFromContext = AppContexts.initialContext.filesDir.absolutePath
 
     var localConfigurationStorage = FilePaths(rootFromContext, "AppData", "AppConfigurationData")
 
     var downloadLink_Metadata = FilePaths(
-        AppContexts.getSaveUserActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "details.csv")
+        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "details.csv")
 
     var downloadLink_CalculatingSheet = FilePaths(
-        AppContexts.getSaveUserActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv")
+        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv")
 
     var downloadLink_UpdateAPK = FilePaths(
-        AppContexts.getSaveUserActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "SampleDownloadApp.apk")
+        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "SampleDownloadApp.apk")
+
+    var breakdownSheet = DownloadableFiles(
+        AppContexts.initialContext,
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pub?gid=600708787&single=true&output=csv",
+        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
+        "E203", "fetching details data"
+    )
 
     fun doesFileExist(filename: FilePaths): Boolean {
         val file = File(filename.destination)

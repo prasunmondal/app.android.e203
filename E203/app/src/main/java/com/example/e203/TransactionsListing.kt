@@ -8,8 +8,32 @@ import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.example.e203.Utility.FileReadUtil
+import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
+import com.example.e203.sessionData.AppContext
 
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
+
+class TransactionsManager {
+
+    object Singleton {
+        var instance = TransactionRecord()
+    }
+
+    var transactions = mutableListOf<TransactionRecord>()
+}
+
+class TransactionRecord {
+
+    lateinit var name: String
+    lateinit var item: String
+    lateinit var sharedBy: String
+    lateinit var qty: String
+    lateinit var price: String
+    lateinit var createTime: String
+    lateinit var time: String
+    lateinit var editLink: String
+}
 
 class TransactionsListing : AppCompatActivity() {
 
@@ -17,11 +41,17 @@ class TransactionsListing : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_listing)
         setSupportActionBar(toolbar)
+        AppContext.Singleton.instance.initialContext = this
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
+        if(!fm.breakdownSheet.doesExist())
+            fm.breakdownSheet.download(::doneDownloading)
+        else
+            FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         var i: Int = 1
 
         for(z:Int in 1..30) {
@@ -223,5 +253,9 @@ class TransactionsListing : AppCompatActivity() {
         llv.addView(llh1)
         llv.addView(llh2)
         linearLayout.addView(llv1)
+    }
+
+    fun doneDownloading() {
+        println("Download Complete!")
     }
 }
