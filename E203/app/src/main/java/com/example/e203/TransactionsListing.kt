@@ -14,15 +14,6 @@ import com.example.e203.sessionData.AppContext
 
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
 
-class TransactionsManager {
-
-    object Singleton {
-        var instance = TransactionRecord()
-    }
-
-    var transactions = mutableListOf<TransactionRecord>()
-}
-
 class TransactionRecord {
 
     lateinit var name: String
@@ -33,6 +24,8 @@ class TransactionRecord {
     lateinit var createTime: String
     lateinit var time: String
     lateinit var editLink: String
+    lateinit var userDebit: String
+    lateinit var userCredit: String
 }
 
 class TransactionsListing : AppCompatActivity() {
@@ -52,34 +45,24 @@ class TransactionsListing : AppCompatActivity() {
             fm.breakdownSheet.download(::doneDownloading)
         else
             FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
-        var i: Int = 1
+        var i = 1
 
-        for(z:Int in 1..30) {
-            addDebitTextBox(
-                i++,
-                "Hair Band",
-                99999.99,
-                "Prasun",
-                8907,
-                "15/03/2020",
-                "12/05/2020", "debit"
-            )
+        for(z:Int in 0..TransactionsManager.Singleton.instance.transactions.size-1) {
+            if(TransactionsManager.Singleton.instance.transactions[z].userDebit.isNotEmpty()) {
+                addDebitTextBox(i++, TransactionsManager.Singleton.instance.transactions[z])
+            }
         }
 
-        for(z:Int in 1..30) {
-            addCreditTextBox(
-                i++,
-                "Hair Band",
-                99999.99,
-                "Prasun",
-                8907,
-                "15/03/2020",
-                "12/05/2020", "debit"
-            )
+        i = 1
+
+        for(z:Int in 1..TransactionsManager.Singleton.instance.transactions.size-1) {
+            if(TransactionsManager.Singleton.instance.transactions[z].userCredit.isNotEmpty()) {
+                addCreditTextBox(i++, TransactionsManager.Singleton.instance.transactions[z])
+            }
         }
     }
 
-    private fun addCreditTextBox(serialNo: Int, itemName: String, sharedAmount: Double, addedBy: String, totalAmount: Int, addedOn: String, addedForDate: String, transactionType: String) {
+    private fun addCreditTextBox(serialNo: Int, transaction: TransactionRecord) {
         var backgroundColor =  "#b7e1cd"
         var textColor = "#134f5c"
 
@@ -87,7 +70,7 @@ class TransactionsListing : AppCompatActivity() {
 
         var llv1 = LinearLayout(applicationContext)
         llv1.orientation = LinearLayout.VERTICAL
-        llv1.setPadding(20, 60, 20, 0)
+        llv1.setPadding(20, 10, 20, 10)
 
         var llv = LinearLayout(applicationContext)
         llv.orientation = LinearLayout.VERTICAL
@@ -121,7 +104,7 @@ class TransactionsListing : AppCompatActivity() {
         serialNoField.setPadding(20, 20, 0, 0)// in pixels (left, top, right, bottom)
 
         var itemNameField = TextView(this)
-        itemNameField.text = itemName
+        itemNameField.text = transaction.item
         itemNameField.width=600
         itemNameField.textSize=15F
         itemNameField.setTextColor(Color.parseColor(textColor))
@@ -133,7 +116,7 @@ class TransactionsListing : AppCompatActivity() {
         itemNameField.setPadding(20, 20, 20, 0)// in pixels (left, top, right, bottom)
 
         var sharedAmountField = TextView(this)
-        sharedAmountField.text = "Rs. " + totalAmount.toString()
+        sharedAmountField.text = "Rs. " + transaction.userCredit
         sharedAmountField.width=407
         sharedAmountField.textSize=15F
         sharedAmountField.gravity = Gravity.END
@@ -146,7 +129,7 @@ class TransactionsListing : AppCompatActivity() {
         sharedAmountField.setPadding(20, 20, 20, 0)// in pixels (left, top, right, bottom)
 
         var recordOriginDetailsField = TextView(this)
-        recordOriginDetailsField.text = "+" + addedBy + " - " + addedForDate + " - Rs. " + totalAmount
+        recordOriginDetailsField.text = "+" + transaction.name + " - " + transaction.time + " - Rs. " + transaction.price
         recordOriginDetailsField.textSize = 12F
 
         recordOriginDetailsField.layoutParams = LinearLayout.LayoutParams(
@@ -168,7 +151,7 @@ class TransactionsListing : AppCompatActivity() {
         linearLayout.addView(llv1)
     }
 
-    private fun addDebitTextBox(serialNo: Int, itemName: String, sharedAmount: Double, addedBy: String, totalAmount: Int, addedOn: String, addedForDate: String, transactionType: String) {
+    private fun addDebitTextBox(serialNo: Int, transaction: TransactionRecord) {
         var backgroundColor =  "#f4cccc"
         var textColor = "#990000"
 
@@ -176,7 +159,7 @@ class TransactionsListing : AppCompatActivity() {
 
         var llv1 = LinearLayout(applicationContext)
         llv1.orientation = LinearLayout.VERTICAL
-        llv1.setPadding(20, 30, 20, 30)
+        llv1.setPadding(20, 10, 20, 10)
 
         var llv = LinearLayout(applicationContext)
         llv.orientation = LinearLayout.VERTICAL
@@ -208,7 +191,7 @@ class TransactionsListing : AppCompatActivity() {
         serialNoField.setPadding(20, 20, 0, 0)// in pixels (left, top, right, bottom)
 
         var itemNameField = TextView(this)
-        itemNameField.text = itemName
+        itemNameField.text = transaction.item
         itemNameField.width=600
         itemNameField.textSize=15F
         itemNameField.setTextColor(Color.parseColor(textColor))
@@ -220,7 +203,7 @@ class TransactionsListing : AppCompatActivity() {
         itemNameField.setPadding(20, 20, 20, 0)// in pixels (left, top, right, bottom)
 
         var sharedAmountField = TextView(this)
-        sharedAmountField.text = "Rs. " + sharedAmount.toString()
+        sharedAmountField.text = "Rs. " + transaction.userDebit
         sharedAmountField.width=400
         sharedAmountField.textSize=15F
         sharedAmountField.gravity = Gravity.END
@@ -233,7 +216,7 @@ class TransactionsListing : AppCompatActivity() {
         sharedAmountField.setPadding(20, 20, 20, 0)// in pixels (left, top, right, bottom)
 
         var recordOriginDetailsField = TextView(this)
-        recordOriginDetailsField.text = "+" + addedBy + " - " + addedForDate + " - Rs. " + totalAmount
+        recordOriginDetailsField.text = "+" + transaction.name + " - " + transaction.time + " - Rs. " + transaction.price
         recordOriginDetailsField.textSize = 12F
 
         recordOriginDetailsField.layoutParams = LinearLayout.LayoutParams(

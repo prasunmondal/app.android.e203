@@ -1,6 +1,7 @@
 package com.example.e203.Utility
 
 import com.example.e203.TransactionRecord
+import com.example.e203.TransactionsManager
 import com.example.e203.appData.FilePaths
 import com.opencsv.CSVReader
 import java.io.File
@@ -32,20 +33,23 @@ class FileReadUtil {
 //        map: MutableMap<String, String>,
                      fileName: FilePaths) {
 
-        var nameIndex: Int = 0
-        var itemIndex: Int = 0
-        var sharedByIndex: Int = 0
-        var qtyIndex: Int = 0
-        var priceIndex: Int = 0
-        var createTimeIndex: Int = 0
-        var timeIndex: Int = 0
-        var editLinkIndex: Int = 0
+        val user = "Sudipta Roy"
+        var nameIndex = 0
+        var itemIndex = 0
+        var sharedByIndex = 0
+        var qtyIndex = 0
+        var priceIndex = 0
+        var createTimeIndex = 0
+        var timeIndex = 0
+        var editLinkIndex = 0
+        var userDebitIndex = 0
+        var userCreditIndex = 0
         
         try {
             val reader = CSVReader(FileReader(File(fileName.destination)))
             var nextLine: Array<String>
             var lineToRead = 1
-            var maxLines = 215
+            val maxLines = 215
             var startLine = maxLines
             while (reader.peek() != null && lineToRead<maxLines) {
                 lineToRead++
@@ -70,6 +74,10 @@ class FileReadUtil {
                             timeIndex = i
                         if (nextLine[i] == "app_editLink")
                             editLinkIndex = i
+                        if (nextLine[i] == user+"_debit")
+                            userDebitIndex = i
+                        if (nextLine[i] == user+"_credit")
+                            userCreditIndex = i
                     }
                 }
 
@@ -79,8 +87,9 @@ class FileReadUtil {
                     print(
                         nextLine[nameIndex] + " - " + nextLine[itemIndex] + " - " + nextLine[sharedByIndex] + " - " + nextLine[qtyIndex] + " - " +
                                 nextLine[priceIndex] + " - " + nextLine[createTimeIndex] + " - " + nextLine[timeIndex] + " - " + nextLine[editLinkIndex]
+                    + " - " + nextLine[userDebitIndex] + " - " + nextLine[userCreditIndex]
                     )
-                    var newRecord = TransactionRecord()
+                    val newRecord = TransactionRecord()
                     newRecord.name = nextLine[nameIndex]
                     newRecord.item = nextLine[itemIndex]
                     newRecord.sharedBy = nextLine[sharedByIndex]
@@ -89,6 +98,10 @@ class FileReadUtil {
                     newRecord.createTime = nextLine[createTimeIndex]
                     newRecord.time = nextLine[timeIndex]
                     newRecord.editLink = nextLine[editLinkIndex]
+                    newRecord.userDebit = nextLine[userDebitIndex]
+                    newRecord.userCredit = nextLine[userCreditIndex]
+
+                    TransactionsManager.Singleton.instance.transactions.add(newRecord)
                 }
                 println()
 //                map[nextLine[0]] = nextLine[1]
