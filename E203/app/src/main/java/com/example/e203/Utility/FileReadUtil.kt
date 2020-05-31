@@ -33,7 +33,9 @@ class FileReadUtil {
 //        map: MutableMap<String, String>,
                      fileName: FilePaths) {
 
-        val user = "Sudipta Roy"
+        var user = ""
+//        user = "Prasun Mondal"
+        user = "Sudipta Roy"
         var nameIndex = 0
         var itemIndex = 0
         var sharedByIndex = 0
@@ -93,15 +95,21 @@ class FileReadUtil {
                     newRecord.name = nextLine[nameIndex]
                     newRecord.item = nextLine[itemIndex]
                     newRecord.sharedBy = nextLine[sharedByIndex]
-                    newRecord.qty = nextLine[qtyIndex]
-                    newRecord.price = nextLine[priceIndex]
+                    newRecord.qty = nextLine[qtyIndex].replace(",","")
+                    newRecord.price = nextLine[priceIndex].replace(",","")
                     newRecord.createTime = nextLine[createTimeIndex]
                     newRecord.time = nextLine[timeIndex]
                     newRecord.editLink = nextLine[editLinkIndex]
-                    newRecord.userDebit = nextLine[userDebitIndex]
-                    newRecord.userCredit = nextLine[userCreditIndex]
+                    newRecord.userDebit = nextLine[userDebitIndex].replace(",","")
+                    newRecord.userCredit = nextLine[userCreditIndex].replace(",","")
 
-                    TransactionsManager.Singleton.instance.transactions.add(newRecord)
+                    if(newRecord.userDebit.isEmpty())
+                        newRecord.userDebit = "0"
+                    if(newRecord.userCredit.isEmpty())
+                        newRecord.userCredit = "0"
+
+                    if(newRecord.createTime.isNotEmpty())
+                        TransactionsManager.Singleton.instance.transactions.add(newRecord)
                 }
                 println()
 //                map[nextLine[0]] = nextLine[1]
