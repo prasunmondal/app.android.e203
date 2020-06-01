@@ -30,10 +30,11 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="37dp"
-        android:background="#10181F"
+        android:background="@color/breakdown_tabsBackground"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-        app:layout_constraintStart_toStartOf="@+id/scrollView2">
+        app:layout_constraintStart_toStartOf="@+id/scrollView2"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/tabView_tabMyTransactions"

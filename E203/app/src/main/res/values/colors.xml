@@ -16,4 +16,6 @@
     <color name="tabs_text_inactive">#999999</color>
     <color name="tabs_text_active">#FFFFFF</color>
 
+    <color name="breakdown_tabsBackground">#10181F</color>
+
 </resources>
