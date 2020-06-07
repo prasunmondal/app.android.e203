@@ -108,13 +108,14 @@
     </LinearLayout>
 
 
-
     <TextView
         android:id="@+id/totalView"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:background="@color/colorPrimary"
         android:gravity="center"
-        android:text="TOTAL"
+        android:text="Downloading Data..."
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
