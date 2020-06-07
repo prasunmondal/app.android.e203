@@ -84,19 +84,12 @@ class TransactionsListing : AppCompatActivity() {
         setSupportActionBar(toolbar)
         AppContext.Singleton.instance.initialContext = this
 
-//        Toast.makeText(this, "Files Exists: " + fm.breakdownSheet.doesExist(), Toast.LENGTH_LONG).show()
-//        if(fm.breakdownSheet.doesExist()) {
-//            Toast.makeText(this, "Downloading...", Toast.LENGTH_LONG).show()
-            fm.breakdownSheet.download(::startDisplay)
-//        }
-//        else {
-//            Toast.makeText(this, "Data Available...", Toast.LENGTH_LONG).show()
-//
-//        }
+        fm.breakdownSheet.download(::startDisplay)
     }
 
     private fun startDisplay() {
         Toast.makeText(this, "Start Display", Toast.LENGTH_LONG).show()
+        TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         TransactionsManager.Singleton.instance.transactions.reverse()
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
