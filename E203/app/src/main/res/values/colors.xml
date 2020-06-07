@@ -7,9 +7,10 @@
     <color name="black_overlay">#66000000</color>
     <color name="gray">#F0E7BF</color>
 
-    <color name="creditTextColorRow1">#02C1D3</color>
-    <color name="debitTextColorRow1">#E69191</color>
-    <color name="notInvolvedTextColorRow1">#667688</color>
+    <color name="cardsColor_credit">#02C1D3</color>
+    <color name="cardsColor_debit">#E69191</color>
+    <color name="cardsColor_white">#A89EA3</color>
+    <color name="notInvolvedTextColorRow1">#66657587</color>
 
     <color name="textColorCreator">#48FFFFFF</color>
 

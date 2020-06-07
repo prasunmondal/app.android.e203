@@ -29,7 +29,7 @@ open class DownloadUtil(private val context: Context) {
         request.setTitle(downloadTitle)
         request.setDescription(downloadDescription)
         request.setDestinationUri(uri)
-//        if(onComplete != null)
+        if(onComplete != null)
             showInstallOption(onComplete)
         println("Started Downloading....")
         downloadManager.enqueue(request)
@@ -43,6 +43,6 @@ open class DownloadUtil(private val context: Context) {
                 onComplete.invoke()
             }
         }
-//        context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 }

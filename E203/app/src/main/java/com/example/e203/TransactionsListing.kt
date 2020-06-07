@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.StyleSpan
-import android.text.style.UnderlineSpan
 import android.view.Gravity
 import android.view.Gravity.END
 import android.view.View
@@ -74,21 +73,31 @@ class SortBy {
 @Suppress("DEPRECATION")
 class TransactionsListing : AppCompatActivity() {
 
+    val priceType_CREDIT = "priceType_CREDIT"
+    val priceType_DEBIT = "priceType_DEBIT"
+    val priceType_TOTAL = "priceType_TOTAL"
+    val priceType_NONE = "priceType_NONE"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_listing)
         setSupportActionBar(toolbar)
         AppContext.Singleton.instance.initialContext = this
 
-        if(!fm.breakdownSheet.doesExist()) {
-            Toast.makeText(this, "Downloading...", Toast.LENGTH_LONG).show()
-            fm.breakdownSheet.download(::doneDownloading)
-        }
-        else {
-            Toast.makeText(this, "Data Available...", Toast.LENGTH_LONG).show()
-            FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
-        }
+//        Toast.makeText(this, "Files Exists: " + fm.breakdownSheet.doesExist(), Toast.LENGTH_LONG).show()
+//        if(fm.breakdownSheet.doesExist()) {
+//            Toast.makeText(this, "Downloading...", Toast.LENGTH_LONG).show()
+            fm.breakdownSheet.download(::startDisplay)
+//        }
+//        else {
+//            Toast.makeText(this, "Data Available...", Toast.LENGTH_LONG).show()
+//
+//        }
+    }
 
+    private fun startDisplay() {
+        Toast.makeText(this, "Start Display", Toast.LENGTH_LONG).show()
+        FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         TransactionsManager.Singleton.instance.transactions.reverse()
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         changeTab_MyTransaction(findViewById(R.id.cardContainers))
@@ -135,7 +144,7 @@ class TransactionsListing : AppCompatActivity() {
         }
 
         if(i==1) {
-            Toast.makeText(this, "No Transaction Found", Toast.LENGTH_LONG).show()
+//            Toast.makeText(this, "No Transaction Found", Toast.LENGTH_LONG).show()
             val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
             val sharedBy = TextView(this)
             sharedBy.text = "No Transactions Found!"
@@ -151,22 +160,22 @@ class TransactionsListing : AppCompatActivity() {
         }
 
         var backgroundColor = resources.getColor(R.color.breakdown_tabsBackground)
-        var textColor = resources.getColor(R.color.creditTextColorRow1)
+        var textColor = resources.getColor(R.color.cardsColor_credit)
         when (tabType) {
             Tabs.Singleton.instance.Tab_showAll -> {
-                textColor = resources.getColor(R.color.debitTextColorRow1)
+                textColor = resources.getColor(R.color.cardsColor_debit)
             }
             Tabs.Singleton.instance.Tab_MyExpenses -> {
-                textColor = resources.getColor(R.color.debitTextColorRow1)
+                textColor = resources.getColor(R.color.cardsColor_debit)
             }
             Tabs.Singleton.instance.Tab_MySpent -> {
-                textColor = resources.getColor(R.color.creditTextColorRow1)
+                textColor = resources.getColor(R.color.cardsColor_credit)
             }
             Tabs.Singleton.instance.Tab_MyTransaction -> {
                 textColor = if (sum >= 0)
-                    resources.getColor(R.color.creditTextColorRow1)
+                    resources.getColor(R.color.cardsColor_credit)
                 else
-                    resources.getColor(R.color.debitTextColorRow1)
+                    resources.getColor(R.color.cardsColor_debit)
             }
         }
         val totalField = findViewById<TextView>(R.id.totalView)
@@ -182,7 +191,7 @@ class TransactionsListing : AppCompatActivity() {
         if(!showConstraint.invoke(transaction))
             return null
 
-        var textColor = R.color.debitTextColorRow1
+        var textColor = R.color.cardsColor_debit
 
         val displayAmount: String = if (Tabs.Singleton.instance.activeTab == Tabs.Singleton.instance.Tab_MySpent) {
             transaction.price
@@ -191,30 +200,23 @@ class TransactionsListing : AppCompatActivity() {
         }
 
         if(tabType == Tabs.Singleton.instance.Tab_MySpent)
-            textColor = R.color.creditTextColorRow1
+            textColor = R.color.cardsColor_credit
 
         if(!isDebitTransaction(transaction))
             textColor = R.color.notInvolvedTextColorRow1
 
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
 
+        val llv0 = LinearLayout(applicationContext)
+        llv0.orientation = LinearLayout.VERTICAL
+        llv0.setPadding(20, 10, 20, 10)
+
         val llv1 = LinearLayout(applicationContext)
         llv1.orientation = LinearLayout.VERTICAL
-        llv1.setPadding(20, 10, 20, 10)
+        llv1.setBackgroundResource(R.drawable.rounded_layout_red)
 
-        val llv = LinearLayout(applicationContext)
-        llv.orientation = LinearLayout.VERTICAL
-        llv.setBackgroundResource(R.drawable.rounded_layout_red)
+        llv0.addView(llv1)
 
-        llv1.addView(llv)
-
-        val llh1 = LinearLayout(applicationContext)
-        llh1.orientation = LinearLayout.HORIZONTAL
-
-        val llh2 = LinearLayout(applicationContext)
-        llh2.orientation = LinearLayout.HORIZONTAL
-        llh2.gravity = END
-        llh2.setPadding(20, 0, 20, 0)
 
         val cardView = CardView(this)
         linearLayout.addView(cardView)
@@ -238,19 +240,21 @@ class TransactionsListing : AppCompatActivity() {
         )
         itemNameField.setPadding(20, 0, 20, 0)
 
-        val sharedAmountField = TextView(this)
-        sharedAmountField.width=407
-        sharedAmountField.textSize=15F
-        sharedAmountField.gravity = END
-        sharedAmountField.setTextColor(resources.getColor(textColor))
-        sharedAmountField.layoutParams = LinearLayout.LayoutParams(
+        val price1 = TextView(this)
+        price1.width=407
+        price1.textSize=15F
+        price1.gravity = END
+//        price1.setTextColor(resources.getColor(textColor))
+        price1.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        sharedAmountField.setPadding(20, 0, 20, 0)
+        price1.setPadding(20, 0, 20, 0)
 
         val sharedBy = TextView(this)
         sharedBy.textSize = 12F
+        sharedBy.width = 800
+        sharedBy.alpha = 0.6F
         sharedBy.setTextColor(resources.getColor(R.color.textColorCreator))
         sharedBy.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -260,48 +264,64 @@ class TransactionsListing : AppCompatActivity() {
 
         val recordOriginDetailsField = TextView(this)
         recordOriginDetailsField.textSize = 12F
-        recordOriginDetailsField.setTextColor(resources.getColor(R.color.textColorCreator))
+        recordOriginDetailsField.setTextColor(resources.getColor(R.color.notInvolvedTextColorRow1))
         recordOriginDetailsField.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
         recordOriginDetailsField.setPadding(20, 10, 0, 20)
 
-        val priceLabel = TextView(this)
-        priceLabel.textSize = 13F
-        priceLabel.setTextColor(resources.getColor(R.color.textColorCreator))
-        priceLabel.layoutParams = LinearLayout.LayoutParams(
+        val price2 = TextView(this)
+        price2.textSize = 12F
+        price2.width=400
+//        price2.setTextColor(resources.getColor(R.color.textColorCreator))
+        price2.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        priceLabel.setPadding(0, 10, 0, 20)
-        if(isCreditTransaction(transaction))
-            priceLabel.setTextColor(resources.getColor(R.color.creditTextColorRow1))
+        price2.gravity = END
+        price2.alpha = 0.85F
+        price2.setPadding(0, 0, 0, 0)
 
         serialNoField.text = "$serialNo."
         itemNameField.text = transaction.item
-        sharedAmountField.text = "Rs. " + round2Decimal(displayAmount)
+        showPrices_textNColor(price1, transaction, price1_getText(tabType, transaction))
+        showPrices_textNColor(price2, transaction, price2_getText(tabType, transaction))
         sharedBy.text = transaction.time + " . " + get1word(transaction.sharedBy)
-        priceLabel.text = " . Rs " + transaction.price
-        recordOriginDetailsField.text = "+ " + get1word(transaction.name) + " . " + transaction.createTime
+//        price2.text = price2_getText(tabType, transaction)
+        recordOriginDetailsField.text = "+ " + get1word(transaction.name) + " . " + transaction.createTime.split(" ")[0]
 
-        if (isCreditTransaction(transaction) && tabType==Tabs.Singleton.instance.Tab_MySpent) {
-            sharedAmountField.setTextColor(resources.getColor(R.color.creditTextColorRow1))
-        }
+//        if (isCreditTransaction(transaction) && tabType==Tabs.Singleton.instance.Tab_MySpent) {
+//            price1.setTextColor(resources.getColor(R.color.cardsColor_credit))
+//        }
+
+        val llh1 = LinearLayout(applicationContext)
+        val llh2 = LinearLayout(applicationContext)
+        val llh3 = LinearLayout(applicationContext)
+        llh1.orientation = LinearLayout.HORIZONTAL
+        llh2.orientation = LinearLayout.HORIZONTAL
+        llh3.orientation = LinearLayout.HORIZONTAL
 
         llh1.addView(serialNoField)
         llh1.addView(itemNameField)
-        llh1.addView(sharedAmountField)
+        llh1.addView(price1)
 
-        llh2.addView(recordOriginDetailsField)
-        if(tabType != Tabs.Singleton.instance.Tab_MySpent)
-            llh2.addView(priceLabel)
+        llh2.addView(sharedBy)
+        llh2.addView(price2)
 
+        llh3.addView(recordOriginDetailsField)
 
-        llv.addView(llh1)
-        llv.addView(sharedBy)
-        llv.addView(llh2)
-        linearLayout.addView(llv1)
+        llh3.gravity = END
+        llh2.setPadding(20, 0, 20, 0)
+        llh3.setPadding(20, 0, 20, 0)
+
+        llv1.addView(llh1)
+        llv1.addView(llh2)
+        llv1.addView(llh3)
+        linearLayout.addView(llv0)
+
+        serialNoField.setTextColor(getColor_text1(tabType, transaction))
+        itemNameField.setTextColor(getColor_text1(tabType, transaction))
 
         if(tabType == Tabs.Singleton.instance.Tab_MyTransaction)
             return transaction.userDebit.toDouble() - transaction.userCredit.toDouble()
@@ -329,7 +349,7 @@ class TransactionsListing : AppCompatActivity() {
         return result
     }
 
-    private val username = "Prasun"
+    private val username = "Sudipta"
 
     private fun isCreditTransaction(transaction: TransactionRecord): Boolean {
         return  transaction.name.contains(username)
@@ -420,5 +440,93 @@ class TransactionsListing : AppCompatActivity() {
         val df = DecimalFormat("#")
         df.roundingMode = RoundingMode.CEILING
         return df.format(st.toDouble())
+    }
+
+    private fun getColor_text1(tabType: String, transaction: TransactionRecord): Int {
+        if(!isCreditTransaction(transaction) && !isDebitTransaction(transaction)) {
+            return resources.getColor(R.color.notInvolvedTextColorRow1)
+        }
+        when (tabType) {
+            Tabs.Singleton.instance.Tab_showAll -> {
+                return resources.getColor(R.color.cardsColor_white)
+            }
+            Tabs.Singleton.instance.Tab_MyExpenses -> {
+                return resources.getColor(R.color.cardsColor_debit)
+            }
+            Tabs.Singleton.instance.Tab_MySpent -> {
+                return resources.getColor(R.color.cardsColor_credit)
+            }
+            Tabs.Singleton.instance.Tab_MyTransaction -> {
+                return resources.getColor(R.color.cardsColor_white)
+            }
+        }
+        return resources.getColor(R.color.cardsColor_white)
+    }
+
+    private fun price1_getText(tabType: String, transaction: TransactionRecord): String {
+        when (tabType) {
+            Tabs.Singleton.instance.Tab_showAll -> {
+                if(isCreditTransaction(transaction))
+                    return priceType_CREDIT
+                return priceType_TOTAL
+            }
+            Tabs.Singleton.instance.Tab_MyExpenses -> {
+                return priceType_DEBIT
+            }
+            Tabs.Singleton.instance.Tab_MySpent -> {
+                return priceType_CREDIT
+            }
+            Tabs.Singleton.instance.Tab_MyTransaction -> {
+                return priceType_DEBIT
+            }
+        }
+        return priceType_TOTAL
+    }
+
+    private fun price2_getText(tabType: String, transaction: TransactionRecord): String {
+        when (tabType) {
+            Tabs.Singleton.instance.Tab_showAll -> {
+                return priceType_DEBIT
+            }
+            Tabs.Singleton.instance.Tab_MyExpenses -> {
+                if(isCreditTransaction(transaction))
+                    return priceType_CREDIT
+                return priceType_TOTAL
+            }
+            Tabs.Singleton.instance.Tab_MySpent -> {
+                return priceType_DEBIT
+            }
+            Tabs.Singleton.instance.Tab_MyTransaction -> {
+                if(isCreditTransaction(transaction))
+                    return priceType_CREDIT
+                return priceType_TOTAL
+            }
+        }
+        return priceType_TOTAL
+    }
+
+    private fun showPrices_textNColor(textView: TextView, transaction: TransactionRecord, priceType: String) {
+        val pre = "Rs. "
+        when (priceType) {
+            priceType_CREDIT -> {
+                textView.text = pre + round2Decimal(transaction.userCredit)
+                textView.setTextColor(resources.getColor(R.color.cardsColor_credit))
+            }
+            priceType_DEBIT -> {
+                textView.text = pre + round2Decimal(transaction.userDebit)
+                if(isDebitTransaction(transaction))
+                    textView.setTextColor(resources.getColor(R.color.cardsColor_debit))
+                else {
+                    textView.setTextColor(resources.getColor(R.color.notInvolvedTextColorRow1))
+                }
+            }
+            priceType_TOTAL -> {
+                textView.text = pre + round2Decimal(transaction.price)
+                textView.setTextColor(resources.getColor(R.color.notInvolvedTextColorRow1))
+            }
+            priceType_NONE -> {
+                textView.text = ""
+            }
+        }
     }
 }
