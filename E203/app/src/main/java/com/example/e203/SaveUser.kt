@@ -15,7 +15,7 @@ class SaveUser : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_save_user)
 
-        AppContexts.setSaveUserActivity(this)
+        AppContexts.initialContext = this
 
         if(localConfigs.doesUsernameExists()) {
             val username = localConfigs.getValue("username")
@@ -33,7 +33,7 @@ class SaveUser : AppCompatActivity() {
         if(isValidUserName(username)) {
             goToMainPage()
         }
-        else Toast.makeText(this@SaveUser, "Error: Please Enter a Valid Name!", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this, "Error: Please Enter a Valid Name!", Toast.LENGTH_SHORT).show()
     }
 
     fun onClickSaveUserSkipButton(view: View) {
@@ -41,7 +41,7 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun goToMainPage() {
-        val i = Intent(this@SaveUser, MainActivity::class.java)
+        val i = Intent(this@SaveUser, AppBrowser::class.java)
         startActivity(i)
         finish()
     }

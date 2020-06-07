@@ -11,12 +11,4 @@ class AppContext {
     private lateinit var mainActivity: Context
     private lateinit var saveUserActivity: Context
     lateinit var initialContext: Context
-
-    fun setMainActivity(value: Context) {
-        this.mainActivity = value
-    }
-
-    fun setSaveUserActivity(value: Context) {
-        this.saveUserActivity = value
-    }
 }

@@ -21,4 +21,5 @@
         <item>Sudipta Roy</item>
     </string-array>
     <string name="title_activity_transactions_listing">TransactionsListing</string>
+    <string name="title_activity_app_browser">AppBrowser</string>
 </resources>

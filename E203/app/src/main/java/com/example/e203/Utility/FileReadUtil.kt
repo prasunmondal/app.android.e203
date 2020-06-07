@@ -3,6 +3,7 @@ package com.example.e203.Utility
 import com.example.e203.TransactionRecord
 import com.example.e203.TransactionsManager
 import com.example.e203.appData.FilePaths
+import com.example.e203.sessionData.LocalConfig
 import com.opencsv.CSVReader
 import java.io.File
 import java.io.FileReader
@@ -35,7 +36,7 @@ class FileReadUtil {
 
         var user = ""
 //        user = "Prasun Mondal"
-        user = "Sudipta Roy"
+        user = LocalConfig.Singleton.instance.getValue("username")!!
         var nameIndex = 0
         var itemIndex = 0
         var sharedByIndex = 0

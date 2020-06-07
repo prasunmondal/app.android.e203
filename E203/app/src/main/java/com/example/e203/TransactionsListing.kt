@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.Utility.FileReadUtil
 import com.example.e203.sessionData.AppContext
+import com.example.e203.sessionData.LocalConfig
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -166,9 +167,9 @@ class TransactionsListing : AppCompatActivity() {
             }
             Tabs.Singleton.instance.Tab_MyTransaction -> {
                 textColor = if (sum >= 0)
-                    resources.getColor(R.color.cardsColor_credit)
-                else
                     resources.getColor(R.color.cardsColor_debit)
+                else
+                    resources.getColor(R.color.cardsColor_credit)
             }
         }
         val totalField = findViewById<TextView>(R.id.totalView)
@@ -327,10 +328,6 @@ class TransactionsListing : AppCompatActivity() {
         return 0.0
     }
 
-    private fun doneDownloading() {
-        println("Download Complete!")
-    }
-
     private fun get1word(str: String): String {
         val names: MutableList<String> = str.split(", ") as MutableList<String>
         var result = ""
@@ -342,7 +339,7 @@ class TransactionsListing : AppCompatActivity() {
         return result
     }
 
-    private val username = "Sudipta"
+    private val username = LocalConfig.Singleton.instance.getValue("username")!!
 
     private fun isCreditTransaction(transaction: TransactionRecord): Boolean {
         return  transaction.name.contains(username)
