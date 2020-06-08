@@ -1,9 +1,13 @@
 package com.example.e203
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Spannable
 import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.Gravity.END
@@ -17,6 +21,7 @@ import com.example.e203.Utility.FileReadUtil
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.LocalConfig
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
+import java.lang.Exception
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
@@ -83,6 +88,7 @@ class TransactionsListing : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_listing)
         setSupportActionBar(toolbar)
+        setActionbarTextColor()
         AppContext.Singleton.instance.initialContext = this
 
         fm.breakdownSheet.download(::startDisplay)
@@ -517,6 +523,30 @@ class TransactionsListing : AppCompatActivity() {
             priceType_NONE -> {
                 textView.text = ""
             }
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun setActionbarTextColor() {
+        val title = ""
+        val spannableTitle: Spannable = SpannableString("")
+        spannableTitle.setSpan(
+            ForegroundColorSpan(Color.BLACK),
+            0,
+            spannableTitle.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        supportActionBar!!.title = title
+        window.statusBarColor = resources.getColor(R.color.colorPrimaryDark)
+        supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorPrimary)))
+
+        findViewById<TextView>(R.id.toolbar_Text1).text = "Transactions"
+        try {
+            var user = LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)
+            if (user!!.isNotEmpty())
+                findViewById<TextView>(R.id.toolbar_Text2).text = user
+        } catch (e: Exception) {
+            findViewById<TextView>(R.id.toolbar_Text2).text = "Anonymous"
         }
     }
 }

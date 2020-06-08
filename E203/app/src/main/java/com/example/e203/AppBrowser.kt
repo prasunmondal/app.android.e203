@@ -4,9 +4,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +19,7 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +32,7 @@ import com.example.e203.sessionData.HardData
 import com.example.e203.sessionData.LocalConfig
 
 import kotlinx.android.synthetic.main.activity_app_browser.*
+import java.lang.Exception
 import java.util.ArrayList
 
 class AppBrowser : AppCompatActivity() {
@@ -37,6 +44,8 @@ class AppBrowser : AppCompatActivity() {
 
 //        val mTopToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.my_toolbar)
 //        setSupportActionBar(mTopToolbar)
+
+        setActionbarTextColor()
 
         val webView: WebView = findViewById(R.id.appBrowserView)
         webView.webViewClient = MyWebViewClient()
@@ -260,6 +269,30 @@ class AppBrowser : AppCompatActivity() {
     fun showBreakdowns(view: View) {
         val i = Intent(this@AppBrowser, TransactionsListing::class.java)
         startActivity(i)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun setActionbarTextColor() {
+        val title = ""
+        val spannableTitle: Spannable = SpannableString("")
+        spannableTitle.setSpan(
+            ForegroundColorSpan(Color.BLACK),
+            0,
+            spannableTitle.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        supportActionBar!!.title = title
+        window.statusBarColor = resources.getColor(R.color.colorPrimaryDark)
+        supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorPrimary)))
+
+        findViewById<TextView>(R.id.toolbar_Text1).text = "E203"
+        try {
+            var user = LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)
+            if (user!!.isNotEmpty())
+                findViewById<TextView>(R.id.toolbar_Text2).text = user
+        } catch (e: Exception) {
+            findViewById<TextView>(R.id.toolbar_Text2).text = "Anonymous"
+        }
     }
 }
 
