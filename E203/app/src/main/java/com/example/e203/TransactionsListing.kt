@@ -14,7 +14,6 @@ import android.view.Gravity.END
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.Utility.FileReadUtil
@@ -84,23 +83,35 @@ class TransactionsListing : AppCompatActivity() {
     val priceType_TOTAL = "priceType_TOTAL"
     val priceType_NONE = "priceType_NONE"
 
+    val label_DownloadingData = "Downloading Data..."
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_listing)
+        TransactionsManager.Singleton.instance.transactions.clear()
         setSupportActionBar(toolbar)
         setActionbarTextColor()
         AppContext.Singleton.instance.initialContext = this
 
+        val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
+        val sharedBy = TextView(this)
+        sharedBy.text = label_DownloadingData
+        sharedBy.setTextColor(resources.getColor(R.color.tabs_text_inactive))
+        sharedBy.gravity = Gravity.CENTER
+        sharedBy.setPadding(0,150,0,10)
+        linearLayout.addView(sharedBy)
+
         fm.breakdownSheet.download(::startDisplay)
     }
 
+    var displayStarted = false
     private fun startDisplay() {
-        Toast.makeText(this, "Start Display", Toast.LENGTH_LONG).show()
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         TransactionsManager.Singleton.instance.transactions.reverse()
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         changeTab_MyTransaction(findViewById(R.id.cardContainers))
+        displayStarted = true
     }
 
     @SuppressLint("SetTextI18n")
@@ -144,14 +155,16 @@ class TransactionsListing : AppCompatActivity() {
         }
 
         if(i==1) {
-//            Toast.makeText(this, "No Transaction Found", Toast.LENGTH_LONG).show()
-            val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
-            val sharedBy = TextView(this)
-            sharedBy.text = "No Transactions Found!"
-            sharedBy.setTextColor(resources.getColor(R.color.tabs_text_inactive))
-            sharedBy.gravity = Gravity.CENTER
-            sharedBy.setPadding(0,150,0,10)
-            linearLayout.addView(sharedBy)
+                val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
+                val sharedBy = TextView(this)
+                if(displayStarted)
+                    sharedBy.text = "No Transactions Found!"
+                else
+                    sharedBy.text = label_DownloadingData
+                sharedBy.setTextColor(resources.getColor(R.color.tabs_text_inactive))
+                sharedBy.gravity = Gravity.CENTER
+                sharedBy.setPadding(0, 150, 0, 10)
+                linearLayout.addView(sharedBy)
         } else {
             val totalField = findViewById<TextView>(R.id.totalView)
             totalField.text = "Total :    Rs. ${round2Decimal(sum.toString())}      (${i-1} items)"
