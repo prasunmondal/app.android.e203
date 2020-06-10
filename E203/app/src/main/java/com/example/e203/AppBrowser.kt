@@ -21,6 +21,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.DownloadCalculatingSheet
 import com.example.e203.Utility.DownloadUpdateMetadataInfo
@@ -266,7 +267,7 @@ class AppBrowser : AppCompatActivity() {
     }
 
     fun showBreakdowns(view: View) {
-        val i = Intent(this@AppBrowser, DownloadingData::class.java)
+        val i = Intent(this@AppBrowser, TransactionsListing::class.java)
         startActivity(i)
     }
 

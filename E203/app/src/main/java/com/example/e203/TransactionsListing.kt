@@ -1,7 +1,6 @@
 package com.example.e203
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -92,7 +91,7 @@ class TransactionsListing : AppCompatActivity() {
         setActionbarTextColor()
         AppContext.Singleton.instance.initialContext = this
 
-        startDisplay()
+        fm.breakdownSheet.download(::startDisplay)
     }
 
     private fun startDisplay() {
@@ -549,12 +548,5 @@ class TransactionsListing : AppCompatActivity() {
         } catch (e: Exception) {
             findViewById<TextView>(R.id.toolbar_Text2).text = "Anonymous"
         }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val i = Intent(this@TransactionsListing, AppBrowser::class.java)
-        startActivity(i)
-        finish()
     }
 }

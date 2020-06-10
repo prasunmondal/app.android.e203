@@ -22,5 +22,4 @@
     </string-array>
     <string name="title_activity_transactions_listing">TransactionsListing</string>
     <string name="title_activity_app_browser">AppBrowser</string>
-    <string name="title_activity_downlaoding_data">DownlaodingData</string>
 </resources>
