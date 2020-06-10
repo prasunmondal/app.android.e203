@@ -30,7 +30,8 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".ShowPaymentOptions" />
-        <activity android:name=".SaveUser">
+        <activity android:name=".SaveUser"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
