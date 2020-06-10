@@ -1,12 +1,5 @@
 <resources>
     <string name="app_name">E203</string>
-    <string name="downloading">Downloading</string>
-    <string name="metadata_downloading">Fetching Data</string>
-    <string name="title_file_download">E203: New Version</string>
-    <string name="checking_for_updates">E203: Checking for Updates...</string>
-    <string name="storage_access_required">Storage access is required to downloading the file.</string>
-    <string name="storage_permission_denied">Storage permission request was denied.</string>
-    <string name="ok">OK</string>
     <string name="update">Update</string>
     <string name="updateAvailable">New Version Available...</string>
 

@@ -25,8 +25,6 @@ class FileManagerUtil {
     var downloadLink_CalculatingSheet = FilePaths(
         AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv")
 
-    var downloadLink_UpdateAPK = FilePaths(
-        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "SampleDownloadApp.apk")
 
     var breakdownSheet = DownloadableFiles(
         AppContexts.initialContext,
