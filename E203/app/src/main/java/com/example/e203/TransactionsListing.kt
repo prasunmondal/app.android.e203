@@ -14,6 +14,7 @@ import android.view.Gravity.END
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.Utility.FileReadUtil
@@ -331,6 +332,14 @@ class TransactionsListing : AppCompatActivity() {
         llv1.addView(llh1)
         llv1.addView(llh2)
         llv1.addView(llh3)
+
+        llv0.setOnClickListener {
+            if(isCreditTransaction(transaction)) {
+                Toast.makeText(this, "editable", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Non - editable", Toast.LENGTH_LONG).show()
+            }
+        }
         linearLayout.addView(llv0)
 
         serialNoField.setTextColor(getColor_text1(tabType, transaction))
