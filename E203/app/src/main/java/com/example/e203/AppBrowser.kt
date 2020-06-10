@@ -2,7 +2,6 @@ package com.example.e203
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -26,10 +25,10 @@ import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.example.e203.Utility.*
+import com.example.e203.Utility.PaymentUtil
+import com.example.e203.Utility.showSnackbar
 import com.example.e203.appData.FileManagerUtil
 import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.AppContext
@@ -37,11 +36,10 @@ import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.HardData
 import com.example.e203.sessionData.LocalConfig
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_app_browser.*
 import java.io.File
-import java.lang.Exception
-import java.util.ArrayList
+import java.util.*
 
 class AppBrowser : AppCompatActivity() {
 
@@ -62,19 +60,12 @@ class AppBrowser : AppCompatActivity() {
         webView.webChromeClient = WebChromeClient()
         loadPage(HardData.Singleton.instance.submitFormURL)
 
-        if(LocalConfig.Singleton.instance.doesUsernameExists())
-            Toast.makeText(this@AppBrowser, "Logged in as: " + LocalConfig.Singleton.instance.getValue(
-                LocalConfig.Singleton.instance.USERNAME), Toast.LENGTH_SHORT).show()
-
-
         AppContext.Singleton.instance.initialContext = this
 
         supportActionBar!!.setDisplayShowTitleEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-//        supportActionBar!!.setIcon(R.mipmap.ic_launcher)
 
         disableViewBreakdownButton()
-
         FileManagerUtil.Singleton.instance.metadata.download(this, ::enableViewBreakdownButton)
     }
 
@@ -83,11 +74,18 @@ class AppBrowser : AppCompatActivity() {
         button.hide()
     }
 
+    private fun showToast() {
+        Toast.makeText(this, "Login to access this feature.", Toast.LENGTH_LONG).show()
+    }
+
     private fun enableViewBreakdownButton() {
         promptAndInitiateUpdate(findViewById(R.id.appBrowserView))
         updateButtonData()
         val button = findViewById<FloatingActionButton>(R.id.showBreakdowns)
         button.show()
+        button.setOnClickListener {
+            showToast()
+        }
     }
 
     private fun loadPage(url: String) {
@@ -166,7 +164,7 @@ class AppBrowser : AppCompatActivity() {
 
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
             AppContext.Singleton.instance.initialContext,
-        apkUrl!!,
+            apkUrl!!,
             AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "update.apk",
             "E203", "downloading update"
         )
