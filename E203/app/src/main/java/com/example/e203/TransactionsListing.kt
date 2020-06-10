@@ -544,7 +544,7 @@ class TransactionsListing : AppCompatActivity() {
         try {
             var user = LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)
             if (user!!.isNotEmpty())
-                findViewById<TextView>(R.id.toolbar_Text2).text = user
+                findViewById<TextView>(R.id.toolbar_Text2).text = "- " + user
         } catch (e: Exception) {
             findViewById<TextView>(R.id.toolbar_Text2).text = "Anonymous"
         }
