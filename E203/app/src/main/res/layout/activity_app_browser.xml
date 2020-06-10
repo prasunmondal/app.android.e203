@@ -45,18 +45,6 @@
             app:layout_constraintTop_toTopOf="@+id/enlistButton" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addButton2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:onClick="loadAddForm"
-            app:backgroundTint="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_action_name" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/detailsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,6 +54,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/addButton2"
             app:srcCompat="@drawable/details2" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/showBreakdowns"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:onClick="showBreakdowns"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/enlistButton"
@@ -79,12 +79,12 @@
             app:srcCompat="@drawable/edit" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/showBreakdowns"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:id="@+id/addButton2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:clickable="true"
-            android:onClick="showBreakdowns"
+            android:onClick="loadAddForm"
             app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

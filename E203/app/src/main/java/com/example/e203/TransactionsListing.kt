@@ -176,7 +176,7 @@ class TransactionsListing : AppCompatActivity() {
         var textColor = resources.getColor(R.color.cardsColor_credit)
         when (tabType) {
             Tabs.Singleton.instance.Tab_showAll -> {
-                textColor = resources.getColor(R.color.cardsColor_debit)
+                textColor = resources.getColor(R.color.tabs_text_active)
             }
             Tabs.Singleton.instance.Tab_MyExpenses -> {
                 textColor = resources.getColor(R.color.cardsColor_debit)
@@ -185,7 +185,7 @@ class TransactionsListing : AppCompatActivity() {
                 textColor = resources.getColor(R.color.cardsColor_credit)
             }
             Tabs.Singleton.instance.Tab_MyTransaction -> {
-                textColor = if (sum >= 0)
+                textColor = if (sum > 0)
                     resources.getColor(R.color.cardsColor_debit)
                 else
                     resources.getColor(R.color.cardsColor_credit)
