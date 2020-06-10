@@ -104,19 +104,19 @@ class DownloadUpdateMetadataInfo(private val context: Context, private val url: 
 
 			if (payBill!=null) {
 				if (payBill.toInt() > 0) {
-					showString = "You Pay: Rs $payBill"
+					showString = "You Pay: ₹ $payBill"
 					showString += "\n(click to pay)"
 					payBillBtn.backgroundTintList =
 						ColorStateList.valueOf(Color.rgb(204, 0, 0))
 					payBillBtn.setTextColor(Color.rgb(255, 255, 255))
 				} else {
-					showString = "You Get\nRs " + (-1 * payBill.toInt()).toString()
+					showString = "You Get\n₹ " + (-1 * payBill.toInt()).toString()
 					payBillBtn.backgroundTintList =
 						ColorStateList.valueOf(Color.rgb(39, 78, 19))
 					payBillBtn.setTextColor(Color.rgb(255, 255, 255))
 				}
 			} else if (outstandingBal!=null) {
-				showString = "Outstanding Bal\nRs $outstandingBal"
+				showString = "Outstanding Bal\n₹ $outstandingBal"
 				if (outstandingBal.toInt() > 0) {
 					payBillBtn.backgroundTintList =
 						ColorStateList.valueOf(Color.rgb(244, 204, 204))

@@ -167,9 +167,9 @@ class TransactionsListing : AppCompatActivity() {
                 linearLayout.addView(sharedBy)
         } else {
             val totalField = findViewById<TextView>(R.id.totalView)
-            totalField.text = "Total :    Rs. ${round2Decimal(sum.toString())}      (${i-1} items)"
+            totalField.text = "Total :    ₹ ${round2Decimal(sum.toString())}    |    ${i-1} items"
             if(tabType == Tabs.Singleton.instance.Tab_MyTransaction)
-                totalField.text = "Total :    Rs. ${roundInt(sum.toString())}      (${i-1} items)"
+                totalField.text = "Total :    ₹ ${roundInt(sum.toString())}    |    ${i-1} items"
         }
 
         var backgroundColor = resources.getColor(R.color.breakdown_tabsBackground)
@@ -515,7 +515,7 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     private fun showPrices_textNColor(textView: TextView, transaction: TransactionRecord, priceType: String) {
-        val pre = "Rs. "
+        val pre = "₹ "
         when (priceType) {
             priceType_CREDIT -> {
                 textView.text = pre + round2Decimal(transaction.userCredit)
