@@ -30,6 +30,21 @@ class FileReadUtil {
         }
     }
 
+    fun readPairCSVnPopulateMap(map: MutableMap<String, String>, fileName: String) {
+        try {
+            val reader = CSVReader(FileReader(File(fileName)))
+            var nextLine: Array<String>
+            while (reader.peek() != null) {
+                nextLine = reader.readNext()
+                map[nextLine[0]] = nextLine[1]
+            }
+            println(map)
+        } catch (e: IOException) {
+            println(e)
+            throw (e)
+        }
+    }
+
     fun printCSVfile(
 //        map: MutableMap<String, String>,
                      fileName: FilePaths) {

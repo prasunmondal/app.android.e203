@@ -101,7 +101,7 @@ class TransactionsListing : AppCompatActivity() {
         sharedBy.setPadding(0,150,0,10)
         linearLayout.addView(sharedBy)
 
-        fm.breakdownSheet.download(::startDisplay)
+        fm.breakdownSheet.download(this, ::startDisplay)
     }
 
     var displayStarted = false

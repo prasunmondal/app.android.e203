@@ -53,13 +53,13 @@ class DownloadUpdate(private val context: Context, private val url: String) {
         // set BroadcastReceiver perform action after download is complete
         val onComplete = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                installUpdate(this, destination, uri)
+                installUpdate2(this, destination, uri)
             }
         }
         context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 
-    private fun installUpdate(This: BroadcastReceiver, destination: String, uri: Uri) {
+    private fun installUpdate2(This: BroadcastReceiver, destination: String, uri: Uri) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val contentUri = FileProvider.getUriForFile(
                 context,

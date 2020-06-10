@@ -9,8 +9,8 @@ class DownloadableFiles(val context: Context,
                         var downloadTitle: String, val downloadDescription: String) {
     var localURL: String = "$rootDir/$childDir/$fileName"
 
-    fun download(onComplete: () -> Unit) {
-        DownloadUtil(context).enqueueDownload(serverURL, localURL,
+    fun download(context: Context, onComplete: () -> Unit) {
+        DownloadUtil(context).enqueueDownload(context, serverURL, localURL,
             downloadTitle, downloadDescription,
             onComplete)
     }

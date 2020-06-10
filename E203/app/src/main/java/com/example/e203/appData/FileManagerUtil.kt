@@ -2,6 +2,7 @@ package com.example.e203.appData
 
 import android.os.Environment
 import com.example.e203.portable_utils.DownloadableFiles
+import com.example.e203.sessionData.AppContext
 import java.io.File
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 
@@ -33,6 +34,20 @@ class FileManagerUtil {
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pub?gid=855055974&single=true&output=csv",
         AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
         "E203", "fetching details data"
+    )
+
+    var metadata = DownloadableFiles(
+        AppContexts.initialContext,
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pub?gid=1321322233&single=true&output=csv",
+        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "metadata.csv",
+        "E203", "fetching metedata"
+    )
+
+    var updateAPK = DownloadableFiles(
+        AppContext.Singleton.instance.initialContext,
+        "",
+        AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "update.apk",
+        "E203", "downloading update"
     )
 
     fun doesFileExist(filename: FilePaths): Boolean {
