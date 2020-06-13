@@ -39,7 +39,7 @@ class FileManagerUtil {
         AppContexts.initialContext,
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pub?gid=1321322233&single=true&output=csv",
         AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "metadata.csv",
-        "E203", "fetching metedata"
+        "E203", "fetching metadata"
     )
 
     var updateAPK = DownloadableFiles(

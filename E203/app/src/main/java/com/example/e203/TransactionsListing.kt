@@ -104,7 +104,7 @@ class TransactionsListing : AppCompatActivity() {
             appContext.initialContext,
             FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
             appContext.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
-            "E203", "fetching metedata"
+            "E203", "fetching transaction details"
         )
 
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
@@ -272,7 +272,7 @@ class TransactionsListing : AppCompatActivity() {
         price1.setPadding(20, 0, 20, 0)
 
         val itemNameField = TextView(this)
-        itemNameField.width=(getScreenWidth(appContext.initialContext) - (15 + 407 + 50))
+        itemNameField.width=(getScreenWidth(appContext.initialContext) - (15 + 307 + 50))
         itemNameField.textSize=15F
         itemNameField.setTextColor(resources.getColor(textColor))
         itemNameField.layoutParams = LinearLayout.LayoutParams(
@@ -283,8 +283,7 @@ class TransactionsListing : AppCompatActivity() {
 
         val price2 = TextView(this)
         price2.textSize = 12F
-        price2.width=400
-//        price2.setTextColor(resources.getColor(R.color.textColorCreator))
+        price2.width=300
         price2.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -295,7 +294,7 @@ class TransactionsListing : AppCompatActivity() {
 
         val sharedBy = TextView(this)
         sharedBy.textSize = 12F
-        sharedBy.width = (getScreenWidth(appContext.initialContext) - (400 + 50))
+        sharedBy.width = (getScreenWidth(appContext.initialContext) - (200 + 50))
         sharedBy.alpha = 0.6F
         sharedBy.setTextColor(resources.getColor(R.color.textColorCreator))
         sharedBy.layoutParams = LinearLayout.LayoutParams(
@@ -594,5 +593,40 @@ class TransactionsListing : AppCompatActivity() {
         val displayMetrics = DisplayMetrics()
         (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.widthPixels
+    }
+
+    fun changeSortOrder(currentSortOrder: String) {
+        val sortTag_itemName_Asc = "↑item"
+        val sortTag_price_Asc = "↑amount"
+        val sortTag_date_Asc = "↑date"
+        val sortTag_itemName_Desc = "↓item"
+        val sortTag_price_Desc = "↓amount"
+        val sortTag_date_Desc = "↓date"
+
+        when(currentSortOrder) {
+            sortTag_date_Desc -> {
+
+            }
+            sortTag_price_Desc -> {
+
+            }
+            sortTag_itemName_Asc -> {
+
+            }
+            sortTag_date_Asc -> {
+
+            }
+            sortTag_price_Asc -> {
+
+            }
+            sortTag_itemName_Desc -> {
+
+            }
+        }
+        // Item Name
+        // Price
+        // add date
+
+
     }
 }
