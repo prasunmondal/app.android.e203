@@ -1,6 +1,8 @@
 package com.example.e203
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -10,6 +12,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.Gravity.END
 import android.view.View
@@ -19,13 +22,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.Utility.FileReadUtil
-import com.example.e203.appData.FileManagerUtil
 import com.example.e203.portable_utils.DownloadableFiles
-import com.example.e203.sessionData.AppContext
+import com.example.e203.sessionData.AppContext.Singleton.instance as appContext
 import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
-import java.lang.Exception
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
@@ -97,12 +98,12 @@ class TransactionsListing : AppCompatActivity() {
         TransactionsManager.Singleton.instance.transactions.clear()
         setSupportActionBar(toolbar)
         setActionbarTextColor()
-        AppContext.Singleton.instance.initialContext = this
+        appContext.initialContext = this
 
         var breakdownSheet = DownloadableFiles(
-            AppContext.Singleton.instance.initialContext,
+            appContext.initialContext,
             FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
-            AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
+            appContext.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
             "E203", "fetching metedata"
         )
 
@@ -120,12 +121,12 @@ class TransactionsListing : AppCompatActivity() {
 
     var displayStarted = false
     private fun startDisplay() {
+        displayStarted = true
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         TransactionsManager.Singleton.instance.transactions.reverse()
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         changeTab_MyTransaction(findViewById(R.id.cardContainers))
-        displayStarted = true
     }
 
     @SuppressLint("SetTextI18n")
@@ -180,10 +181,13 @@ class TransactionsListing : AppCompatActivity() {
                 sharedBy.setPadding(0, 150, 0, 10)
                 linearLayout.addView(sharedBy)
         }
+        if(displayStarted) {
             val totalField2 = findViewById<TextView>(R.id.totalView)
-            totalField2.text = "Total :    ₹ ${round2Decimal(sum.toString())}    |    ${i-1} items"
-            if(tabType == Tabs.Singleton.instance.Tab_MyTransaction)
-                totalField2.text = "Total :    ₹ ${roundInt(sum.toString())}    |    ${i-1} items"
+            totalField2.text =
+                "Total :    ₹ ${round2Decimal(sum.toString())}    |    ${i - 1} items"
+            if (tabType == Tabs.Singleton.instance.Tab_MyTransaction)
+                totalField2.text = "Total :    ₹ ${roundInt(sum.toString())}    |    ${i - 1} items"
+        }
 
 
         var backgroundColor = resources.getColor(R.color.breakdown_tabsBackground)
@@ -257,8 +261,18 @@ class TransactionsListing : AppCompatActivity() {
         )
         serialNoField.setPadding(20, 0, 0, 0)
 
+        val price1 = TextView(this)
+        price1.width=407
+        price1.textSize=15F
+        price1.gravity = END
+        price1.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        price1.setPadding(20, 0, 20, 0)
+
         val itemNameField = TextView(this)
-        itemNameField.width=600
+        itemNameField.width=(getScreenWidth(appContext.initialContext) - (15 + 407 + 50))
         itemNameField.textSize=15F
         itemNameField.setTextColor(resources.getColor(textColor))
         itemNameField.layoutParams = LinearLayout.LayoutParams(
@@ -267,20 +281,21 @@ class TransactionsListing : AppCompatActivity() {
         )
         itemNameField.setPadding(20, 0, 20, 0)
 
-        val price1 = TextView(this)
-        price1.width=407
-        price1.textSize=15F
-        price1.gravity = END
-//        price1.setTextColor(resources.getColor(textColor))
-        price1.layoutParams = LinearLayout.LayoutParams(
+        val price2 = TextView(this)
+        price2.textSize = 12F
+        price2.width=400
+//        price2.setTextColor(resources.getColor(R.color.textColorCreator))
+        price2.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        price1.setPadding(20, 0, 20, 0)
+        price2.gravity = END
+        price2.alpha = 0.85F
+        price2.setPadding(0, 0, 0, 0)
 
         val sharedBy = TextView(this)
         sharedBy.textSize = 12F
-        sharedBy.width = 800
+        sharedBy.width = (getScreenWidth(appContext.initialContext) - (400 + 50))
         sharedBy.alpha = 0.6F
         sharedBy.setTextColor(resources.getColor(R.color.textColorCreator))
         sharedBy.layoutParams = LinearLayout.LayoutParams(
@@ -298,17 +313,7 @@ class TransactionsListing : AppCompatActivity() {
         )
         recordOriginDetailsField.setPadding(20, 10, 0, 20)
 
-        val price2 = TextView(this)
-        price2.textSize = 12F
-        price2.width=400
-//        price2.setTextColor(resources.getColor(R.color.textColorCreator))
-        price2.layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        price2.gravity = END
-        price2.alpha = 0.85F
-        price2.setPadding(0, 0, 0, 0)
+
 
         serialNoField.text = "$serialNo."
         itemNameField.text = transaction.item
@@ -583,5 +588,11 @@ class TransactionsListing : AppCompatActivity() {
         } catch (e: Exception) {
             findViewById<TextView>(R.id.toolbar_Text2).text = "Anonymous"
         }
+    }
+
+    fun getScreenWidth(context: Context): Int {
+        val displayMetrics = DisplayMetrics()
+        (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+        return displayMetrics.widthPixels
     }
 }
