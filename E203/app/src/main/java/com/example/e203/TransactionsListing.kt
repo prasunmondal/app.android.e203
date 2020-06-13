@@ -23,13 +23,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.Utility.FileReadUtil
 import com.example.e203.portable_utils.DownloadableFiles
-import com.example.e203.sessionData.AppContext.Singleton.instance as appContext
 import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
+import com.example.e203.sessionData.AppContext.Singleton.instance as appContext
 
 
 class TransactionRecord {
@@ -90,6 +93,15 @@ class TransactionsListing : AppCompatActivity() {
     val priceType_NONE = "priceType_NONE"
 
     val label_DownloadingData = "Downloading Data..."
+
+    val sortTag_itemName_Asc = "↑item"
+    val sortTag_price_Asc = "↑amount"
+    val sortTag_date_Asc = "↑date"
+    val sortTag_itemName_Desc = "↓item"
+    val sortTag_price_Desc = "↓amount"
+    val sortTag_date_Desc = "↓date"
+
+    var currentSortOrder = sortTag_date_Desc
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -463,6 +475,35 @@ class TransactionsListing : AppCompatActivity() {
 //        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.item.toLowerCase() }
 //        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.createTime }
 //        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.time }
+
+        findViewById<TextView>(R.id.labelSort).text = currentSortOrder
+
+        when(currentSortOrder) {
+            sortTag_date_Asc -> {
+
+                TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.createTime }
+            }
+            sortTag_date_Desc -> {
+                TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.createTime }
+                TransactionsManager.Singleton.instance.transactions.reverse()
+            }
+
+            sortTag_price_Asc -> {
+                TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.price.toFloat() }
+            }
+            sortTag_price_Desc -> {
+                TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.price.toFloat() }
+                TransactionsManager.Singleton.instance.transactions.reverse()
+            }
+
+            sortTag_itemName_Asc -> {
+                TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.item.toLowerCase() }
+            }
+            sortTag_itemName_Desc -> {
+                TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.item.toLowerCase() }
+                TransactionsManager.Singleton.instance.transactions.reverse()
+            }
+        }
     }
 
     private fun round2Decimal(st: String): String {
@@ -595,38 +636,33 @@ class TransactionsListing : AppCompatActivity() {
         return displayMetrics.widthPixels
     }
 
-    fun changeSortOrder(currentSortOrder: String) {
-        val sortTag_itemName_Asc = "↑item"
-        val sortTag_price_Asc = "↑amount"
-        val sortTag_date_Asc = "↑date"
-        val sortTag_itemName_Desc = "↓item"
-        val sortTag_price_Desc = "↓amount"
-        val sortTag_date_Desc = "↓date"
+    fun changeSortOrder(view: View) {
 
-        when(currentSortOrder) {
-            sortTag_date_Desc -> {
 
-            }
-            sortTag_price_Desc -> {
-
-            }
-            sortTag_itemName_Asc -> {
-
-            }
-            sortTag_date_Asc -> {
-
-            }
-            sortTag_price_Asc -> {
-
-            }
-            sortTag_itemName_Desc -> {
-
-            }
-        }
         // Item Name
         // Price
         // add date
 
-
+        when(currentSortOrder) {
+            sortTag_date_Desc -> {
+                currentSortOrder = sortTag_date_Asc
+            }
+            sortTag_date_Asc -> {
+                currentSortOrder = sortTag_price_Desc
+            }
+            sortTag_price_Desc -> {
+                currentSortOrder = sortTag_price_Asc
+            }
+            sortTag_price_Asc -> {
+                currentSortOrder = sortTag_itemName_Asc
+            }
+            sortTag_itemName_Asc -> {
+                currentSortOrder = sortTag_itemName_Desc
+            }
+            sortTag_itemName_Desc -> {
+                currentSortOrder = sortTag_date_Desc
+            }
+        }
+        displayCards()
     }
 }
