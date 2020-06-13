@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Environment
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -18,7 +19,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.Utility.FileReadUtil
+import com.example.e203.appData.FileManagerUtil
+import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.AppContext
+import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
 import java.lang.Exception
@@ -86,6 +90,7 @@ class TransactionsListing : AppCompatActivity() {
 
     val label_DownloadingData = "Downloading Data..."
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_listing)
@@ -93,6 +98,13 @@ class TransactionsListing : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setActionbarTextColor()
         AppContext.Singleton.instance.initialContext = this
+
+        var breakdownSheet = DownloadableFiles(
+            AppContext.Singleton.instance.initialContext,
+            FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
+            AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
+            "E203", "fetching metedata"
+        )
 
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
         val sharedBy = TextView(this)
@@ -102,7 +114,8 @@ class TransactionsListing : AppCompatActivity() {
         sharedBy.setPadding(0,150,0,10)
         linearLayout.addView(sharedBy)
 
-        fm.breakdownSheet.download(this, ::startDisplay)
+        println("breakdown sheet: " + breakdownSheet.serverURL)
+        breakdownSheet.download(this, ::startDisplay)
     }
 
     var displayStarted = false
@@ -166,12 +179,12 @@ class TransactionsListing : AppCompatActivity() {
                 sharedBy.gravity = Gravity.CENTER
                 sharedBy.setPadding(0, 150, 0, 10)
                 linearLayout.addView(sharedBy)
-        } else {
-            val totalField = findViewById<TextView>(R.id.totalView)
-            totalField.text = "Total :    ₹ ${round2Decimal(sum.toString())}    |    ${i-1} items"
-            if(tabType == Tabs.Singleton.instance.Tab_MyTransaction)
-                totalField.text = "Total :    ₹ ${roundInt(sum.toString())}    |    ${i-1} items"
         }
+            val totalField2 = findViewById<TextView>(R.id.totalView)
+            totalField2.text = "Total :    ₹ ${round2Decimal(sum.toString())}    |    ${i-1} items"
+            if(tabType == Tabs.Singleton.instance.Tab_MyTransaction)
+                totalField2.text = "Total :    ₹ ${roundInt(sum.toString())}    |    ${i-1} items"
+
 
         var backgroundColor = resources.getColor(R.color.breakdown_tabsBackground)
         var textColor = resources.getColor(R.color.cardsColor_credit)
