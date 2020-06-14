@@ -6,8 +6,10 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -22,12 +24,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.Utility.FileReadUtil
+import com.example.e203.mailUtils.Mails_E203
 import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
+import com.prasunmondal.mbros_delivery.utils.mailUtils.SendMailTrigger
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.*
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
 import com.example.e203.sessionData.AppContext.Singleton.instance as appContext
 
@@ -118,6 +123,8 @@ class TransactionsListing : AppCompatActivity() {
 
         println("breakdown sheet: " + breakdownSheet.serverURL)
         breakdownSheet.download(this, ::startDisplay)
+
+        Mails_E203().mail("Opened Breakdown View", generateDeviceId(), findViewById(R.id.cardContainers))
     }
 
     private var displayStarted = false
@@ -404,6 +411,7 @@ class TransactionsListing : AppCompatActivity() {
     fun changeTab_showAll(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_showAll
         displayCards()
+        Mails_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), findViewById(R.id.cardContainers))
     }
 
     private fun setTabFormatting(activeTab: String) {
@@ -439,16 +447,19 @@ class TransactionsListing : AppCompatActivity() {
     fun changeTab_MyExpenses(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyExpenses
         displayCards()
+        Mails_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), findViewById(R.id.cardContainers))
     }
 
     fun changeTab_MySpent(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MySpent
         displayCards()
+        Mails_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), findViewById(R.id.cardContainers))
     }
 
     fun changeTab_MyTransaction(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         displayCards()
+        Mails_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), findViewById(R.id.cardContainers))
     }
 
     private fun transactionSort(activeTab: String) {
@@ -677,6 +688,7 @@ class TransactionsListing : AppCompatActivity() {
                 currentSortOrder = sortTag_date_Desc
             }
         }
+        Mails_E203().mail("Breakdown View - Change Sort: $currentSortOrder", generateDeviceId(), findViewById(R.id.cardContainers))
         displayCards()
     }
 
@@ -715,6 +727,7 @@ class TransactionsListing : AppCompatActivity() {
                 current_cardType = cardType_all
             }
         }
+        Mails_E203().mail("Breakdown View - Change Card View: $current_cardType", generateDeviceId(), findViewById(R.id.cardContainers))
         applyCardView()
     }
 
@@ -750,6 +763,22 @@ class TransactionsListing : AppCompatActivity() {
         else {
             tview.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         }
+        Mails_E203().mail("Breakdown View - Decimal Show: " + current_showDecimal, generateDeviceId(), findViewById(R.id.cardContainers))
         displayCards()
+    }
+
+    @SuppressLint("HardwareIds")
+    fun generateDeviceId(): String {
+        val macAddr: String
+        val wifiMan =
+            this.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifiInf = wifiMan.connectionInfo
+        macAddr = wifiInf.macAddress
+        val androidId: String = "" + Settings.Secure.getString(
+            contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
+        val deviceUuid = UUID(androidId.hashCode().toLong(), macAddr.hashCode().toLong())
+        return deviceUuid.toString()
     }
 }

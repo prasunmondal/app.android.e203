@@ -9,9 +9,11 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -30,6 +32,7 @@ import androidx.core.content.FileProvider
 import com.example.e203.Utility.PaymentUtil
 import com.example.e203.Utility.showSnackbar
 import com.example.e203.appData.FileManagerUtil
+import com.example.e203.mailUtils.Mails_E203
 import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.FetchedMetaData
@@ -37,6 +40,7 @@ import com.example.e203.sessionData.HardData
 import com.example.e203.sessionData.LocalConfig
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.prasunmondal.mbros_delivery.utils.mailUtils.SendMailTrigger
 import kotlinx.android.synthetic.main.activity_app_browser.*
 import java.io.File
 import java.util.*
@@ -67,6 +71,7 @@ class AppBrowser : AppCompatActivity() {
 
         disableViewBreakdownButton()
         FileManagerUtil.Singleton.instance.metadata.download(this, ::enableViewBreakdownButton)
+        Mails_E203().mail("Logged in", generateDeviceId(), findViewById(R.id.appBrowserView))
     }
 
     private fun disableViewBreakdownButton() {
@@ -182,10 +187,12 @@ class AppBrowser : AppCompatActivity() {
 
         val FILE_BASE_PATH = "file://"
         val destination = FileManagerUtil.Singleton.instance.updateAPK.localURL
-        FileManagerUtil.Singleton.instance.updateAPK.download(this, ::installUpdate33)
+        FileManagerUtil.Singleton.instance.updateAPK.download(this, ::installUpdate)
     }
 
-    fun installUpdate33() {
+    fun installUpdate() {
+
+        Mails_E203().mail("Update Initiated", generateDeviceId(), findViewById(R.id.appBrowserView))
 
         val FILE_BASE_PATH = "file://"
         val MIME_TYPE = "application/vnd.android.package-archive"
@@ -430,6 +437,21 @@ class AppBrowser : AppCompatActivity() {
         } catch (e: Exception) {
             findViewById<TextView>(R.id.toolbar_Text2).text = "Anonymous"
         }
+    }
+
+    @SuppressLint("HardwareIds")
+    fun generateDeviceId(): String {
+        val macAddr: String
+        val wifiMan =
+            this.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifiInf = wifiMan.connectionInfo
+        macAddr = wifiInf.macAddress
+        val androidId: String = "" + Settings.Secure.getString(
+            contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
+        val deviceUuid = UUID(androidId.hashCode().toLong(), macAddr.hashCode().toLong())
+        return deviceUuid.toString()
     }
 }
 
