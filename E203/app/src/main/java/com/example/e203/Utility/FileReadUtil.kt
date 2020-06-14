@@ -8,6 +8,9 @@ import com.opencsv.CSVReader
 import java.io.File
 import java.io.FileReader
 import java.io.IOException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FileReadUtil {
 
@@ -107,6 +110,16 @@ class FileReadUtil {
                                 nextLine[priceIndex] + " - " + nextLine[createTimeIndex] + " - " + nextLine[timeIndex] + " - " + nextLine[editLinkIndex]
                     + " - " + nextLine[userDebitIndex] + " - " + nextLine[userCreditIndex]
                     )
+
+//                    val dtStart = "6/1/2020 09:27:37"
+//                    val format = SimpleDateFormat("mm/dd/yyyy")
+////                    try {
+//                        val date: Date = format.parse(nextLine[timeIndex])
+////                        System.out.println(date)
+////                    } catch (e: ParseException) {
+////                        e.printStackTrace()
+////                    }
+
                     val newRecord = TransactionRecord()
                     newRecord.name = nextLine[nameIndex]
                     newRecord.item = nextLine[itemIndex]

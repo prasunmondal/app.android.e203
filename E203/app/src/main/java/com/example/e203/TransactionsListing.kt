@@ -28,9 +28,6 @@ import com.example.e203.sessionData.LocalConfig
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
 import com.example.e203.sessionData.AppContext.Singleton.instance as appContext
 
@@ -94,12 +91,12 @@ class TransactionsListing : AppCompatActivity() {
 
     val label_DownloadingData = "Downloading Data..."
 
-    val sortTag_itemName_Asc = "↑item"
-    val sortTag_price_Asc = "↑amount"
-    val sortTag_date_Asc = "↑date"
-    val sortTag_itemName_Desc = "↓item"
-    val sortTag_price_Desc = "↓amount"
-    val sortTag_date_Desc = "↓date"
+    val sortTag_itemName_Asc = "▲item"
+    val sortTag_price_Asc = "▲amount"
+    val sortTag_date_Asc = "▲date"
+    val sortTag_itemName_Desc = "▼item"
+    val sortTag_price_Desc = "▼amount"
+    val sortTag_date_Desc = "▼date"
 
     var currentSortOrder = sortTag_date_Desc
 
@@ -139,6 +136,7 @@ class TransactionsListing : AppCompatActivity() {
         TransactionsManager.Singleton.instance.transactions.reverse()
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         changeTab_MyTransaction(findViewById(R.id.cardContainers))
+        enableSorting()
     }
 
     @SuppressLint("SetTextI18n")
@@ -480,11 +478,12 @@ class TransactionsListing : AppCompatActivity() {
 
         when(currentSortOrder) {
             sortTag_date_Asc -> {
-
-                TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.createTime }
+                TransactionsManager.Singleton.instance.transactions = mutableListOf()
+                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
             }
             sortTag_date_Desc -> {
-                TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.createTime }
+                TransactionsManager.Singleton.instance.transactions = mutableListOf()
+                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
                 TransactionsManager.Singleton.instance.transactions.reverse()
             }
 
@@ -636,7 +635,7 @@ class TransactionsListing : AppCompatActivity() {
         return displayMetrics.widthPixels
     }
 
-    fun changeSortOrder(view: View) {
+    fun changeSortOrder() {
 
 
         // Item Name
@@ -664,5 +663,11 @@ class TransactionsListing : AppCompatActivity() {
             }
         }
         displayCards()
+    }
+
+    private fun enableSorting() {
+        findViewById<TextView>(R.id.labelSort).setOnClickListener {
+            changeSortOrder()
+        }
     }
 }

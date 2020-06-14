@@ -48,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:onClick="changeTab_MyTransaction"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:text="My Transactions"
                 android:textColor="@color/tabs_text_inactive" />
         </LinearLayout>
@@ -63,9 +63,9 @@
                 android:id="@+id/tabExpenses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:onClick="changeTab_MyExpenses"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:text="Expenses"
                 android:textColor="@color/tabs_text_inactive" />
 
@@ -81,9 +81,9 @@
                 android:id="@+id/tabSpent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:onClick="changeTab_MySpent"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:text="Spent"
                 android:textColor="@color/tabs_text_inactive" />
         </LinearLayout>
@@ -98,9 +98,9 @@
                 android:id="@+id/tabAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:onClick="changeTab_showAll"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:text="All"
                 android:textColor="@color/tabs_text_inactive" />
 
@@ -116,10 +116,9 @@
                 android:id="@+id/labelSort"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:onClick="changeSortOrder"
-                android:padding="10dp"
-                android:text="↑Date"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:text="▼date"
                 android:textColor="@color/tabs_text_inactive" />
 
         </LinearLayout>
