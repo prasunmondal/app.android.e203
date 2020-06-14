@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:onClick="changeTab_MyTransaction"
-                android:padding="8dp"
+                android:padding="6dp"
                 android:text="My Transactions"
                 android:textColor="@color/tabs_text_inactive" />
         </LinearLayout>
@@ -45,9 +45,9 @@
                 android:id="@+id/tabExpenses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="6dp"
                 android:onClick="changeTab_MyExpenses"
-                android:padding="8dp"
+                android:padding="6dp"
                 android:text="Expenses"
                 android:textColor="@color/tabs_text_inactive" />
 
@@ -63,9 +63,9 @@
                 android:id="@+id/tabSpent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="6dp"
                 android:onClick="changeTab_MySpent"
-                android:padding="8dp"
+                android:padding="6dp"
                 android:text="Spent"
                 android:textColor="@color/tabs_text_inactive" />
         </LinearLayout>
@@ -80,9 +80,9 @@
                 android:id="@+id/tabAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="6dp"
                 android:onClick="changeTab_showAll"
-                android:padding="8dp"
+                android:padding="6dp"
                 android:text="All"
                 android:textColor="@color/tabs_text_inactive" />
 
@@ -98,8 +98,8 @@
                 android:id="@+id/tabMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:padding="8dp"
+                android:layout_marginStart="6dp"
+                android:padding="6dp"
                 android:text="..."
                 android:textColor="@color/tabs_text_inactive" />
 
@@ -116,6 +116,23 @@
         app:layout_constraintEnd_toEndOf="@+id/scrollView2"
         app:layout_constraintStart_toStartOf="@+id/scrollView2"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <LinearLayout
+            android:id="@+id/tabView_labelDecimalView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/labelDecimalView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:text=".00"
+                android:textColor="@color/tabs_text_inactive" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/tabView_sort2"

@@ -122,19 +122,27 @@ class AppBrowser : AppCompatActivity() {
 
     @SuppressLint("DefaultLocale")
     fun onClickPayButton(view: View) {
-        if(PaymentUtil.Singleton.instance.isPayOptionEnabled()) {
-            goToPaymentOptionsPage()
-            val currentUser =
-                LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)!!.toLowerCase()
-            val amount =
-                FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_PENDING_BILL + currentUser)!!
-            val note = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_DESCRIPTION)
-            val name = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_NAME)
-            val upiId = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_UPIID)
-            println("Pay button clicked...")
-            payUsingUpi(amount, upiId!!, name!!, note!!)
-        } else if (PaymentUtil.Singleton.instance.isDisplayButtonEnabled()){
-            Toast.makeText(this, "No Payment Due!", Toast.LENGTH_SHORT).show()
+        try {
+            if (PaymentUtil.Singleton.instance.isPayOptionEnabled()) {
+                goToPaymentOptionsPage()
+                val currentUser =
+                    LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)!!
+                        .toLowerCase()
+                val amount =
+                    FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_PENDING_BILL + currentUser)!!
+                val note =
+                    FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_DESCRIPTION)
+                val name =
+                    FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_NAME)
+                val upiId =
+                    FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_UPIID)
+                println("Pay button clicked...")
+                payUsingUpi(amount, upiId!!, name!!, note!!)
+            } else if (PaymentUtil.Singleton.instance.isDisplayButtonEnabled()) {
+                Toast.makeText(this, "No Payment Due!", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: java.lang.Exception) {
+
         }
     }
 

@@ -19,7 +19,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.Utility.FileReadUtil
@@ -59,53 +58,38 @@ class Tabs {
     val tabViewID_showAll = R.id.tabAll
 
     var activeTab = Tab_MyTransaction
-    lateinit var underLineTab:View
 
     object Singleton {
         var instance = Tabs()
     }
 }
 
-class SortBy {
-    val itemName = "sortBy_itemName"
-    val userDebit = "sortBy_userDebit"
-    val userCredit = "sortBy_userCredit"
-    val amount = "sortBy_amount"
-    val creationDate = "sortBy_creationDate"
-    val itemDate = "sortBy_itemDate"
-
-    var activeSortType = creationDate
-
-    object Singleton {
-        var instance = SortBy()
-    }
-
-}
-
 @Suppress("DEPRECATION")
 class TransactionsListing : AppCompatActivity() {
 
-    val priceType_CREDIT = "priceType_CREDIT"
-    val priceType_DEBIT = "priceType_DEBIT"
-    val priceType_TOTAL = "priceType_TOTAL"
-    val priceType_NONE = "priceType_NONE"
+    private val priceType_CREDIT = "priceType_CREDIT"
+    private val priceType_DEBIT = "priceType_DEBIT"
+    private val priceType_TOTAL = "priceType_TOTAL"
+    private val priceType_NONE = "priceType_NONE"
 
-    val label_DownloadingData = "Downloading Data..."
+    private val label_DownloadingData = "Downloading Data..."
 
-    val sortTag_itemName_Asc = "▲item name"
-    val sortTag_price_Asc = "▲amount"
-    val sortTag_date_Asc = "▲date"
-    val sortTag_itemName_Desc = "▼item name"
-    val sortTag_price_Desc = "▼amount"
-    val sortTag_date_Desc = "▼date"
+    private val sortTag_itemName_Asc = "▲Item name"
+    private val sortTag_price_Asc = "▲Amount"
+    private val sortTag_date_Asc = "▲Date"
+    private val sortTag_itemName_Desc = "▼Item name"
+    private val sortTag_price_Desc = "▼Amount"
+    private val sortTag_date_Desc = "▼Date"
 
-    val cardType_all = "\uD83D\uDC40 All"
-    val cardType_minimal = "\uD83D\uDC40 Minimal"
-    val cardType_relevant = "\uD83D\uDC40 Relevant"
+    private val cardType_all = "\uD83D\uDC40 All"
+    private val cardType_minimal = "\uD83D\uDC40 Minimal"
+    private val cardType_relevant = "\uD83D\uDC40 Relevant"
 
-    var current_cardType = cardType_all
+    private var current_cardType = cardType_all
 
-    var currentSortOrder = sortTag_date_Desc
+    private var currentSortOrder = sortTag_date_Desc
+
+    private var current_showDecimal = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,7 +100,7 @@ class TransactionsListing : AppCompatActivity() {
         setActionbarTextColor()
         appContext.initialContext = this
 
-        var breakdownSheet = DownloadableFiles(
+        val breakdownSheet = DownloadableFiles(
             appContext.initialContext,
             FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
             appContext.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
@@ -136,7 +120,7 @@ class TransactionsListing : AppCompatActivity() {
         breakdownSheet.download(this, ::startDisplay)
     }
 
-    var displayStarted = false
+    private var displayStarted = false
     private fun startDisplay() {
         displayStarted = true
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
@@ -154,6 +138,8 @@ class TransactionsListing : AppCompatActivity() {
 
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
         linearLayout.removeAllViews()
+
+        setTabFormatting(Tabs.Singleton.instance.activeTab)
 
         var showMethod = ::showAll
 
@@ -187,7 +173,7 @@ class TransactionsListing : AppCompatActivity() {
         }
 
         if(i==1) {
-                val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
+                val lLayout = findViewById<LinearLayout>(R.id.cardContainers)
                 val sharedBy = TextView(this)
                 if(displayStarted)
                     sharedBy.text = "No Transactions Found!"
@@ -196,18 +182,18 @@ class TransactionsListing : AppCompatActivity() {
                 sharedBy.setTextColor(resources.getColor(R.color.tabs_text_inactive))
                 sharedBy.gravity = Gravity.CENTER
                 sharedBy.setPadding(0, 150, 0, 10)
-                linearLayout.addView(sharedBy)
+                lLayout.addView(sharedBy)
         }
         if(displayStarted) {
             val totalField2 = findViewById<TextView>(R.id.totalView)
             totalField2.text =
                 "Total :    ₹ ${round2Decimal(sum.toString())}    |    ${i - 1} items"
-            if (tabType == Tabs.Singleton.instance.Tab_MyTransaction)
+            if (tabType == Tabs.Singleton.instance.Tab_MyTransaction && !current_showDecimal)
                 totalField2.text = "Total :    ₹ ${roundInt(sum.toString())}    |    ${i - 1} items"
         }
 
 
-        var backgroundColor = resources.getColor(R.color.breakdown_tabsBackground)
+        val backgroundColor = resources.getColor(R.color.breakdown_tabsBackground)
         var textColor = resources.getColor(R.color.cardsColor_credit)
         when (tabType) {
             Tabs.Singleton.instance.Tab_showAll -> {
@@ -240,12 +226,6 @@ class TransactionsListing : AppCompatActivity() {
             return null
 
         var textColor = R.color.cardsColor_debit
-
-        val displayAmount: String = if (Tabs.Singleton.instance.activeTab == Tabs.Singleton.instance.Tab_MySpent) {
-            transaction.price
-        } else {
-            transaction.userDebit
-        }
 
         if(tabType == Tabs.Singleton.instance.Tab_MySpent)
             textColor = R.color.cardsColor_credit
@@ -423,7 +403,6 @@ class TransactionsListing : AppCompatActivity() {
 
     fun changeTab_showAll(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_showAll
-        setTabFormatting(Tabs.Singleton.instance.Tab_showAll)
         displayCards()
     }
 
@@ -459,19 +438,16 @@ class TransactionsListing : AppCompatActivity() {
 
     fun changeTab_MyExpenses(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyExpenses
-        setTabFormatting(Tabs.Singleton.instance.Tab_MyExpenses)
         displayCards()
     }
 
     fun changeTab_MySpent(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MySpent
-        setTabFormatting(Tabs.Singleton.instance.Tab_MySpent)
         displayCards()
     }
 
     fun changeTab_MyTransaction(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
-        setTabFormatting(Tabs.Singleton.instance.Tab_MyTransaction)
         displayCards()
     }
 
@@ -492,6 +468,8 @@ class TransactionsListing : AppCompatActivity() {
             }
 
             sortTag_price_Asc -> {
+                TransactionsManager.Singleton.instance.transactions = mutableListOf()
+                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
                 when (activeTab) {
                     Tabs.Singleton.instance.Tab_showAll -> {
                         TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.price.toFloat() }
@@ -508,6 +486,9 @@ class TransactionsListing : AppCompatActivity() {
                 }
             }
             sortTag_price_Desc -> {
+                TransactionsManager.Singleton.instance.transactions = mutableListOf()
+                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+                TransactionsManager.Singleton.instance.transactions.reverse()
                 when (activeTab) {
                     Tabs.Singleton.instance.Tab_showAll -> {
                         TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.price.toFloat() }
@@ -526,9 +507,14 @@ class TransactionsListing : AppCompatActivity() {
             }
 
             sortTag_itemName_Asc -> {
+                TransactionsManager.Singleton.instance.transactions = mutableListOf()
+                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
                 TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.item.toLowerCase() }
             }
             sortTag_itemName_Desc -> {
+                TransactionsManager.Singleton.instance.transactions = mutableListOf()
+                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+                TransactionsManager.Singleton.instance.transactions.reverse()
                 TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.item.toLowerCase() }
                 TransactionsManager.Singleton.instance.transactions.reverse()
             }
@@ -536,6 +522,11 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     private fun round2Decimal(st: String): String {
+        if(!current_showDecimal) {
+            val df = DecimalFormat("#")
+            df.roundingMode = RoundingMode.FLOOR
+            return df.format(st.toDouble())
+        }
         val df = DecimalFormat("#.##")
         df.roundingMode = RoundingMode.CEILING
         return df.format(st.toDouble())
@@ -693,10 +684,22 @@ class TransactionsListing : AppCompatActivity() {
         var ll2 = findViewById<LinearLayout>(R.id.linearLayout2)
         val params: ViewGroup.LayoutParams = ll2.layoutParams
         println("heightssssssssss: " + params.height)
-        if(params.height == 0)
+
+        if(current_showDecimal) {
+
+        }
+        else {
+
+        }
+        val tview =findViewById<TextView>(R.id.tabMore)
+        if(params.height == 0) {
             params.height = 90
-        else
+            tview.setTextColor(resources.getColor(R.color.tabs_text_active))
+        }
+        else {
             params.height = 0
+            tview.setTextColor(resources.getColor(R.color.tabs_text_inactive))
+        }
         ll2.layoutParams = params
     }
 
@@ -732,5 +735,21 @@ class TransactionsListing : AppCompatActivity() {
         findViewById<TextView>(R.id.labelChangeView).setOnClickListener {
             changeView()
         }
+
+        findViewById<TextView>(R.id.labelDecimalView).setOnClickListener {
+            changeDecimalValue()
+        }
+    }
+
+    private fun changeDecimalValue() {
+        current_showDecimal = !current_showDecimal
+        val tview =findViewById<TextView>(R.id.labelDecimalView)
+        if(current_showDecimal) {
+            tview.setTextColor(resources.getColor(R.color.tabs_text_active))
+        }
+        else {
+            tview.setTextColor(resources.getColor(R.color.tabs_text_inactive))
+        }
+        displayCards()
     }
 }
