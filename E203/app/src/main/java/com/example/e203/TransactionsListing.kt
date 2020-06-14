@@ -16,6 +16,7 @@ import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.Gravity.END
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -91,12 +92,18 @@ class TransactionsListing : AppCompatActivity() {
 
     val label_DownloadingData = "Downloading Data..."
 
-    val sortTag_itemName_Asc = "▲item"
+    val sortTag_itemName_Asc = "▲item name"
     val sortTag_price_Asc = "▲amount"
     val sortTag_date_Asc = "▲date"
-    val sortTag_itemName_Desc = "▼item"
+    val sortTag_itemName_Desc = "▼item name"
     val sortTag_price_Desc = "▼amount"
     val sortTag_date_Desc = "▼date"
+
+    val cardType_all = "\uD83D\uDC40 All"
+    val cardType_minimal = "\uD83D\uDC40 Minimal"
+    val cardType_relevant = "\uD83D\uDC40 Relevant"
+
+    var current_cardType = cardType_all
 
     var currentSortOrder = sortTag_date_Desc
 
@@ -123,6 +130,7 @@ class TransactionsListing : AppCompatActivity() {
         sharedBy.gravity = Gravity.CENTER
         sharedBy.setPadding(0,150,0,10)
         linearLayout.addView(sharedBy)
+        Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
         println("breakdown sheet: " + breakdownSheet.serverURL)
         breakdownSheet.download(this, ::startDisplay)
@@ -134,16 +142,15 @@ class TransactionsListing : AppCompatActivity() {
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         TransactionsManager.Singleton.instance.transactions.reverse()
-        Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
-        changeTab_MyTransaction(findViewById(R.id.cardContainers))
         enableSorting()
+        applyCardView()
     }
 
     @SuppressLint("SetTextI18n")
     private fun displayCards() {
         var i=1
         val tabType = Tabs.Singleton.instance.activeTab
-        transactionSort()
+        transactionSort(tabType)
 
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
         linearLayout.removeAllViews()
@@ -328,13 +335,14 @@ class TransactionsListing : AppCompatActivity() {
         itemNameField.text = transaction.item
         showPrices_textNColor(price1, transaction, price1_getText(tabType, transaction))
         showPrices_textNColor(price2, transaction, price2_getText(tabType, transaction))
-        sharedBy.text = transaction.time + " . " + get1word(transaction.sharedBy)
-//        price2.text = price2_getText(tabType, transaction)
         recordOriginDetailsField.text = "+ " + get1word(transaction.name) + " . " + transaction.createTime.split(" ")[0]
+        if(current_cardType == cardType_minimal)
+            sharedBy.text = ""
+        else if(current_cardType == cardType_relevant)
+            sharedBy.text = get1word(transaction.sharedBy)
+        else
+            sharedBy.text = transaction.time + " . " + get1word(transaction.sharedBy)
 
-//        if (isCreditTransaction(transaction) && tabType==Tabs.Singleton.instance.Tab_MySpent) {
-//            price1.setTextColor(resources.getColor(R.color.cardsColor_credit))
-//        }
 
         val llh1 = LinearLayout(applicationContext)
         val llh2 = LinearLayout(applicationContext)
@@ -358,13 +366,14 @@ class TransactionsListing : AppCompatActivity() {
 
         llv1.addView(llh1)
         llv1.addView(llh2)
-        llv1.addView(llh3)
+        if(current_cardType == cardType_all)
+            llv1.addView(llh3)
 
         llv0.setOnClickListener {
             if(isCreditTransaction(transaction)) {
-                Toast.makeText(this, "editable", Toast.LENGTH_LONG).show()
+//                Toast.makeText(this, "editable", Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(this, "Non - editable", Toast.LENGTH_LONG).show()
+//                Toast.makeText(this, "Non - editable", Toast.LENGTH_LONG).show()
             }
         }
         linearLayout.addView(llv0)
@@ -466,16 +475,11 @@ class TransactionsListing : AppCompatActivity() {
         displayCards()
     }
 
-    private fun transactionSort() {
-//        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.userDebit.toDouble() }
-//        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.userCredit.toDouble() }
-//        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.price.toDouble() }
-//        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.item.toLowerCase() }
-//        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.createTime }
-//        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.time }
+    private fun transactionSort(activeTab: String) {
+        if(!displayStarted)
+            return
 
         findViewById<TextView>(R.id.labelSort).text = currentSortOrder
-
         when(currentSortOrder) {
             sortTag_date_Asc -> {
                 TransactionsManager.Singleton.instance.transactions = mutableListOf()
@@ -488,10 +492,36 @@ class TransactionsListing : AppCompatActivity() {
             }
 
             sortTag_price_Asc -> {
-                TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.price.toFloat() }
+                when (activeTab) {
+                    Tabs.Singleton.instance.Tab_showAll -> {
+                        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.price.toFloat() }
+                    }
+                    Tabs.Singleton.instance.Tab_MyTransaction -> {
+                        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.userDebit.toFloat() }
+                    }
+                    Tabs.Singleton.instance.Tab_MyExpenses -> {
+                        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.userDebit.toFloat() }
+                    }
+                    Tabs.Singleton.instance.Tab_MySpent -> {
+                        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.userCredit.toFloat() }
+                    }
+                }
             }
             sortTag_price_Desc -> {
-                TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.price.toFloat() }
+                when (activeTab) {
+                    Tabs.Singleton.instance.Tab_showAll -> {
+                        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.price.toFloat() }
+                    }
+                    Tabs.Singleton.instance.Tab_MyTransaction -> {
+                        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.userDebit.toFloat() }
+                    }
+                    Tabs.Singleton.instance.Tab_MyExpenses -> {
+                        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.userDebit.toFloat() }
+                    }
+                    Tabs.Singleton.instance.Tab_MySpent -> {
+                        TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.userCredit.toFloat() }
+                    }
+                }
                 TransactionsManager.Singleton.instance.transactions.reverse()
             }
 
@@ -636,12 +666,6 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     fun changeSortOrder() {
-
-
-        // Item Name
-        // Price
-        // add date
-
         when(currentSortOrder) {
             sortTag_date_Desc -> {
                 currentSortOrder = sortTag_date_Asc
@@ -665,9 +689,48 @@ class TransactionsListing : AppCompatActivity() {
         displayCards()
     }
 
+    private fun showOptions() {
+        var ll2 = findViewById<LinearLayout>(R.id.linearLayout2)
+        val params: ViewGroup.LayoutParams = ll2.layoutParams
+        println("heightssssssssss: " + params.height)
+        if(params.height == 0)
+            params.height = 90
+        else
+            params.height = 0
+        ll2.layoutParams = params
+    }
+
+    private fun changeView() {
+        when (current_cardType) {
+            cardType_all -> {
+                current_cardType = cardType_relevant
+            }
+            cardType_relevant -> {
+                current_cardType = cardType_minimal
+            }
+            cardType_minimal -> {
+                current_cardType = cardType_all
+            }
+        }
+        applyCardView()
+    }
+
+    private fun applyCardView() {
+        findViewById<TextView>(R.id.labelChangeView).text = current_cardType
+        displayCards()
+    }
+
     private fun enableSorting() {
         findViewById<TextView>(R.id.labelSort).setOnClickListener {
             changeSortOrder()
+        }
+
+        findViewById<TextView>(R.id.tabMore).setOnClickListener {
+            showOptions()
+        }
+
+        findViewById<TextView>(R.id.labelChangeView).setOnClickListener {
+            changeView()
         }
     }
 }
