@@ -172,22 +172,17 @@ class AppBrowser : AppCompatActivity() {
         println("apkURL ------------------")
         println(apkUrl)
 
+        Toast.makeText(this, "Update is being downloaded.. Please Wait!", Toast.LENGTH_LONG).show()
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
             AppContext.Singleton.instance.initialContext,
             apkUrl!!,
             AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "update.apk",
-            "E203", "downloading update"
+            "E203", "Downloading Update"
         )
 
-
-
-//        updateAPK.download(::installUpdate(this, updateAPK.))
         val FILE_BASE_PATH = "file://"
         val destination = FileManagerUtil.Singleton.instance.updateAPK.localURL
-        val uri = Uri.parse("${FILE_BASE_PATH}$destination")
-//        var l = (AppBrowser::installUpdate33)(this, ::installUpdate33)
         FileManagerUtil.Singleton.instance.updateAPK.download(this, ::installUpdate33)
-
     }
 
     fun installUpdate33() {
