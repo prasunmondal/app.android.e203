@@ -30,6 +30,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.e203.Utility.PaymentUtil
+import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.Utility.showSnackbar
 import com.example.e203.appData.FileManagerUtil
 import com.example.e203.mailUtils.Mails_E203
@@ -71,7 +72,7 @@ class AppBrowser : AppCompatActivity() {
 
         disableViewBreakdownButton()
         FileManagerUtil.Singleton.instance.metadata.download(this, ::enableViewBreakdownButton)
-        Mails_E203().mail("Logged in", generateDeviceId(), findViewById(R.id.appBrowserView))
+        PostToSheet_E203().mail("Logged in", generateDeviceId(), applicationContext)
     }
 
     private fun disableViewBreakdownButton() {
@@ -192,7 +193,7 @@ class AppBrowser : AppCompatActivity() {
 
     fun installUpdate() {
 
-        Mails_E203().mail("Update Initiated", generateDeviceId(), findViewById(R.id.appBrowserView))
+        PostToSheet_E203().mail("Update Initiated", generateDeviceId(), applicationContext)
 
         val FILE_BASE_PATH = "file://"
         val MIME_TYPE = "application/vnd.android.package-archive"

@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.mailUtils.Mails_E203
 import java.util.*
 import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetaDatas
@@ -27,7 +28,7 @@ class ShowPaymentOptions : AppCompatActivity() {
         val upi_copy_btn = findViewById<Button>(R.id.upiIDCopy)
         val upiId = fetchedMetaDatas.getValue(fetchedMetaDatas.PAYMENT_UPI_PAY_UPIID)
 
-        Mails_E203().mail("Opened Payment Page", generateDeviceId(), upi_view)
+        PostToSheet_E203().mail("Opened Payment Page", generateDeviceId(), applicationContext)
         upi_view.text = upiId
     }
 
