@@ -13,6 +13,7 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Looper
 import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
@@ -25,6 +26,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -44,6 +46,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.prasunmondal.mbros_delivery.utils.mailUtils.SendMailTrigger
 import kotlinx.android.synthetic.main.activity_app_browser.*
 import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.util.*
 
 class AppBrowser : AppCompatActivity() {
@@ -54,6 +58,34 @@ class AppBrowser : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         setActionbarTextColor()
+
+        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
+            // Without System.exit() this will not work.
+            try {
+                object : Thread() {
+                    override fun run() {
+
+                        val sw = StringWriter()
+                        val pw = PrintWriter(sw)
+                        paramThrowable.printStackTrace(pw)
+                        val sStackTrace: String = sw.toString() // stack trace as a string
+
+                        println(sStackTrace)
+
+                        PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
+                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.cardContainers))
+                        Looper.prepare()
+                        Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
+                        Looper.loop()
+                    }
+                }.start()
+                Thread.sleep(4000)
+                println("prasun mondal - error")
+                println(paramThrowable.printStackTrace())
+            } catch (e: InterruptedException) {
+            }
+            System.exit(2)
+        }
 
         val webView: WebView = findViewById(R.id.appBrowserView)
         webView.webViewClient = MyWebViewClient()
@@ -69,10 +101,11 @@ class AppBrowser : AppCompatActivity() {
 
         supportActionBar!!.setDisplayShowTitleEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-
-        disableViewBreakdownButton()
-        FileManagerUtil.Singleton.instance.metadata.download(this, ::enableViewBreakdownButton)
         PostToSheet_E203().mail("Logged in", generateDeviceId(), applicationContext)
+        disableViewBreakdownButton()
+        PostToSheet_E203().mail("Downloading metadata", generateDeviceId(), applicationContext)
+        FileManagerUtil.Singleton.instance.metadata.download(this, ::enableViewBreakdownButton)
+
     }
 
     private fun disableViewBreakdownButton() {
@@ -81,6 +114,7 @@ class AppBrowser : AppCompatActivity() {
     }
 
     private fun showToast() {
+        PostToSheet_E203().mail("Breakdown view - Login to access this feature.", generateDeviceId(), applicationContext)
         Toast.makeText(this, "Login to access this feature.", Toast.LENGTH_LONG).show()
     }
 
@@ -97,6 +131,7 @@ class AppBrowser : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
+        PostToSheet_E203().mail("Loading URL - $url", generateDeviceId(), applicationContext)
         val webView: WebView = findViewById(R.id.appBrowserView)
         webView.webViewClient = object : WebViewClient() {
 
@@ -113,22 +148,27 @@ class AppBrowser : AppCompatActivity() {
     }
 
     fun loadAddForm(view: View) {
+        PostToSheet_E203().mail("Clicked - load add form", generateDeviceId(), applicationContext)
         loadPage(HardData.Singleton.instance.submitFormURL)
     }
 
     fun loadDetails(view: View) {
+        PostToSheet_E203().mail("Clicked - view summary page", generateDeviceId(), applicationContext)
         loadPage(HardData.Singleton.instance.detailsFormViewPage)
         Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
     }
 
     fun loadEditPage(view: View) {
+        PostToSheet_E203().mail("Clicked - view edit page", generateDeviceId(), applicationContext)
         loadPage(HardData.Singleton.instance.editPage)
         Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
     }
 
     @SuppressLint("DefaultLocale")
     fun onClickPayButton(view: View) {
+        PostToSheet_E203().mail("Clicked - pay button", generateDeviceId(), applicationContext)
         try {
+            PostToSheet_E203().mail("Payment Initiated", generateDeviceId(), applicationContext)
             if (PaymentUtil.Singleton.instance.isPayOptionEnabled()) {
                 goToPaymentOptionsPage()
                 val currentUser =
@@ -145,6 +185,7 @@ class AppBrowser : AppCompatActivity() {
                 println("Pay button clicked...")
                 payUsingUpi(amount, upiId!!, name!!, note!!)
             } else if (PaymentUtil.Singleton.instance.isDisplayButtonEnabled()) {
+                PostToSheet_E203().mail("No Payment Due", generateDeviceId(), applicationContext)
                 Toast.makeText(this, "No Payment Due!", Toast.LENGTH_SHORT).show()
             }
         } catch (e: java.lang.Exception) {
@@ -162,6 +203,7 @@ class AppBrowser : AppCompatActivity() {
             availableVers = currentVers.toString()
         }
         if (availableVers.toInt() > currentVers && apkUrl!!.isNotEmpty()) {
+            PostToSheet_E203().mail("Version check - Update Available", generateDeviceId(), applicationContext)
             println("New Version Available")
             view.showSnackbar(
                 R.string.updateAvailable,
@@ -170,10 +212,13 @@ class AppBrowser : AppCompatActivity() {
                 println("Download initiated")
                 downloadAndUpdate()
             }
+        } else {
+            PostToSheet_E203().mail("Version check - No Update Available", generateDeviceId(), applicationContext)
         }
     }
 
     private fun downloadAndUpdate() {
+        PostToSheet_E203().mail("Clicked - Download App Update", generateDeviceId(), applicationContext)
         val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
         println("apkURL ------------------")
         println(apkUrl)
@@ -192,7 +237,6 @@ class AppBrowser : AppCompatActivity() {
     }
 
     fun installUpdate() {
-
         PostToSheet_E203().mail("Update Initiated", generateDeviceId(), applicationContext)
 
         val FILE_BASE_PATH = "file://"
@@ -271,6 +315,7 @@ class AppBrowser : AppCompatActivity() {
         } else {
             showString = "No User Configured..."
         }
+        PostToSheet_E203().mail("Dashboard button - \"$showString\"", generateDeviceId(), applicationContext)
         payBillBtn.text = showString
     }
 

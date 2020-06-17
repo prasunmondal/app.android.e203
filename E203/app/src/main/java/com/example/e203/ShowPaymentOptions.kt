@@ -6,14 +6,18 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.wifi.WifiManager
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.mailUtils.Mails_E203
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.util.*
 import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetaDatas
 
@@ -23,6 +27,34 @@ class ShowPaymentOptions : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_payment_options)
+
+        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
+            // Without System.exit() this will not work.
+            try {
+                object : Thread() {
+                    override fun run() {
+
+                        val sw = StringWriter()
+                        val pw = PrintWriter(sw)
+                        paramThrowable.printStackTrace(pw)
+                        val sStackTrace: String = sw.toString() // stack trace as a string
+
+                        println(sStackTrace)
+
+                        PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
+                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.cardContainers))
+                        Looper.prepare()
+                        Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
+                        Looper.loop()
+                    }
+                }.start()
+                Thread.sleep(4000)
+                println("prasun mondal - error")
+                println(paramThrowable.printStackTrace())
+            } catch (e: InterruptedException) {
+            }
+            System.exit(2)
+        }
 
         val upi_view = findViewById<TextView>(R.id.upiIDView)
         val upi_copy_btn = findViewById<Button>(R.id.upiIDCopy)

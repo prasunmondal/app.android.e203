@@ -108,6 +108,7 @@ class TransactionsListing : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setActionbarTextColor()
         appContext.initialContext = this
+        PostToSheet_E203().mail("Opened Breakdown View", generateDeviceId(), applicationContext)
 
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
             // Without System.exit() this will not work.
@@ -137,7 +138,6 @@ class TransactionsListing : AppCompatActivity() {
             System.exit(2)
         }
 
-        var t = 8/0
         val breakdownSheet = DownloadableFiles(
             appContext.initialContext,
             FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
@@ -157,12 +157,13 @@ class TransactionsListing : AppCompatActivity() {
 
         println("breakdown sheet: " + breakdownSheet.serverURL)
         breakdownSheet.download(this, ::startDisplay)
-
-        PostToSheet_E203().mail("Opened Breakdown View", generateDeviceId(), applicationContext)
+        PostToSheet_E203().mail("Breakdown View - downloading data", generateDeviceId(), applicationContext)
     }
 
     private var displayStarted = false
     private fun startDisplay() {
+        if(!displayStarted)
+            PostToSheet_E203().mail("Breakdown View - data downloaded", generateDeviceId(), applicationContext)
         displayStarted = true
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
