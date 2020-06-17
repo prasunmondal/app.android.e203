@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.Environment
+import android.os.Looper
 import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
@@ -21,15 +22,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.Utility.FileReadUtil
 import com.example.e203.Utility.PostToSheet_E203
+import com.example.e203.mailUtils.Mails_E203
 import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
-import com.prasunmondal.mbros_delivery.utils.mailUtils.SendMailTrigger
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*
@@ -105,6 +109,35 @@ class TransactionsListing : AppCompatActivity() {
         setActionbarTextColor()
         appContext.initialContext = this
 
+        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
+            // Without System.exit() this will not work.
+            try {
+                object : Thread() {
+                    override fun run() {
+
+                        val sw = StringWriter()
+                        val pw = PrintWriter(sw)
+                        paramThrowable.printStackTrace(pw)
+                        val sStackTrace: String = sw.toString() // stack trace as a string
+
+                        println(sStackTrace)
+
+                        PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
+                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.cardContainers))
+                        Looper.prepare()
+                        Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
+                        Looper.loop()
+                    }
+                }.start()
+                Thread.sleep(4000)
+                println("prasun mondal - error")
+                println(paramThrowable.printStackTrace())
+            } catch (e: InterruptedException) {
+            }
+            System.exit(2)
+        }
+
+        var t = 8/0
         val breakdownSheet = DownloadableFiles(
             appContext.initialContext,
             FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
@@ -115,6 +148,7 @@ class TransactionsListing : AppCompatActivity() {
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
         val sharedBy = TextView(this)
         sharedBy.text = label_DownloadingData
+
         sharedBy.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         sharedBy.gravity = Gravity.CENTER
         sharedBy.setPadding(0,150,0,10)
