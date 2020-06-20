@@ -21,7 +21,7 @@ class PostToSheet_E203 {
             var username = LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)!!
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            val format = "yyyy-MM-dd HH:mm:ss"
+            val format = "yyyy-MM-dd HH:mm:ss:SSS"
             val sdf = SimpleDateFormat(format)
             dateFormat.timeZone = TimeZone.getTimeZone("IST")
 
