@@ -71,6 +71,6 @@ class ViewTransaction : AppCompatActivity() {
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorPrimary)))
 
         findViewById<TextView>(R.id.toolbar_Text1).text = "E203"
-        findViewById<TextView>(R.id.toolbar_Text2).text = "Transaction details"
+        findViewById<TextView>(R.id.toolbar_Text2).text = "View Details"
     }
 }

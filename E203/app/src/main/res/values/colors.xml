@@ -18,4 +18,12 @@
 
     <color name="breakdown_tabsBackground">#10181F</color>
 
+    <color name="infoBtn_paymentDue_bkg">#cc0000</color>
+    <color name="infoBtn_paymentDue_txt">#ffffff</color>
+    <color name="infoBtn_YouGet_bkg">#63175288</color>
+    <color name="infoBtn_YouGet_txt">#87FA73</color>
+    <color name="infoBtn_OutstandingPositive_bkg">#f4cccc</color>
+    <color name="infoBtn_OutstandingPositive_txt">#990000</color>
+    <color name="infoBtn_OutstandingNegative_bkg">#b7e1cd</color>
+    <color name="infoBtn_OutstandingNegative_txt">#134f5c</color>
 </resources>

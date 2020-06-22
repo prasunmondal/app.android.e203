@@ -214,7 +214,8 @@ class AppBrowser : AppCompatActivity() {
                 R.string.updateAvailable,
                 Snackbar.LENGTH_INDEFINITE, R.string.update
             ) {
-                println("Download initiated")
+                println("Update apk Download initiated")
+                PostToSheet_E203().mail("Update apk Download initiated", generateDeviceId(), applicationContext)
                 downloadAndUpdate()
             }
         } else {
@@ -295,24 +296,24 @@ class AppBrowser : AppCompatActivity() {
                     showString = "You Pay: ₹ $payBill"
                     showString += "\n(click to pay)"
                     payBillBtn.backgroundTintList =
-                        ColorStateList.valueOf(Color.rgb(204, 0, 0))
-                    payBillBtn.setTextColor(Color.rgb(255, 255, 255))
+                        ColorStateList.valueOf(resources.getColor(R.color.infoBtn_paymentDue_bkg))
+                    payBillBtn.setTextColor(resources.getColor(R.color.infoBtn_paymentDue_txt))
                 } else {
                     showString = "You Get\n₹ " + (-1 * payBill.toInt()).toString()
                     payBillBtn.backgroundTintList =
-                        ColorStateList.valueOf(Color.rgb(39, 78, 19))
-                    payBillBtn.setTextColor(Color.rgb(255, 255, 255))
+                        ColorStateList.valueOf(resources.getColor(R.color.infoBtn_YouGet_bkg))
+                    payBillBtn.setTextColor(resources.getColor(R.color.infoBtn_YouGet_txt))
                 }
             } else if (outstandingBal!=null) {
                 showString = "Outstanding Bal\n₹ $outstandingBal"
                 if (outstandingBal.toInt() > 0) {
                     payBillBtn.backgroundTintList =
-                        ColorStateList.valueOf(Color.rgb(244, 204, 204))
-                    payBillBtn.setTextColor(Color.rgb(153, 0, 0))
+                        ColorStateList.valueOf(resources.getColor(R.color.infoBtn_OutstandingPositive_bkg))
+                    payBillBtn.setTextColor(resources.getColor(R.color.infoBtn_OutstandingPositive_txt))
                 } else {
                     payBillBtn.backgroundTintList =
-                        ColorStateList.valueOf(Color.rgb(183, 225, 205))
-                    payBillBtn.setTextColor(Color.rgb(19, 79, 92))
+                        ColorStateList.valueOf(resources.getColor(R.color.infoBtn_OutstandingNegative_bkg))
+                    payBillBtn.setTextColor(resources.getColor(R.color.infoBtn_OutstandingNegative_txt))
                 }
             } else {
                 showString = "Couldn't fetch data..."
