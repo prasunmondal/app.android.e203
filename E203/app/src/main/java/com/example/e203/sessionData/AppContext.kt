@@ -9,4 +9,7 @@ class AppContext {
     }
 
     lateinit var initialContext: Context
+
+    var systemInfo = ""
+    var uniqueDeviceID = ""
 }

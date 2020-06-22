@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
@@ -27,6 +28,7 @@ class SaveUser : AppCompatActivity() {
         setContentView(R.layout.activity_save_user)
 
         AppContexts.initialContext = this
+        populateSystemInfo()
 
         PostToSheet_E203().mail("Entered Select User page", generateDeviceId(), applicationContext)
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
@@ -43,7 +45,7 @@ class SaveUser : AppCompatActivity() {
                         println(sStackTrace)
 
                         PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
-                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.cardContainers))
+                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.userNameSelection))
                         Looper.prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
                         Looper.loop()
@@ -62,6 +64,8 @@ class SaveUser : AppCompatActivity() {
             if (username != null && isValidUserName(username))
                 goToMainPage()
         }
+
+        Mails_E203().mail("In Login page", generateDeviceId(), findViewById<LinearLayout>(R.id.userNameSelection))
     }
 
     fun onClickSaveUsername(view: View) {
@@ -107,5 +111,22 @@ class SaveUser : AppCompatActivity() {
         )
         val deviceUuid = UUID(androidId.hashCode().toLong(), macAddr.hashCode().toLong())
         return deviceUuid.toString()
+    }
+
+    fun populateSystemInfo() {
+        AppContexts.systemInfo = "System-infos: "
+        AppContexts.systemInfo += "     OS Version: " + System.getProperty("os.version") + "(" + android.os.Build.VERSION.INCREMENTAL + ")"
+        AppContexts.systemInfo += "     OS API Level: " + Build.VERSION.SDK_INT
+        AppContexts.systemInfo += "     Device: " + Build.DEVICE
+        AppContexts.systemInfo += "     Model (and Product): " + Build.MODEL + " ("+ Build.PRODUCT + ")"
+        AppContexts.systemInfo += "      windowHeight: " + window.windowManager.defaultDisplay.height
+        AppContexts.systemInfo += "      windowWidth(): " + window.windowManager.defaultDisplay.width
+        AppContexts.systemInfo += "      generateDeviceId(): " + generateDeviceId()
+
+
+        AppContexts.uniqueDeviceID = generateDeviceId()
+
+
+
     }
 }

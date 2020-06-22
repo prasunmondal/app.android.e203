@@ -31,8 +31,4 @@ class FetchedMetaData {
     fun getValueByLabel(pre: String, post: String): String {
         return getValue((pre + post.toLowerCase()))!!
     }
-
-    fun isDataFetched(): Boolean {
-        return FileManagers.doesFileExist(FileManagers.downloadLink_Metadata)
-    }
 }

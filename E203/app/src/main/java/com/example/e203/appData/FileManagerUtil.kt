@@ -19,9 +19,6 @@ class FileManagerUtil {
 
     var localConfigurationStorage = FilePaths(rootFromContext, "AppData", "AppConfigurationData")
 
-    var downloadLink_Metadata = FilePaths(
-        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "details.csv")
-
     var downloadLink_CalculatingSheet = FilePaths(
         AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv")
 

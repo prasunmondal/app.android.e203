@@ -3,6 +3,7 @@ package com.example.e203.Utility
 import android.content.Context
 import com.example.e203.BuildConfig
 import com.example.e203.SheetUtils.PostToSheet
+import com.example.e203.sessionData.AppContext.Singleton.instance as appContexts
 import com.example.e203.sessionData.HardData
 import com.example.e203.sessionData.LocalConfig
 import java.text.SimpleDateFormat
@@ -27,7 +28,7 @@ class PostToSheet_E203 {
 
             PostToSheet().post(context, HardData.Singleton.instance.GSheet_logs_PostScript,
                 HardData.Singleton.instance.GSheet_User_logs_spreadsheetURL, deviceID,
-            listOf(sdf.format(Date()), appVersion, username, deviceID, text))
+            listOf(sdf.format(Date()), appVersion, username, appContexts.systemInfo, text))
         } catch (e: Exception) {
 
         }

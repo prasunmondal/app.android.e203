@@ -167,7 +167,7 @@ class AppBrowser : AppCompatActivity() {
     fun onClickPayButton(view: View) {
         PostToSheet_E203().mail("Clicked - pay button", generateDeviceId(), applicationContext)
         try {
-            PostToSheet_E203().mail("Payment Initiated", generateDeviceId(), applicationContext)
+            PostToSheet_E203().mail("Payment Initiated for mentioned amount", generateDeviceId(), applicationContext)
             if (PaymentUtil.Singleton.instance.isPayOptionEnabled()) {
                 goToPaymentOptionsPage()
                 val currentUser =
@@ -185,15 +185,16 @@ class AppBrowser : AppCompatActivity() {
                 payUsingUpi(amount, upiId!!, name!!, note!!)
             } else if (PaymentUtil.Singleton.instance.isDisplayButtonEnabled()) {
                 PostToSheet_E203().mail("No Payment Due", generateDeviceId(), applicationContext)
-                Toast.makeText(this, "No Payment Due!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "No Payment Due", Toast.LENGTH_SHORT).show()
+            } else {
+                PostToSheet_E203().mail("You don't need to pay anything", generateDeviceId(), applicationContext)
+                Toast.makeText(this, "You don't need to pay anything", Toast.LENGTH_SHORT).show()
             }
         } catch (e: java.lang.Exception) {
             val sw = StringWriter()
             e.printStackTrace(PrintWriter(sw))
             val sStackTrace: String = sw.toString()
-
             println(sStackTrace)
-
             PostToSheet_E203().mail("Error after initiating payment:\n$sStackTrace", generateDeviceId(), applicationContext)
         }
     }
