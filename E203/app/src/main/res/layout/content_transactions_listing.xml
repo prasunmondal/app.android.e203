@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:onClick="changeTab_MyTransaction"
+                android:onClick="tabMytransaction"
                 android:padding="6dp"
                 android:text="My Transactions"
                 android:textColor="@color/tabs_text_inactive" />
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:onClick="changeTab_MyExpenses"
+                android:onClick="tabMyexpenses"
                 android:padding="6dp"
                 android:text="Expenses"
                 android:textColor="@color/tabs_text_inactive" />
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:onClick="changeTab_MySpent"
+                android:onClick="tabMyspent"
                 android:padding="6dp"
                 android:text="Spent"
                 android:textColor="@color/tabs_text_inactive" />
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:onClick="changeTab_showAll"
+                android:onClick="tabShowall"
                 android:padding="6dp"
                 android:text="All"
                 android:textColor="@color/tabs_text_inactive" />

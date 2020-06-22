@@ -1,26 +1,71 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.e203
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.wifi.WifiManager
 import android.os.Bundle
+import android.os.Looper
+import android.os.Looper.prepare
+import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e203.Utility.PostToSheet_E203
+import com.example.e203.mailUtils.Mails_E203
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as lc
 
 import kotlinx.android.synthetic.main.activity_view_transaction.*
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.*
+import kotlin.system.exitProcess
 
 class ViewTransaction : AppCompatActivity() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_transaction)
         setSupportActionBar(toolbar)
         setActionbarTextColor()
+
+        Thread.setDefaultUncaughtExceptionHandler { _, paramThrowable -> //Catch your exception
+            // Without System.exit() this will not work.
+            try {
+                object : Thread() {
+                    override fun run() {
+
+                        val sw = StringWriter()
+                        val pw = PrintWriter(sw)
+                        paramThrowable.printStackTrace(pw)
+                        val sStackTrace: String = sw.toString() // stack trace as a string
+
+                        println(sStackTrace)
+
+                        PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
+                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.details_itemname))
+                        prepare()
+                        Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
+                        Looper.loop()
+                    }
+                }.start()
+                Thread.sleep(4000)
+                println("prasun mondal - error")
+                println(paramThrowable.printStackTrace())
+            } catch (e: InterruptedException) {
+            }
+            exitProcess(2)
+        }
 
         findViewById<TextView>(R.id.details_itemname).text = "Item Name: " + lc.viewTransaction.item
 
@@ -56,6 +101,7 @@ class ViewTransaction : AppCompatActivity() {
         return result
     }
 
+    @SuppressLint("SetTextI18n")
     @Suppress("DEPRECATION")
     private fun setActionbarTextColor() {
         val title = ""
@@ -72,5 +118,20 @@ class ViewTransaction : AppCompatActivity() {
 
         findViewById<TextView>(R.id.toolbar_Text1).text = "E203"
         findViewById<TextView>(R.id.toolbar_Text2).text = "View Details"
+    }
+
+    @SuppressLint("HardwareIds")
+    fun generateDeviceId(): String {
+        val macAddr: String
+        val wifiMan =
+            this.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifiInf = wifiMan.connectionInfo
+        macAddr = wifiInf.macAddress
+        val androidId: String = "" + Settings.Secure.getString(
+            contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
+        val deviceUuid = UUID(androidId.hashCode().toLong(), macAddr.hashCode().toLong())
+        return deviceUuid.toString()
     }
 }

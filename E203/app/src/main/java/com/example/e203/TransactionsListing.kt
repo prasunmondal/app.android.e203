@@ -38,6 +38,7 @@ import java.io.StringWriter
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.system.exitProcess
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
 import com.example.e203.sessionData.AppContext.Singleton.instance as appContext
 
@@ -136,7 +137,7 @@ class TransactionsListing : AppCompatActivity() {
                 println(paramThrowable.printStackTrace())
             } catch (e: InterruptedException) {
             }
-            System.exit(2)
+            exitProcess(2)
         }
 
         val breakdownSheet = DownloadableFiles(
@@ -440,7 +441,7 @@ class TransactionsListing : AppCompatActivity() {
         return  isCreditTransaction(transaction) || isDebitTransaction(transaction)
     }
 
-    fun changeTab_showAll(view: View) {
+    fun tabShowall(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_showAll
         displayCards()
         PostToSheet_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
@@ -476,19 +477,19 @@ class TransactionsListing : AppCompatActivity() {
         activateLabel.setTextColor(resources.getColor(R.color.tabs_text_active))
     }
 
-    fun changeTab_MyExpenses(view: View) {
+    fun tabMyexpenses(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyExpenses
         displayCards()
         PostToSheet_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
     }
 
-    fun changeTab_MySpent(view: View) {
+    fun tabMyspent(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MySpent
         displayCards()
         PostToSheet_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
     }
 
-    fun changeTab_MyTransaction(view: View) {
+    fun tabMytransaction(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         displayCards()
         PostToSheet_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
@@ -644,6 +645,7 @@ class TransactionsListing : AppCompatActivity() {
         return priceType_TOTAL
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showPrices_textNColor(textView: TextView, transaction: TransactionRecord, priceType: String) {
         val pre = "₹ "
         when (priceType) {
@@ -691,7 +693,7 @@ class TransactionsListing : AppCompatActivity() {
 
         findViewById<TextView>(R.id.toolbar_Text1).text = "Transactions"
         try {
-            var user = LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)
+            val user = LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)
             if (user!!.isNotEmpty())
                 findViewById<TextView>(R.id.toolbar_Text2).text = "- " + user
         } catch (e: Exception) {
@@ -699,13 +701,13 @@ class TransactionsListing : AppCompatActivity() {
         }
     }
 
-    fun getScreenWidth(context: Context): Int {
+    private fun getScreenWidth(context: Context): Int {
         val displayMetrics = DisplayMetrics()
         (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.widthPixels
     }
 
-    fun changeSortOrder() {
+    private fun changeSortOrder() {
         when(currentSortOrder) {
             sortTag_date_Desc -> {
                 currentSortOrder = sortTag_date_Asc
@@ -731,16 +733,9 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     private fun showOptions() {
-        var ll2 = findViewById<LinearLayout>(R.id.linearLayout2)
+        val ll2 = findViewById<LinearLayout>(R.id.linearLayout2)
         val params: ViewGroup.LayoutParams = ll2.layoutParams
-        println("heightssssssssss: " + params.height)
 
-        if(current_showDecimal) {
-
-        }
-        else {
-
-        }
         val tview =findViewById<TextView>(R.id.tabMore)
         if(params.height == 0) {
             params.height = 90
