@@ -1,5 +1,6 @@
 package com.example.e203.sessionData
 
+import com.example.e203.TransactionRecord
 import java.io.File
 import com.example.e203.Utility.FileReadUtil.Singleton.instance as FileReadUtils
 import com.example.e203.Utility.FileWriteUtil.Singleton.instance as FileWriteUtils
@@ -8,6 +9,7 @@ import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManage
 class LocalConfig {
 
     val USERNAME= "username"
+    lateinit var viewTransaction: TransactionRecord
 
     private var localConfigMap: MutableMap<String, String> = mutableMapOf()
 

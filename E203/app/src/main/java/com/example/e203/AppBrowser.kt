@@ -43,7 +43,6 @@ import com.example.e203.sessionData.HardData
 import com.example.e203.sessionData.LocalConfig
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import com.prasunmondal.mbros_delivery.utils.mailUtils.SendMailTrigger
 import kotlinx.android.synthetic.main.activity_app_browser.*
 import java.io.File
 import java.io.PrintWriter
@@ -189,7 +188,13 @@ class AppBrowser : AppCompatActivity() {
                 Toast.makeText(this, "No Payment Due!", Toast.LENGTH_SHORT).show()
             }
         } catch (e: java.lang.Exception) {
+            val sw = StringWriter()
+            e.printStackTrace(PrintWriter(sw))
+            val sStackTrace: String = sw.toString()
 
+            println(sStackTrace)
+
+            PostToSheet_E203().mail("Error after initiating payment:\n$sStackTrace", generateDeviceId(), applicationContext)
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.e203
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -392,11 +393,7 @@ class TransactionsListing : AppCompatActivity() {
             llv1.addView(llh3)
 
         llv0.setOnClickListener {
-            if(isCreditTransaction(transaction)) {
-//                Toast.makeText(this, "editable", Toast.LENGTH_LONG).show()
-            } else {
-//                Toast.makeText(this, "Non - editable", Toast.LENGTH_LONG).show()
-            }
+            goToViewTransaction(transaction)
         }
         linearLayout.addView(llv0)
 
@@ -670,6 +667,12 @@ class TransactionsListing : AppCompatActivity() {
                 textView.text = ""
             }
         }
+    }
+
+    private fun goToViewTransaction(transaction: TransactionRecord) {
+        LocalConfig.Singleton.instance.viewTransaction = transaction
+        val i = Intent(this@TransactionsListing, ViewTransaction::class.java)
+        startActivity(i)
     }
 
     @Suppress("DEPRECATION")

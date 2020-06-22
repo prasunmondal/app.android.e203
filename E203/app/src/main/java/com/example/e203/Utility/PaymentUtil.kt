@@ -1,5 +1,6 @@
 package com.example.e203.Utility
 
+import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
 import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetadatas
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
 
@@ -10,7 +11,7 @@ class PaymentUtil {
     }
 
     fun isPayOptionEnabled(): Boolean {
-        if (localConfigs.doesUsernameExists() && fetchedMetadatas.isDataFetched()) {
+        if (localConfigs.doesUsernameExists() && fm.metadata.doesExist()) {
             val currentUser = localConfigs.getValue(localConfigs.USERNAME)!!.toLowerCase()
             val payBill =
                 fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_PENDING_BILL, currentUser)
