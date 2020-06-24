@@ -72,7 +72,7 @@ class AppBrowser : AppCompatActivity() {
                         println(sStackTrace)
 
                         PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
-                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.cardContainers))
+                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.appBrowserView))
                         Looper.prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
                         Looper.loop()
