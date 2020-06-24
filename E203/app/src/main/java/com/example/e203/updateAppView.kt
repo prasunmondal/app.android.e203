@@ -40,7 +40,6 @@ class updateAppView : AppCompatActivity() {
         println("apkURL ------------------")
         println(apkUrl)
 
-        Toast.makeText(this, "Update is being downloaded.. Please Wait!", Toast.LENGTH_LONG).show()
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
             AppContext.Singleton.instance.initialContext,
             apkUrl!!,

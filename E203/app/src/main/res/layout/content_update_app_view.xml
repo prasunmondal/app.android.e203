@@ -15,7 +15,7 @@
         android:layout_marginTop="45dp"
         android:background="#000000"
         android:gravity="center"
-        android:text="Downloading Update...\n\n\n\nDo Not Press Back Button\n\nYou can check download progress in notifications."
+        android:text="Downloading Update...\n\n\n\nDo Not Press Back Button\n\nYou can check the download progress in notifications."
         android:textColor="#A89EA3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
