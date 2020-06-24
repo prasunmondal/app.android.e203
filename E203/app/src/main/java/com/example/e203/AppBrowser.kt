@@ -186,9 +186,6 @@ class AppBrowser : AppCompatActivity() {
             } else if (PaymentUtil.Singleton.instance.isDisplayButtonEnabled()) {
                 PostToSheet_E203().mail("No Payment Due", generateDeviceId(), applicationContext)
                 Toast.makeText(this, "No Payment Due", Toast.LENGTH_SHORT).show()
-            } else {
-                PostToSheet_E203().mail("You don't need to pay anything", generateDeviceId(), applicationContext)
-                Toast.makeText(this, "You don't need to pay anything", Toast.LENGTH_SHORT).show()
             }
         } catch (e: java.lang.Exception) {
             val sw = StringWriter()
@@ -225,60 +222,65 @@ class AppBrowser : AppCompatActivity() {
     }
 
     private fun downloadAndUpdate() {
-        PostToSheet_E203().mail("Clicked - Download App Update", generateDeviceId(), applicationContext)
-        val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
-        println("apkURL ------------------")
-        println(apkUrl)
-
-        Toast.makeText(this, "Update is being downloaded.. Please Wait!", Toast.LENGTH_LONG).show()
-        FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
-            AppContext.Singleton.instance.initialContext,
-            apkUrl!!,
-            AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "update.apk",
-            "E203", "Downloading Update"
-        )
-
-        val FILE_BASE_PATH = "file://"
-        val destination = FileManagerUtil.Singleton.instance.updateAPK.localURL
-        FileManagerUtil.Singleton.instance.updateAPK.download(this, ::installUpdate)
+        val i = Intent(this@AppBrowser, updateAppView::class.java)
+        startActivity(i)
+        finish()
     }
 
-    fun installUpdate() {
-        PostToSheet_E203().mail("Update Initiated", generateDeviceId(), applicationContext)
-
-        val FILE_BASE_PATH = "file://"
-        val MIME_TYPE = "application/vnd.android.package-archive"
-        val PROVIDER_PATH = ".provider"
-        val APP_INSTALL_PATH: String = "\"application/vnd.android.package-archive\""
-
-
-        val destination = FileManagerUtil.Singleton.instance.updateAPK.localURL
-        val uri = Uri.parse("${FILE_BASE_PATH}$destination")
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val contentUri = FileProvider.getUriForFile(
-                this,
-                BuildConfig.APPLICATION_ID + PROVIDER_PATH,
-                File(destination)
-            )
-            val install = Intent(Intent.ACTION_VIEW)
-            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            install.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            install.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
-            install.data = contentUri
-            this.startActivity(install)
-//            context.unregisterReceiver(This)
-        } else {
-            val install = Intent(Intent.ACTION_VIEW)
-            install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            install.setDataAndType(
-                uri,
-                APP_INSTALL_PATH
-            )
-            this.startActivity(install)
-//            context.unregisterReceiver(This)
-        }
-    }
+//        PostToSheet_E203().mail("Clicked - Download App Update", generateDeviceId(), applicationContext)
+//        val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
+//        println("apkURL ------------------")
+//        println(apkUrl)
+//
+//        Toast.makeText(this, "Update is being downloaded.. Please Wait!", Toast.LENGTH_LONG).show()
+//        FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
+//            AppContext.Singleton.instance.initialContext,
+//            apkUrl!!,
+//            AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "update.apk",
+//            "E203", "Downloading Update"
+//        )
+//
+//        val FILE_BASE_PATH = "file://"
+//        val destination = FileManagerUtil.Singleton.instance.updateAPK.localURL
+//        FileManagerUtil.Singleton.instance.updateAPK.download(this, ::installUpdate)
+//    }
+//
+//    fun installUpdate() {
+//        PostToSheet_E203().mail("Update Initiated", generateDeviceId(), applicationContext)
+//
+//        val FILE_BASE_PATH = "file://"
+//        val MIME_TYPE = "application/vnd.android.package-archive"
+//        val PROVIDER_PATH = ".provider"
+//        val APP_INSTALL_PATH: String = "\"application/vnd.android.package-archive\""
+//
+//
+//        val destination = FileManagerUtil.Singleton.instance.updateAPK.localURL
+//        val uri = Uri.parse("${FILE_BASE_PATH}$destination")
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            val contentUri = FileProvider.getUriForFile(
+//                this,
+//                BuildConfig.APPLICATION_ID + PROVIDER_PATH,
+//                File(destination)
+//            )
+//            val install = Intent(Intent.ACTION_VIEW)
+//            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//            install.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            install.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+//            install.data = contentUri
+//            this.startActivity(install)
+////            context.unregisterReceiver(This)
+//        } else {
+//            val install = Intent(Intent.ACTION_VIEW)
+//            install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+//            install.setDataAndType(
+//                uri,
+//                APP_INSTALL_PATH
+//            )
+//            this.startActivity(install)
+////            context.unregisterReceiver(This)
+//        }
+//    }
 
     @SuppressLint("DefaultLocale")
     fun updateButtonData() {

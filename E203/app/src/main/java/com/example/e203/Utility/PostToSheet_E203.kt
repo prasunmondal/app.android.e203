@@ -3,6 +3,7 @@ package com.example.e203.Utility
 import android.content.Context
 import com.example.e203.BuildConfig
 import com.example.e203.SheetUtils.PostToSheet
+import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.AppContext.Singleton.instance as appContexts
 import com.example.e203.sessionData.HardData
 import com.example.e203.sessionData.LocalConfig
@@ -27,7 +28,7 @@ class PostToSheet_E203 {
             dateFormat.timeZone = TimeZone.getTimeZone("IST")
 
             PostToSheet().post(context, HardData.Singleton.instance.GSheet_logs_PostScript,
-                HardData.Singleton.instance.GSheet_User_logs_spreadsheetURL, deviceID,
+                HardData.Singleton.instance.GSheet_User_logs_spreadsheetURL, AppContext.Singleton.instance.uniqueDeviceID,
             listOf(sdf.format(Date()), appVersion, username, appContexts.systemInfo, text))
         } catch (e: Exception) {
 

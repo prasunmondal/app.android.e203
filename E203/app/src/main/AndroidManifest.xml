@@ -21,17 +21,21 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ViewTransaction"
+            android:name=".updateAppView"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".ViewTransaction"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".AppBrowser"
             android:label="@string/title_activity_app_browser"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TransactionsListing"
             android:label="@string/title_activity_transactions_listing"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ShowPaymentOptions" />
         <activity
             android:name=".SaveUser"

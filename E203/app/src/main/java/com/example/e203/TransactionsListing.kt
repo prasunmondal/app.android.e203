@@ -110,7 +110,7 @@ class TransactionsListing : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setActionbarTextColor()
         appContext.initialContext = this
-        PostToSheet_E203().mail("Opened Breakdown View", generateDeviceId(), applicationContext)
+        PostToSheet_E203().mail("Clicked - Open Breakdown View", generateDeviceId(), applicationContext)
 
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
             // Without System.exit() this will not work.

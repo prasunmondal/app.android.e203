@@ -23,6 +23,7 @@ import com.example.e203.mailUtils.Mails_E203
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as lc
 
 import kotlinx.android.synthetic.main.activity_view_transaction.*
+import kotlinx.android.synthetic.main.content_view_transaction.*
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.math.RoundingMode
@@ -66,6 +67,14 @@ class ViewTransaction : AppCompatActivity() {
             }
             exitProcess(2)
         }
+
+        PostToSheet_E203().mail("Viewing Details: item: " + lc.viewTransaction.item
+                + " qty: " + lc.viewTransaction.qty
+                + " price: " + lc.viewTransaction.price
+                + " editURL: " + lc.viewTransaction.editLink,
+            generateDeviceId(),
+            this.applicationContext
+        )
 
         findViewById<TextView>(R.id.details_itemname).text = "Item Name: " + lc.viewTransaction.item
 
