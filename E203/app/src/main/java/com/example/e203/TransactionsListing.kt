@@ -248,7 +248,7 @@ class TransactionsListing : AppCompatActivity() {
             totalField2.text =
                 totalString + "₹ ${round2Decimal(sum.toString())}    |    ${i - 1} items"
             if (tabType == Tabs.Singleton.instance.Tab_MyTransaction && !current_showDecimal)
-                totalField2.text = "₹ ${roundInt(sum.toString())}    |    ${i - 1} items"
+                totalField2.text = totalString + "₹ ${roundInt(sum.toString())}    |    ${i - 1} items"
         }
 
 
