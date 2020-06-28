@@ -70,6 +70,7 @@ class updateAppView : AppCompatActivity() {
 
         PostToSheet_E203().mail("Clicked - Download App Update", generateDeviceId(), applicationContext)
         val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
+        PostToSheet_E203().mail("Download apk url: " + apkUrl, generateDeviceId(), applicationContext)
         println("apkURL ------------------")
         println(apkUrl)
 
