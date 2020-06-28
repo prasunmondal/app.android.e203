@@ -296,7 +296,7 @@ class AppBrowser : AppCompatActivity() {
 
             if (payBill!=null) {
                 if (payBill.toInt() > 0) {
-                    showString = "You Pay: ₹ $payBill"
+                    showString = "Due: ₹ $payBill"
                     showString += "\n(click to pay)"
                     payBillBtn.backgroundTintList =
                         ColorStateList.valueOf(resources.getColor(R.color.infoBtn_paymentDue_bkg))
