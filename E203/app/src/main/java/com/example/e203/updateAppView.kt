@@ -8,19 +8,24 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Looper
 import android.provider.Settings
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.appData.FileManagerUtil
+import com.example.e203.mailUtils.Mails_E203
 import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.FetchedMetaData
 
 import kotlinx.android.synthetic.main.activity_update_app_view.*
 import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.util.*
 
 class updateAppView : AppCompatActivity() {
@@ -29,6 +34,34 @@ class updateAppView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_app_view)
         setSupportActionBar(toolbar)
+
+        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
+            // Without System.exit() this will not work.
+            try {
+                object : Thread() {
+                    override fun run() {
+
+                        val sw = StringWriter()
+                        val pw = PrintWriter(sw)
+                        paramThrowable.printStackTrace(pw)
+                        val sStackTrace: String = sw.toString() // stack trace as a string
+
+                        println(sStackTrace)
+
+                        PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
+                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.updateAppView_downloadingLabel))
+                        Looper.prepare()
+                        Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
+                        Looper.loop()
+                    }
+                }.start()
+                Thread.sleep(4000)
+                println("prasun mondal - error")
+                println(paramThrowable.printStackTrace())
+            } catch (e: InterruptedException) {
+            }
+            System.exit(2)
+        }
 
         downloadAndUpdate()
     }

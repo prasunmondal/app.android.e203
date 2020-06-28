@@ -229,11 +229,26 @@ class TransactionsListing : AppCompatActivity() {
                 lLayout.addView(sharedBy)
         }
         if(displayStarted) {
+            var totalString = ""
             val totalField2 = findViewById<TextView>(R.id.totalView)
+            when (tabType) {
+                Tabs.Singleton.instance.Tab_showAll -> {
+                    totalString = "All Transaction:  "
+                }
+                Tabs.Singleton.instance.Tab_MyExpenses -> {
+                    totalString = "Your Expenses:  "
+                }
+                Tabs.Singleton.instance.Tab_MySpent -> {
+                    totalString = "You Spent:  "
+                }
+                Tabs.Singleton.instance.Tab_MyTransaction -> {
+                    totalString = "Outstanding Bal.  "
+                }
+            }
             totalField2.text =
-                "Total :    ₹ ${round2Decimal(sum.toString())}    |    ${i - 1} items"
+                totalString + "₹ ${round2Decimal(sum.toString())}    |    ${i - 1} items"
             if (tabType == Tabs.Singleton.instance.Tab_MyTransaction && !current_showDecimal)
-                totalField2.text = "Total :    ₹ ${roundInt(sum.toString())}    |    ${i - 1} items"
+                totalField2.text = "₹ ${roundInt(sum.toString())}    |    ${i - 1} items"
         }
 
 
