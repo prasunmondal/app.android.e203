@@ -17,4 +17,8 @@
     <string name="title_activity_app_browser">AppBrowser</string>
     <string name="title_activity_view_transaction">ViewTransaction</string>
     <string name="title_activity_update_app_view">updateAppView</string>
+
+    <string name="title_activity_welcome_screen">WelcomeScreen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

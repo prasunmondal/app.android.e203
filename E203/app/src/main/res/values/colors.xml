@@ -26,4 +26,8 @@
     <color name="infoBtn_OutstandingPositive_txt">#990000</color>
     <color name="infoBtn_OutstandingNegative_bkg">#b7e1cd</color>
     <color name="infoBtn_OutstandingNegative_txt">#134f5c</color>
+
+    <color name="black_overlay">#66000000</color>
+
+    <color name="welcomeScreen_background">#10181F</color>
 </resources>
