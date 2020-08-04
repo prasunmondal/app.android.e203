@@ -27,8 +27,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/roundCardView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:elevation="0dp"
@@ -36,10 +36,9 @@
         app:cardCornerRadius="200dp">
 
         <ImageView
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_launcher_foreground" />
+            android:src="@mipmap/ic_launcher" />
     </androidx.cardview.widget.CardView>
-
 </FrameLayout>
