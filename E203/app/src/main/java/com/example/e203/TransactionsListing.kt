@@ -106,7 +106,16 @@ class TransactionsListing : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_listing)
-        TransactionsManager.Singleton.instance.transactions.clear()
+        Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
+        val breakdownSheet = DownloadableFiles(
+            appContext.initialContext,
+            FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
+            appContext.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
+            "E203", "fetching transaction details"
+        )
+
+        if(breakdownSheet.doesExist())
+            initDisplay()
         setSupportActionBar(toolbar)
         setActionbarTextColor()
         appContext.initialContext = this
@@ -140,13 +149,6 @@ class TransactionsListing : AppCompatActivity() {
             exitProcess(2)
         }
 
-        val breakdownSheet = DownloadableFiles(
-            appContext.initialContext,
-            FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
-            appContext.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
-            "E203", "fetching transaction details"
-        )
-
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
         val sharedBy = TextView(this)
         sharedBy.text = label_DownloadingData
@@ -167,6 +169,16 @@ class TransactionsListing : AppCompatActivity() {
         if(!displayStarted)
             PostToSheet_E203().mail("Breakdown View - data downloaded", generateDeviceId(), applicationContext)
         displayStarted = true
+        TransactionsManager.Singleton.instance.transactions = mutableListOf()
+        FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+        TransactionsManager.Singleton.instance.transactions.reverse()
+        enableSorting()
+        applyCardView()
+    }
+
+    private fun initDisplay() {
+        if(!displayStarted)
+            PostToSheet_E203().mail("Breakdown View - data downloaded", generateDeviceId(), applicationContext)
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         TransactionsManager.Singleton.instance.transactions.reverse()

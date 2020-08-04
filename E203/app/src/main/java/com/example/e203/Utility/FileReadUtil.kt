@@ -65,7 +65,8 @@ class FileReadUtil {
         var editLinkIndex = 0
         var userDebitIndex = 0
         var userCreditIndex = 0
-        
+
+        TransactionsManager.Singleton.instance.transactions.clear()
         try {
             val reader = CSVReader(FileReader(File(fileName.destination)))
             var nextLine: Array<String>

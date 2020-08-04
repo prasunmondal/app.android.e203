@@ -14,7 +14,7 @@ class FetchedMetaData {
     val TAG_CURRENT_OUTSTANDING = "currentOutstanding_"
     val TAG_PENDING_BILL = "pendingBill_"
 
-    var TAG_BREAKDOWN_URL = "breakdownCurrentMonth"
+    var TAG_BREAKDOWN_URL = "breakdownCurrentTest"
 
     private var fetchedDataMap: MutableMap<String, String> = mutableMapOf()
     object Singleton {
