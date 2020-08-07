@@ -14,12 +14,18 @@ import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.View
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.mailUtils.Mails_E203
+import com.example.e203.sessionData.AppContext
+import com.example.e203.sessionData.HardData
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as lc
 
 import kotlinx.android.synthetic.main.activity_view_transaction.*
@@ -91,12 +97,56 @@ class ViewTransaction : AppCompatActivity() {
 
         findViewById<TextView>(R.id.details_debit).text = "Your Debit: ₹ " + round2Decimal(lc.viewTransaction.userDebit)
         findViewById<TextView>(R.id.details_debit).setTextColor(resources.getColor(R.color.cardsColor_debit))
+
+        val webView: WebView = findViewById(R.id.editBrowser)
+        webView.visibility = View.GONE
+        showEdit()
+    }
+
+    fun showEdit() {
+        val webView: WebView = findViewById(R.id.editBrowser)
+        webView.webViewClient = MyWebViewClient()
+        val webSettings = webView.settings
+        webSettings.javaScriptEnabled = true
+        webView.settings.useWideViewPort = true
+        webView.settings.loadWithOverviewMode = true
+        webView.webViewClient = WebViewClient()
+        webView.webChromeClient = WebChromeClient()
+        loadPage(HardData.Singleton.instance.submitFormURL)
+
+        AppContext.Singleton.instance.initialContext = this
+
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        loadPage(lc.viewTransaction.editLink)
+    }
+
+    fun onClickEdit(view: View) {
+        val webView: WebView = findViewById(R.id.editBrowser)
+        webView.visibility = View.VISIBLE
     }
 
     private fun round2Decimal(st: String): String {
         val df = DecimalFormat("#.##")
         df.roundingMode = RoundingMode.CEILING
         return df.format(st.toDouble())
+    }
+
+    private fun loadPage(url: String) {
+        PostToSheet_E203().mail("Loading URL - $url", generateDeviceId(), applicationContext)
+        val webView: WebView = findViewById(R.id.editBrowser)
+        webView.webViewClient = object : WebViewClient() {
+
+            override fun onReceivedError(
+                view: WebView,
+                errorCode: Int,
+                description: String,
+                failingUrl: String
+            ) {
+                Toast.makeText(this@ViewTransaction, "Error:$description", Toast.LENGTH_SHORT).show()
+            }
+        }
+        webView.loadUrl(url)
     }
 
     private fun get1word(str: String): String {

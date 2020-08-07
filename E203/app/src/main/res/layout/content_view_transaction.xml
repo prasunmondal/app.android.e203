@@ -117,4 +117,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/pic_coin_foreground" />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:onClick="onClickEdit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_debit" />
+
+    <WebView
+        android:id="@+id/editBrowser"
+        android:layout_width="349dp"
+        android:layout_height="635dp"
+        android:foregroundGravity="bottom|right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.504">
+
+    </WebView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

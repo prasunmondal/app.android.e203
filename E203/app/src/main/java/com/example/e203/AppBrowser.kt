@@ -510,7 +510,7 @@ class AppBrowser : AppCompatActivity() {
     }
 }
 
-private class MyWebViewClient : WebViewClient() {
+class MyWebViewClient : WebViewClient() {
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         return false
     }
