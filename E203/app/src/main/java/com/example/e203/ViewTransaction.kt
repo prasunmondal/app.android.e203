@@ -123,7 +123,10 @@ class ViewTransaction : AppCompatActivity() {
 
     fun onClickEdit(view: View) {
         val webView: WebView = findViewById(R.id.editBrowser)
-        webView.visibility = View.VISIBLE
+        if(webView.visibility == View.GONE)
+            webView.visibility = View.VISIBLE
+        else
+            webView.visibility = View.GONE
     }
 
     private fun round2Decimal(st: String): String {
