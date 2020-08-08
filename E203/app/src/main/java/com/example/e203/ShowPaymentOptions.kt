@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.mailUtils.Mails_E203
 import java.io.PrintWriter
@@ -41,7 +42,7 @@ class ShowPaymentOptions : AppCompatActivity() {
 
                         println(sStackTrace)
 
-                        PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
+                        PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.upiIDView))
                         Looper.prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
@@ -60,7 +61,7 @@ class ShowPaymentOptions : AppCompatActivity() {
         val upi_copy_btn = findViewById<Button>(R.id.upiIDCopy)
         val upiId = fetchedMetaDatas.getValue(fetchedMetaDatas.PAYMENT_UPI_PAY_UPIID)
 
-        PostToSheet_E203().mail("Opened Payment Page", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Opened Payment Page", generateDeviceId(), applicationContext)
         upi_view.text = upiId
     }
 

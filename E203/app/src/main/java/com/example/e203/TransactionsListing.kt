@@ -26,6 +26,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.Utility.FileReadUtil
 import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.mailUtils.Mails_E203
@@ -120,7 +121,7 @@ class TransactionsListing : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setActionbarTextColor()
         appContext.initialContext = this
-        PostToSheet_E203().mail("Clicked - Open Breakdown View", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Clicked - Open Breakdown View", generateDeviceId(), applicationContext)
 
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
             // Without System.exit() this will not work.
@@ -135,7 +136,7 @@ class TransactionsListing : AppCompatActivity() {
 
                         println(sStackTrace)
 
-                        PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
+                        PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.cardContainers))
                         Looper.prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
@@ -163,13 +164,13 @@ class TransactionsListing : AppCompatActivity() {
 
         println("breakdown sheet: " + breakdownSheet.serverURL)
         breakdownSheet.download(this, ::startDisplay)
-        PostToSheet_E203().mail("Breakdown View - downloading data", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Breakdown View - downloading data", generateDeviceId(), applicationContext)
     }
 
     private var displayStarted = false
     private fun startDisplay() {
         if(!displayStarted)
-            PostToSheet_E203().mail("Breakdown View - data downloaded", generateDeviceId(), applicationContext)
+            PostToSheets().logs.post("Breakdown View - data downloaded", generateDeviceId(), applicationContext)
         displayStarted = true
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
@@ -180,7 +181,7 @@ class TransactionsListing : AppCompatActivity() {
 
     private fun initDisplay() {
         if(!displayStarted)
-            PostToSheet_E203().mail("Breakdown View - data downloaded", generateDeviceId(), applicationContext)
+            PostToSheets().logs.post("Breakdown View - data downloaded", generateDeviceId(), applicationContext)
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         TransactionsManager.Singleton.instance.transactions.reverse()
@@ -473,7 +474,7 @@ class TransactionsListing : AppCompatActivity() {
     fun tabShowall(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_showAll
         displayCards()
-        PostToSheet_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
     }
 
     private fun setTabFormatting(activeTab: String) {
@@ -509,19 +510,19 @@ class TransactionsListing : AppCompatActivity() {
     fun tabMyexpenses(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyExpenses
         displayCards()
-        PostToSheet_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
     }
 
     fun tabMyspent(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MySpent
         displayCards()
-        PostToSheet_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
     }
 
     fun tabMytransaction(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         displayCards()
-        PostToSheet_E203().mail("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
     }
 
     private fun transactionSort(activeTab: String) {
@@ -757,7 +758,7 @@ class TransactionsListing : AppCompatActivity() {
                 currentSortOrder = sortTag_date_Desc
             }
         }
-        PostToSheet_E203().mail("Breakdown View - Change Sort: $currentSortOrder", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Breakdown View - Change Sort: $currentSortOrder", generateDeviceId(), applicationContext)
         displayCards()
     }
 
@@ -789,7 +790,7 @@ class TransactionsListing : AppCompatActivity() {
                 current_cardType = cardType_all
             }
         }
-        PostToSheet_E203().mail("Breakdown View - Change Card View: $current_cardType", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Breakdown View - Change Card View: $current_cardType", generateDeviceId(), applicationContext)
         applyCardView()
     }
 
@@ -825,7 +826,7 @@ class TransactionsListing : AppCompatActivity() {
         else {
             tview.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         }
-        PostToSheet_E203().mail("Breakdown View - Decimal Show: " + current_showDecimal, generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Breakdown View - Decimal Show: " + current_showDecimal, generateDeviceId(), applicationContext)
         displayCards()
     }
 

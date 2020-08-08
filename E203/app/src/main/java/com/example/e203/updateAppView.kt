@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.appData.FileManagerUtil
 import com.example.e203.mailUtils.Mails_E203
@@ -48,7 +49,7 @@ class updateAppView : AppCompatActivity() {
 
                         println(sStackTrace)
 
-                        PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
+                        PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.updateAppView_downloadingLabel))
                         Looper.prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
@@ -68,9 +69,9 @@ class updateAppView : AppCompatActivity() {
 
     private fun downloadAndUpdate() {
 
-        PostToSheet_E203().mail("Clicked - Download App Update", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Clicked - Download App Update", generateDeviceId(), applicationContext)
         val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
-        PostToSheet_E203().mail("Download apk url: " + apkUrl, generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Download apk url: " + apkUrl, generateDeviceId(), applicationContext)
         println("apkURL ------------------")
         println(apkUrl)
 
@@ -92,7 +93,7 @@ class updateAppView : AppCompatActivity() {
         startActivity(i)
         finish()
 
-        PostToSheet_E203().mail("Update Initiated", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Update Initiated", generateDeviceId(), applicationContext)
 
         val FILE_BASE_PATH = "file://"
         val MIME_TYPE = "application/vnd.android.package-archive"

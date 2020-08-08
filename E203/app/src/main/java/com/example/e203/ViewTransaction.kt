@@ -23,6 +23,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.mailUtils.Mails_E203
 import com.example.e203.sessionData.AppContext
@@ -60,7 +61,7 @@ class ViewTransaction : AppCompatActivity() {
 
                         println(sStackTrace)
 
-                        PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
+                        PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.details_itemname))
                         prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
@@ -75,7 +76,7 @@ class ViewTransaction : AppCompatActivity() {
             exitProcess(2)
         }
 
-        PostToSheet_E203().mail("Viewing Details: item: " + lc.viewTransaction.item
+        PostToSheets().logs.post("Viewing Details: item: " + lc.viewTransaction.item
                 + " qty: " + lc.viewTransaction.qty
                 + " price: " + lc.viewTransaction.price
                 + " editURL: " + lc.viewTransaction.editLink,
@@ -142,7 +143,7 @@ class ViewTransaction : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        PostToSheet_E203().mail("Loading URL - $url", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Loading URL - $url", generateDeviceId(), applicationContext)
         val webView: WebView = findViewById(R.id.editBrowser)
         webView.webViewClient = object : WebViewClient() {
 

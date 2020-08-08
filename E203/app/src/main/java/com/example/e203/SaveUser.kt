@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.Utility.Device
 import com.example.e203.Utility.DeviceInfo
 import com.example.e203.Utility.PostToSheet_E203
@@ -34,7 +35,7 @@ class SaveUser : AppCompatActivity() {
         AppContexts.initialContext = this
         populateSystemInfo()
 
-        PostToSheet_E203().mail("Entered Select User page", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("Entered Select User page", generateDeviceId(), applicationContext)
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
             // Without System.exit() this will not work.
             try {
@@ -48,7 +49,7 @@ class SaveUser : AppCompatActivity() {
 
                         println(sStackTrace)
 
-                        PostToSheet_E203().mail(sStackTrace, generateDeviceId(), applicationContext)
+                        PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.userNameSelection))
                         Looper.prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
@@ -66,7 +67,7 @@ class SaveUser : AppCompatActivity() {
         if(localConfigs.doesUsernameExists()) {
             val username = localConfigs.getValue("username")
             if (username != null && isValidUserName(username)) {
-                PostToSheet_E203().mail("Logged in as per record - $username", generateDeviceId(), applicationContext)
+                PostToSheets().logs.post("Logged in as per record - $username", generateDeviceId(), applicationContext)
                 goToMainPage()
             }
         }
@@ -81,11 +82,11 @@ class SaveUser : AppCompatActivity() {
         localConfigs.setValue("username", username)
 
         if(isValidUserName(username)) {
-            PostToSheet_E203().mail("Logging in as - " + username, generateDeviceId(), applicationContext)
+            PostToSheets().logs.post("Logging in as - " + username, generateDeviceId(), applicationContext)
             goToMainPage()
         }
         else {
-            PostToSheet_E203().mail("Logging in as - anonymous", generateDeviceId(), applicationContext)
+            PostToSheets().logs.post("Logging in as - anonymous", generateDeviceId(), applicationContext)
             Toast.makeText(this, "Error: Please Enter a Valid Name!", Toast.LENGTH_SHORT).show()
         }
     }
