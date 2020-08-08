@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
+import android.telephony.TelephonyManager
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Spinner
@@ -15,11 +17,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.Utility.Device
 import com.example.e203.Utility.DeviceInfo
+import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.mailUtils.Mails_E203
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.util.*
-import kotlin.system.exitProcess
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
 
@@ -33,7 +35,8 @@ class SaveUser : AppCompatActivity() {
         AppContexts.initialContext = this
         populateSystemInfo()
 
-        Thread.setDefaultUncaughtExceptionHandler { _, paramThrowable -> //Catch your exception
+        PostToSheets().logs.post("Entered Select User page", generateDeviceId(), applicationContext)
+        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
             // Without System.exit() this will not work.
             try {
                 object : Thread() {
@@ -54,55 +57,54 @@ class SaveUser : AppCompatActivity() {
                     }
                 }.start()
                 Thread.sleep(4000)
+                println("prasun mondal - error")
                 println(paramThrowable.printStackTrace())
             } catch (e: InterruptedException) {
             }
-            exitProcess(2)
+            System.exit(2)
         }
 
         if(localConfigs.doesUsernameExists()) {
             val username = localConfigs.getValue("username")
             if (username != null && isValidUserName(username)) {
-                PostToSheets().logs.post("As per saved login data - $username", generateDeviceId(), applicationContext)
+                PostToSheets().logs.post("Logged in as per record - $username", generateDeviceId(), applicationContext)
                 goToMainPage()
             }
-        } else {
-            PostToSheets().logs.post("No login saved data found", generateDeviceId(), applicationContext)
         }
+
+
     }
 
     fun onClickSaveUsername(view: View) {
         val userSelection: Spinner = findViewById(R.id.userNameSelection)
-        val username: String = userSelection.selectedItem.toString()
+        val username: String = userSelection.getSelectedItem().toString()
 
         localConfigs.setValue("username", username)
 
         if(isValidUserName(username)) {
-            PostToSheets().logs.post("Login as - $username", generateDeviceId(), applicationContext)
+            PostToSheets().logs.post("Logging in as - " + username, generateDeviceId(), applicationContext)
             goToMainPage()
         }
         else {
-            PostToSheets().logs.post("Login failed - No User Selected", generateDeviceId(), applicationContext)
+            PostToSheets().logs.post("Logging in as - anonymous", generateDeviceId(), applicationContext)
             Toast.makeText(this, "Error: Please Enter a Valid Name!", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun onClickSaveUserSkipButton(view: View) {
-        PostToSheets().logs.post("Login as - anonymous", generateDeviceId(), applicationContext)
-        goToMainPage()
+       goToMainPage()
     }
 
-    private fun goToMainPage() {
+    fun goToMainPage() {
         val i = Intent(this@SaveUser, AppBrowser::class.java)
         startActivity(i)
         finish()
     }
 
-    private fun isValidUserName(username: String): Boolean {
-        return username != "Select Your Name"
+    fun isValidUserName(username: String): Boolean {
+        return !username.equals("Select Your Name")
     }
 
-    @SuppressLint("HardwareIds")
     fun generateDeviceId(): String {
         val macAddr: String
         val wifiMan =
