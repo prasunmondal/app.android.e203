@@ -69,7 +69,6 @@ class ViewTransaction : AppCompatActivity() {
                     }
                 }.start()
                 Thread.sleep(4000)
-                println("prasun mondal - error")
                 println(paramThrowable.printStackTrace())
             } catch (e: InterruptedException) {
             }
