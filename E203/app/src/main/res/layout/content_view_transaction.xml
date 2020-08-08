@@ -132,7 +132,7 @@
     </WebView>
 
     <TextView
-        android:id="@+id/editViewButton"
+        android:id="@+id/editTransactionButton"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:background="@color/colorPrimary"

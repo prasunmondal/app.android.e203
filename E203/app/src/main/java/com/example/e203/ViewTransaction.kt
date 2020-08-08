@@ -18,6 +18,7 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -123,10 +124,15 @@ class ViewTransaction : AppCompatActivity() {
 
     fun onClickEdit(view: View) {
         val webView: WebView = findViewById(R.id.editBrowser)
-        if(webView.visibility == View.GONE)
+        val editTransactionButton = findViewById<TextView>(R.id.editTransactionButton)
+        if(webView.visibility == View.GONE) {
             webView.visibility = View.VISIBLE
-        else
+            editTransactionButton.text = "Close Edit Window"
+        }
+        else {
             webView.visibility = View.GONE
+            editTransactionButton.text = "Edit this Transaction"
+        }
     }
 
     private fun round2Decimal(st: String): String {

@@ -102,17 +102,18 @@ class TransactionsListing : AppCompatActivity() {
 
     private var current_showDecimal = false
 
+    val breakdownSheet = DownloadableFiles(
+        appContext.initialContext,
+        FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
+        appContext.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
+        "E203", "fetching transaction details"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_listing)
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
-        val breakdownSheet = DownloadableFiles(
-            appContext.initialContext,
-            FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
-            appContext.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
-            "E203", "fetching transaction details"
-        )
+
 
         if(breakdownSheet.doesExist())
             initDisplay()
@@ -151,7 +152,8 @@ class TransactionsListing : AppCompatActivity() {
 
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
         val sharedBy = TextView(this)
-        sharedBy.text = label_DownloadingData
+        if(!breakdownSheet.doesExist())
+            sharedBy.text = label_DownloadingData
 
         sharedBy.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         sharedBy.gravity = Gravity.CENTER
@@ -233,7 +235,7 @@ class TransactionsListing : AppCompatActivity() {
                 val sharedBy = TextView(this)
                 if(displayStarted)
                     sharedBy.text = "No Transactions Found!"
-                else
+                else if(!breakdownSheet.doesExist())
                     sharedBy.text = label_DownloadingData
                 sharedBy.setTextColor(resources.getColor(R.color.tabs_text_inactive))
                 sharedBy.gravity = Gravity.CENTER
