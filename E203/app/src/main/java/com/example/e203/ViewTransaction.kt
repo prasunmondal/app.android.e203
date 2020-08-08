@@ -141,7 +141,7 @@ class ViewTransaction : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        PostToSheets.Singleton.instance.logs.post("Loading edit URL - $url", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Loading edit page - $url", generateDeviceId(), applicationContext)
         val webView: WebView = findViewById(R.id.editBrowser)
         webView.webViewClient = object : WebViewClient() {
 
