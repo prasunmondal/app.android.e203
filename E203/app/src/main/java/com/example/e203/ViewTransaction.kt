@@ -59,7 +59,7 @@ class ViewTransaction : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
+                        PostToSheets.Singleton.instance.error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.details_itemname))
                         prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
@@ -72,7 +72,7 @@ class ViewTransaction : AppCompatActivity() {
             exitProcess(2)
         }
 
-        PostToSheets().logs.post("Viewing Details: item: " + lc.viewTransaction.item
+        PostToSheets.Singleton.instance.logs.post("Viewing Details: item: " + lc.viewTransaction.item
                 + " qty: " + lc.viewTransaction.qty
                 + " price: " + lc.viewTransaction.price
                 + " editURL: " + lc.viewTransaction.editLink,
@@ -139,7 +139,7 @@ class ViewTransaction : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        PostToSheets().logs.post("Loading URL - $url", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Loading URL - $url", generateDeviceId(), applicationContext)
         val webView: WebView = findViewById(R.id.editBrowser)
         webView.webViewClient = object : WebViewClient() {
 

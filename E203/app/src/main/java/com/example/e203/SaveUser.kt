@@ -44,7 +44,7 @@ class SaveUser : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
+                        PostToSheets.Singleton.instance.error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.userNameSelection))
                         Looper.prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
@@ -60,11 +60,12 @@ class SaveUser : AppCompatActivity() {
         if(localConfigs.doesUsernameExists()) {
             val username = localConfigs.getValue("username")
             if (username != null && isValidUserName(username)) {
-                PostToSheets().logs.post("As per saved login data - $username", generateDeviceId(), applicationContext)
+                PostToSheets.Singleton.instance.logs.updatePrependList(listOf(username))
+                PostToSheets.Singleton.instance.logs.post("As per saved login data - $username", generateDeviceId(), applicationContext)
                 goToMainPage()
             }
         } else {
-            PostToSheets().logs.post("No login saved data found", generateDeviceId(), applicationContext)
+            PostToSheets.Singleton.instance.logs.post("No login saved data found", generateDeviceId(), applicationContext)
         }
     }
 
@@ -73,20 +74,21 @@ class SaveUser : AppCompatActivity() {
         val username: String = userSelection.selectedItem.toString()
 
         localConfigs.setValue("username", username)
-        PostToSheets().logs.updatePrependList(listOf(username))
+        PostToSheets.Singleton.instance.logs.updatePrependList(listOf(username))
 
         if(isValidUserName(username)) {
-            PostToSheets().logs.post("Login as - $username", generateDeviceId(), applicationContext)
+            PostToSheets.Singleton.instance.logs.post("Login as - $username", generateDeviceId(), applicationContext)
             goToMainPage()
         }
         else {
-            PostToSheets().logs.post("Login failed - No User Selected", generateDeviceId(), applicationContext)
+            PostToSheets.Singleton.instance.logs.post("Login failed - No User Selected", generateDeviceId(), applicationContext)
             Toast.makeText(this, "Error: Please Enter a Valid Name!", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun onClickSaveUserSkipButton(view: View) {
-        PostToSheets().logs.post("Login as - anonymous", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.updatePrependList(listOf("Anonymous"))
+        PostToSheets.Singleton.instance.logs.post("Login as - anonymous", generateDeviceId(), applicationContext)
         goToMainPage()
     }
 

@@ -47,7 +47,7 @@ class updateAppView : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
+                        PostToSheets.Singleton.instance.error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.updateAppView_downloadingLabel))
                         Looper.prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
@@ -65,9 +65,9 @@ class updateAppView : AppCompatActivity() {
 
     private fun downloadAndUpdate() {
 
-        PostToSheets().logs.post("Clicked - Download App Update", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Clicked - Download App Update", generateDeviceId(), applicationContext)
         val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
-        PostToSheets().logs.post("Download apk url: " + apkUrl, generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Download apk url: " + apkUrl, generateDeviceId(), applicationContext)
 
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
             AppContext.Singleton.instance.initialContext,
@@ -87,7 +87,7 @@ class updateAppView : AppCompatActivity() {
         startActivity(i)
         finish()
 
-        PostToSheets().logs.post("Update Initiated", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Update Initiated", generateDeviceId(), applicationContext)
 
         val FILE_BASE_PATH = "file://"
         val MIME_TYPE = "application/vnd.android.package-archive"
