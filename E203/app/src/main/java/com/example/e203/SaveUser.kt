@@ -73,6 +73,7 @@ class SaveUser : AppCompatActivity() {
         val username: String = userSelection.selectedItem.toString()
 
         localConfigs.setValue("username", username)
+        PostToSheets().logs.updatePrependList(listOf(username))
 
         if(isValidUserName(username)) {
             PostToSheets().logs.post("Login as - $username", generateDeviceId(), applicationContext)
