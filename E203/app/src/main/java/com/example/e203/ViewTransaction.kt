@@ -123,14 +123,14 @@ class ViewTransaction : AppCompatActivity() {
         val webView: WebView = findViewById(R.id.editBrowser)
         val editTransactionButton = findViewById<TextView>(R.id.editTransactionButton)
         if(webView.visibility == View.GONE) {
+            PostToSheets.Singleton.instance.logs.post("Opened Edit Window", generateDeviceId(), applicationContext)
             webView.visibility = View.VISIBLE
             editTransactionButton.text = "Close Edit Window"
-            PostToSheets.Singleton.instance.logs.post("Opened Edit Window", applicationContext)
         }
         else {
+            PostToSheets.Singleton.instance.logs.post("Closed Edit Window",generateDeviceId(), applicationContext)
             webView.visibility = View.GONE
             editTransactionButton.text = "Edit this Transaction"
-            PostToSheets.Singleton.instance.logs.post("Closed Edit Window", applicationContext)
         }
     }
 
