@@ -134,8 +134,6 @@ class TransactionsListing : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        println(sStackTrace)
-
                         PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.cardContainers))
                         Looper.prepare()
@@ -144,8 +142,6 @@ class TransactionsListing : AppCompatActivity() {
                     }
                 }.start()
                 Thread.sleep(4000)
-                println("prasun mondal - error")
-                println(paramThrowable.printStackTrace())
             } catch (e: InterruptedException) {
             }
             exitProcess(2)
@@ -162,7 +158,6 @@ class TransactionsListing : AppCompatActivity() {
         linearLayout.addView(sharedBy)
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
-        println("breakdown sheet: " + breakdownSheet.serverURL)
         breakdownSheet.download(this, ::startDisplay)
         PostToSheets().logs.post("Breakdown View - downloading data", generateDeviceId(), applicationContext)
     }

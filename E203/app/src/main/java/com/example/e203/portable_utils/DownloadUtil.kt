@@ -31,7 +31,6 @@ open class DownloadUtil(private val context: Context) {
         request.setDestinationUri(uri)
         if(onComplete != null)
             showInstallOption(onComplete)
-        println("Started Downloading....")
         downloadManager.enqueue(request)
     }
 
@@ -39,7 +38,6 @@ open class DownloadUtil(private val context: Context) {
         // on download complete...
         val onComplete = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                println("Download Complete!")
                 onComplete.invoke()
                 context.unregisterReceiver(this)
             }

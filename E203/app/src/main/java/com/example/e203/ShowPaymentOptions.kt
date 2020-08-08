@@ -40,8 +40,6 @@ class ShowPaymentOptions : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        println(sStackTrace)
-
                         PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.upiIDView))
                         Looper.prepare()
@@ -50,8 +48,6 @@ class ShowPaymentOptions : AppCompatActivity() {
                     }
                 }.start()
                 Thread.sleep(4000)
-                println("prasun mondal - error")
-                println(paramThrowable.printStackTrace())
             } catch (e: InterruptedException) {
             }
             System.exit(2)

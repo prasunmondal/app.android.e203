@@ -47,8 +47,6 @@ class updateAppView : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        println(sStackTrace)
-
                         PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.updateAppView_downloadingLabel))
                         Looper.prepare()
@@ -57,8 +55,6 @@ class updateAppView : AppCompatActivity() {
                     }
                 }.start()
                 Thread.sleep(4000)
-                println("prasun mondal - error")
-                println(paramThrowable.printStackTrace())
             } catch (e: InterruptedException) {
             }
             System.exit(2)
@@ -72,8 +68,6 @@ class updateAppView : AppCompatActivity() {
         PostToSheets().logs.post("Clicked - Download App Update", generateDeviceId(), applicationContext)
         val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
         PostToSheets().logs.post("Download apk url: " + apkUrl, generateDeviceId(), applicationContext)
-        println("apkURL ------------------")
-        println(apkUrl)
 
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
             AppContext.Singleton.instance.initialContext,

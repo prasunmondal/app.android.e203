@@ -33,15 +33,11 @@ class LocalConfig {
 
     fun doesUsernameExists(): Boolean {
         if(FileManagerUtils.doesFileExist(FileManagerUtils.localConfigurationStorage)) {
-            println("doesUsernameExists: File Exists!")
             val username = getValue(USERNAME)
-            println("Value for username: $username")
             if(username != null && username.isNotEmpty()) {
-                println("doesUsernameExists: true")
                 return true
             }
         }
-        println("doesUsernameExists: false")
         return false
     }
 

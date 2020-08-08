@@ -68,9 +68,6 @@ class AppBrowser : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        println(sStackTrace)
-
-//                        PostToSheets().logs.post(sStackTrace, generateDeviceId(), applicationContext)
                         PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.appBrowserView))
                         Looper.prepare()
@@ -79,8 +76,6 @@ class AppBrowser : AppCompatActivity() {
                     }
                 }.start()
                 Thread.sleep(4000)
-                println("prasun mondal - error")
-                println(paramThrowable.printStackTrace())
             } catch (e: InterruptedException) {
             }
             System.exit(2)
@@ -147,25 +142,25 @@ class AppBrowser : AppCompatActivity() {
     }
 
     fun loadAddForm(view: View) {
-        PostToSheets().logs.post("Clicked - load add form", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("clicked - Load Add Form", generateDeviceId(), applicationContext)
         loadPage(HardData.Singleton.instance.submitFormURL)
     }
 
     fun loadDetails(view: View) {
-        PostToSheets().logs.post("Clicked - view summary page", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("clicked - View Summary Page", generateDeviceId(), applicationContext)
         loadPage(HardData.Singleton.instance.detailsFormViewPage)
         Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
     }
 
     fun loadEditPage(view: View) {
-        PostToSheets().logs.post("Clicked - view edit page", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("clicked - View Edit Page", generateDeviceId(), applicationContext)
         loadPage(HardData.Singleton.instance.editPage)
         Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
     }
 
     @SuppressLint("DefaultLocale")
     fun onClickPayButton(view: View) {
-        PostToSheets().logs.post("Clicked - pay button", generateDeviceId(), applicationContext)
+        PostToSheets().logs.post("clicked - Pay Button", generateDeviceId(), applicationContext)
         try {
             PostToSheets().logs.post("Payment Initiated for mentioned amount", generateDeviceId(), applicationContext)
             if (PaymentUtil.Singleton.instance.isPayOptionEnabled()) {
@@ -181,7 +176,6 @@ class AppBrowser : AppCompatActivity() {
                     FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_NAME)
                 val upiId =
                     FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_UPIID)
-                println("Pay button clicked...")
                 payUsingUpi(amount, upiId!!, name!!, note!!)
             } else if (PaymentUtil.Singleton.instance.isDisplayButtonEnabled()) {
                 PostToSheets().logs.post("No Payment Due", generateDeviceId(), applicationContext)
@@ -191,7 +185,6 @@ class AppBrowser : AppCompatActivity() {
             val sw = StringWriter()
             e.printStackTrace(PrintWriter(sw))
             val sStackTrace: String = sw.toString()
-            println(sStackTrace)
             PostToSheets().logs.post("Error after initiating payment:\n$sStackTrace", generateDeviceId(), applicationContext)
         }
     }
@@ -201,18 +194,15 @@ class AppBrowser : AppCompatActivity() {
         var availableVers = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_VERSION)
         val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
         val currentVers = BuildConfig.VERSION_CODE
-        println("current value: $currentVers")
         if(availableVers == null) {
             availableVers = currentVers.toString()
         }
         if (availableVers.toInt() > currentVers && apkUrl!!.isNotEmpty()) {
             PostToSheets().logs.post("Version check - Update Available", generateDeviceId(), applicationContext)
-            println("New Version Available")
             view.showSnackbar(
                 R.string.updateAvailable,
                 Snackbar.LENGTH_INDEFINITE, R.string.update
             ) {
-                println("Update apk Download initiated")
                 PostToSheets().logs.post("Update apk Download initiated", generateDeviceId(), applicationContext)
                 downloadAndUpdate()
             }
@@ -227,61 +217,6 @@ class AppBrowser : AppCompatActivity() {
         finish()
     }
 
-//        PostToSheets().logs.post("Clicked - Download App Update", generateDeviceId(), applicationContext)
-//        val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
-//        println("apkURL ------------------")
-//        println(apkUrl)
-//
-//        Toast.makeText(this, "Update is being downloaded.. Please Wait!", Toast.LENGTH_LONG).show()
-//        FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
-//            AppContext.Singleton.instance.initialContext,
-//            apkUrl!!,
-//            AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "update.apk",
-//            "E203", "Downloading Update"
-//        )
-//
-//        val FILE_BASE_PATH = "file://"
-//        val destination = FileManagerUtil.Singleton.instance.updateAPK.localURL
-//        FileManagerUtil.Singleton.instance.updateAPK.download(this, ::installUpdate)
-//    }
-//
-//    fun installUpdate() {
-//        PostToSheets().logs.post("Update Initiated", generateDeviceId(), applicationContext)
-//
-//        val FILE_BASE_PATH = "file://"
-//        val MIME_TYPE = "application/vnd.android.package-archive"
-//        val PROVIDER_PATH = ".provider"
-//        val APP_INSTALL_PATH: String = "\"application/vnd.android.package-archive\""
-//
-//
-//        val destination = FileManagerUtil.Singleton.instance.updateAPK.localURL
-//        val uri = Uri.parse("${FILE_BASE_PATH}$destination")
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            val contentUri = FileProvider.getUriForFile(
-//                this,
-//                BuildConfig.APPLICATION_ID + PROVIDER_PATH,
-//                File(destination)
-//            )
-//            val install = Intent(Intent.ACTION_VIEW)
-//            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//            install.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//            install.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
-//            install.data = contentUri
-//            this.startActivity(install)
-////            context.unregisterReceiver(This)
-//        } else {
-//            val install = Intent(Intent.ACTION_VIEW)
-//            install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-//            install.setDataAndType(
-//                uri,
-//                APP_INSTALL_PATH
-//            )
-//            this.startActivity(install)
-////            context.unregisterReceiver(This)
-//        }
-//    }
-
     @SuppressLint("DefaultLocale")
     fun updateButtonData() {
         val payBillBtn = findViewById(R.id.pay_bill_btn) as Button
@@ -290,9 +225,6 @@ class AppBrowser : AppCompatActivity() {
             val currentUser = LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)!!.toLowerCase()
             val payBill = PaymentUtil.Singleton.instance.getPendingBill(currentUser)
             val outstandingBal = PaymentUtil.Singleton.instance.getOutstandingAmount(currentUser)
-
-            println("Pay Bill: $payBill")
-            println("Outstanding Bal: $outstandingBal")
 
             if (payBill!=null) {
                 if (payBill.toInt() > 0) {

@@ -58,11 +58,9 @@ class Mail() : Authenticator() {
             msg.setHeader("X-Priority", "1")
             // Put parts in message
             if(isHTML) {
-                println("You have sent an html string")
                 msg.setContent(body, "text/html; charset=utf-8")
             }
             else {
-                println("You have sent an non html string")
                 msg.setContent(_multipart)
             }
             // send email

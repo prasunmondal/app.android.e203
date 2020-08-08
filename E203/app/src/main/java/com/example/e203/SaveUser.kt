@@ -44,8 +44,6 @@ class SaveUser : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        println(sStackTrace)
-
                         PostToSheets().error.post(listOf("device_details", sStackTrace), applicationContext)
                         Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.userNameSelection))
                         Looper.prepare()
@@ -54,7 +52,6 @@ class SaveUser : AppCompatActivity() {
                     }
                 }.start()
                 Thread.sleep(4000)
-                println(paramThrowable.printStackTrace())
             } catch (e: InterruptedException) {
             }
             exitProcess(2)

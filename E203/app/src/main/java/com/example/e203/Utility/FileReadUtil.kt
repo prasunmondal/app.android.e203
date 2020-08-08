@@ -26,9 +26,7 @@ class FileReadUtil {
                 nextLine = reader.readNext()
                 map[nextLine[0]] = nextLine[1]
             }
-            println(map)
         } catch (e: IOException) {
-            println(e)
             throw (e)
         }
     }
@@ -41,9 +39,7 @@ class FileReadUtil {
                 nextLine = reader.readNext()
                 map[nextLine[0]] = nextLine[1]
             }
-            println(map)
         } catch (e: IOException) {
-            println(e)
             throw (e)
         }
     }
@@ -105,21 +101,11 @@ class FileReadUtil {
 
 
                 if(lineToRead >= startLine) {
-//                    for(i in 0..nextLine.size-1)
                     print(
                         nextLine[nameIndex] + " - " + nextLine[itemIndex] + " - " + nextLine[sharedByIndex] + " - " + nextLine[qtyIndex] + " - " +
                                 nextLine[priceIndex] + " - " + nextLine[createTimeIndex] + " - " + nextLine[timeIndex] + " - " + nextLine[editLinkIndex]
                     + " - " + nextLine[userDebitIndex] + " - " + nextLine[userCreditIndex]
                     )
-
-//                    val dtStart = "6/1/2020 09:27:37"
-//                    val format = SimpleDateFormat("mm/dd/yyyy")
-////                    try {
-//                        val date: Date = format.parse(nextLine[timeIndex])
-////                        System.out.println(date)
-////                    } catch (e: ParseException) {
-////                        e.printStackTrace()
-////                    }
 
                     val newRecord = TransactionRecord()
                     newRecord.name = nextLine[nameIndex]
@@ -141,12 +127,8 @@ class FileReadUtil {
                     if(newRecord.createTime.isNotEmpty())
                         TransactionsManager.Singleton.instance.transactions.add(newRecord)
                 }
-                println()
-//                map[nextLine[0]] = nextLine[1]
             }
-//            println(map)
         } catch (e: IOException) {
-            println(e)
             throw (e)
         }
     }
