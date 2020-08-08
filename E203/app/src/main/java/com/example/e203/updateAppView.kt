@@ -65,9 +65,9 @@ class updateAppView : AppCompatActivity() {
 
     private fun downloadAndUpdate() {
 
-        PostToSheets.Singleton.instance.logs.post("Clicked - Download App Update", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Clicked - Download App Update", applicationContext)
         val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
-        PostToSheets.Singleton.instance.logs.post("Download apk url: " + apkUrl, generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Download apk url: " + apkUrl, applicationContext)
 
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
             AppContext.Singleton.instance.initialContext,
@@ -87,7 +87,7 @@ class updateAppView : AppCompatActivity() {
         startActivity(i)
         finish()
 
-        PostToSheets.Singleton.instance.logs.post("Update Initiated", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Update Initiated", applicationContext)
 
         val FILE_BASE_PATH = "file://"
         val MIME_TYPE = "application/vnd.android.package-archive"

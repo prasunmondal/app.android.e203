@@ -123,7 +123,7 @@ class ViewTransaction : AppCompatActivity() {
         val webView: WebView = findViewById(R.id.editBrowser)
         val editTransactionButton = findViewById<TextView>(R.id.editTransactionButton)
         if(webView.visibility == View.GONE) {
-            PostToSheets.Singleton.instance.logs.post("Opened Edit Window", generateDeviceId(), applicationContext)
+            PostToSheets.Singleton.instance.logs.post("Opened Edit Window", applicationContext)
             webView.visibility = View.VISIBLE
             editTransactionButton.text = "Close Edit Window"
         }
@@ -141,7 +141,7 @@ class ViewTransaction : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        PostToSheets.Singleton.instance.logs.post("Loading edit page - $url", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Loading edit page - $url", applicationContext)
         val webView: WebView = findViewById(R.id.editBrowser)
         webView.webViewClient = object : WebViewClient() {
 

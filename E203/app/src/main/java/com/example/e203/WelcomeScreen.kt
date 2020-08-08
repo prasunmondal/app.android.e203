@@ -30,7 +30,8 @@ class WelcomeScreen : AppCompatActivity() {
 
         setContentView(R.layout.activity_welcome_screen)
         PostToSheets.Singleton.instance.logs.updatePrependList(listOf(""))
-        PostToSheets.Singleton.instance.logs.post("App Opened", generateDeviceId() ,applicationContext)
+        PostToSheets.Singleton.instance.logs.updateTabName(generateDeviceId())
+        PostToSheets.Singleton.instance.logs.post("App Opened", applicationContext)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mVisible = true

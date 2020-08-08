@@ -121,7 +121,7 @@ class TransactionsListing : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setActionbarTextColor()
         appContext.initialContext = this
-        PostToSheets.Singleton.instance.logs.post("Clicked - Open Breakdown View", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Clicked - Open Breakdown View", applicationContext)
 
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
             // Without System.exit() this will not work.
@@ -159,13 +159,13 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
         breakdownSheet.download(this, ::startDisplay)
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - downloading data", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Breakdown View - downloading data", applicationContext)
     }
 
     private var displayStarted = false
     private fun startDisplay() {
         if(!displayStarted)
-            PostToSheets.Singleton.instance.logs.post("Breakdown View - data downloaded", generateDeviceId(), applicationContext)
+            PostToSheets.Singleton.instance.logs.post("Breakdown View - data downloaded", applicationContext)
         displayStarted = true
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
@@ -176,7 +176,7 @@ class TransactionsListing : AppCompatActivity() {
 
     private fun initDisplay() {
         if(!displayStarted)
-            PostToSheets.Singleton.instance.logs.post("Breakdown View - data downloaded", generateDeviceId(), applicationContext)
+            PostToSheets.Singleton.instance.logs.post("Breakdown View - data downloaded", applicationContext)
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         TransactionsManager.Singleton.instance.transactions.reverse()
@@ -469,7 +469,7 @@ class TransactionsListing : AppCompatActivity() {
     fun tabShowall(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_showAll
         displayCards()
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, applicationContext)
     }
 
     private fun setTabFormatting(activeTab: String) {
@@ -505,19 +505,19 @@ class TransactionsListing : AppCompatActivity() {
     fun tabMyexpenses(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyExpenses
         displayCards()
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, applicationContext)
     }
 
     fun tabMyspent(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MySpent
         displayCards()
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, applicationContext)
     }
 
     fun tabMytransaction(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         displayCards()
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, applicationContext)
     }
 
     private fun transactionSort(activeTab: String) {
@@ -753,7 +753,7 @@ class TransactionsListing : AppCompatActivity() {
                 currentSortOrder = sortTag_date_Desc
             }
         }
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Change Sort: $currentSortOrder", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Breakdown View - Change Sort: $currentSortOrder", applicationContext)
         displayCards()
     }
 
@@ -785,7 +785,7 @@ class TransactionsListing : AppCompatActivity() {
                 current_cardType = cardType_all
             }
         }
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Change Card View: $current_cardType", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Breakdown View - Change Card View: $current_cardType", applicationContext)
         applyCardView()
     }
 
@@ -821,7 +821,7 @@ class TransactionsListing : AppCompatActivity() {
         else {
             tview.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         }
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Decimal Show: " + current_showDecimal, generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Breakdown View - Decimal Show: " + current_showDecimal, applicationContext)
         displayCards()
     }
 

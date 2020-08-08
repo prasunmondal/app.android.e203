@@ -61,11 +61,11 @@ class SaveUser : AppCompatActivity() {
             val username = localConfigs.getValue("username")
             if (username != null && isValidUserName(username)) {
                 PostToSheets.Singleton.instance.logs.updatePrependList(listOf(username))
-                PostToSheets.Singleton.instance.logs.post("As per saved login data - $username", generateDeviceId(), applicationContext)
+                PostToSheets.Singleton.instance.logs.post("As per saved login data - $username", applicationContext)
                 goToMainPage()
             }
         } else {
-            PostToSheets.Singleton.instance.logs.post("No login saved data found", generateDeviceId(), applicationContext)
+            PostToSheets.Singleton.instance.logs.post("No login saved data found", applicationContext)
         }
     }
 
@@ -77,18 +77,18 @@ class SaveUser : AppCompatActivity() {
         PostToSheets.Singleton.instance.logs.updatePrependList(listOf(username))
 
         if(isValidUserName(username)) {
-            PostToSheets.Singleton.instance.logs.post("Login as - $username", generateDeviceId(), applicationContext)
+            PostToSheets.Singleton.instance.logs.post("Login as - $username", applicationContext)
             goToMainPage()
         }
         else {
-            PostToSheets.Singleton.instance.logs.post("Login failed - No User Selected", generateDeviceId(), applicationContext)
+            PostToSheets.Singleton.instance.logs.post("Login failed - No User Selected", applicationContext)
             Toast.makeText(this, "Error: Please Enter a Valid Name!", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun onClickSaveUserSkipButton(view: View) {
         PostToSheets.Singleton.instance.logs.updatePrependList(listOf("Anonymous"))
-        PostToSheets.Singleton.instance.logs.post("Login as - anonymous", generateDeviceId(), applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Login as - anonymous", applicationContext)
         goToMainPage()
     }
 
