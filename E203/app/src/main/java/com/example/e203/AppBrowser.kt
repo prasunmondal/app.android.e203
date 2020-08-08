@@ -384,6 +384,8 @@ class AppBrowser : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         val id: Int = item.getItemId()
         if (id == R.id.action_favorite) {
+            PostToSheets.Singleton.instance.logs.post("Logged Out", generateDeviceId(), applicationContext)
+            PostToSheets.Singleton.instance.logs.updatePrependList(listOf(""))
             goToSaveUserPage()
             return true
         }
