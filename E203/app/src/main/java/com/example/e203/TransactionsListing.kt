@@ -117,7 +117,7 @@ class TransactionsListing : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setActionbarTextColor()
         appContext.initialContext = this
-        PostToSheets.Singleton.instance.logs.post(
+        PostToSheets.instance.logs.post(
             "Clicked - Open Breakdown View",
             applicationContext
         )
@@ -134,7 +134,7 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
         breakdownSheet.download(this, ::startDisplay)
-        PostToSheets.Singleton.instance.logs.post(
+        PostToSheets.instance.logs.post(
             "Breakdown View - downloading data",
             applicationContext
         )
@@ -143,7 +143,7 @@ class TransactionsListing : AppCompatActivity() {
     private var displayStarted = false
     private fun startDisplay() {
         if (!displayStarted)
-            PostToSheets.Singleton.instance.logs.post(
+            PostToSheets.instance.logs.post(
                 "Breakdown View - data downloaded",
                 applicationContext
             )
@@ -157,7 +157,7 @@ class TransactionsListing : AppCompatActivity() {
 
     private fun initDisplay() {
         if (!displayStarted)
-            PostToSheets.Singleton.instance.logs.post(
+            PostToSheets.instance.logs.post(
                 "Breakdown View - data downloaded",
                 applicationContext
             )
@@ -460,7 +460,7 @@ class TransactionsListing : AppCompatActivity() {
     fun tabShowall(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_showAll
         displayCards()
-        PostToSheets.Singleton.instance.logs.post(
+        PostToSheets.instance.logs.post(
             "Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab,
             applicationContext
         )
@@ -499,7 +499,7 @@ class TransactionsListing : AppCompatActivity() {
     fun tabMyexpenses(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyExpenses
         displayCards()
-        PostToSheets.Singleton.instance.logs.post(
+        PostToSheets.instance.logs.post(
             "Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab,
             applicationContext
         )
@@ -508,7 +508,7 @@ class TransactionsListing : AppCompatActivity() {
     fun tabMyspent(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MySpent
         displayCards()
-        PostToSheets.Singleton.instance.logs.post(
+        PostToSheets.instance.logs.post(
             "Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab,
             applicationContext
         )
@@ -517,7 +517,7 @@ class TransactionsListing : AppCompatActivity() {
     fun tabMytransaction(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         displayCards()
-        PostToSheets.Singleton.instance.logs.post(
+        PostToSheets.instance.logs.post(
             "Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab,
             applicationContext
         )
@@ -761,7 +761,7 @@ class TransactionsListing : AppCompatActivity() {
                 currentSortOrder = sortTag_date_Desc
             }
         }
-        PostToSheets.Singleton.instance.logs.post(
+        PostToSheets.instance.logs.post(
             "Breakdown View - Change Sort: $currentSortOrder",
             applicationContext
         )
@@ -795,7 +795,7 @@ class TransactionsListing : AppCompatActivity() {
                 current_cardType = cardType_all
             }
         }
-        PostToSheets.Singleton.instance.logs.post(
+        PostToSheets.instance.logs.post(
             "Breakdown View - Change Card View: $current_cardType",
             applicationContext
         )
@@ -833,7 +833,7 @@ class TransactionsListing : AppCompatActivity() {
         } else {
             tview.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         }
-        PostToSheets.Singleton.instance.logs.post(
+        PostToSheets.instance.logs.post(
             "Breakdown View - Decimal Show: " + current_showDecimal,
             applicationContext
         )

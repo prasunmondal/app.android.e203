@@ -20,7 +20,7 @@ class ErrorHandle {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        PostToSheets.Singleton.instance.error.post(
+                        PostToSheets.instance.error.post(
                             listOf(
                                 "device_details",
                                 sStackTrace

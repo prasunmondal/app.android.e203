@@ -18,7 +18,7 @@ class WelcomeScreen : AppCompatActivity() {
         ErrorHandle().reportUnhandledException(applicationContext)
         initiallize()
 
-        PostToSheets.Singleton.instance.logs.post("App Opened", applicationContext)
+        PostToSheets.instance.logs.post("App Opened", applicationContext)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mVisible = true
@@ -35,7 +35,7 @@ class WelcomeScreen : AppCompatActivity() {
         DeviceInfo.setContext(applicationContext, contentResolver)
 
         // Post to Sheet initiallization
-        PostToSheets.Singleton.instance.logs.updateTabName(DeviceInfo.get(Device.UNIQUE_ID))
-        PostToSheets.Singleton.instance.logs.updatePrependList(listOf(""))
+        PostToSheets.instance.logs.updateTabName(DeviceInfo.get(Device.UNIQUE_ID))
+        PostToSheets.instance.logs.updatePrependList(listOf(""))
     }
 }

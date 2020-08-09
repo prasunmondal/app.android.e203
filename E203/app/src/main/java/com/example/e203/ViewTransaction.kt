@@ -35,7 +35,7 @@ class ViewTransaction : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setActionbarTextColor()
 
-        PostToSheets.Singleton.instance.logs.post(
+        PostToSheets.instance.logs.post(
             "Viewing Details: item: " + lc.viewTransaction.item
                     + " qty: " + lc.viewTransaction.qty
                     + " price: " + lc.viewTransaction.price
@@ -92,11 +92,11 @@ class ViewTransaction : AppCompatActivity() {
         val webView: WebView = findViewById(R.id.editBrowser)
         val editTransactionButton = findViewById<TextView>(R.id.editTransactionButton)
         if (webView.visibility == View.GONE) {
-            PostToSheets.Singleton.instance.logs.post("Opened Edit Window", applicationContext)
+            PostToSheets.instance.logs.post("Opened Edit Window", applicationContext)
             webView.visibility = View.VISIBLE
             editTransactionButton.text = "Close Edit Window"
         } else {
-            PostToSheets.Singleton.instance.logs.post("Closed Edit Window", applicationContext)
+            PostToSheets.instance.logs.post("Closed Edit Window", applicationContext)
             webView.visibility = View.GONE
             editTransactionButton.text = "Edit this Transaction"
         }
@@ -109,7 +109,7 @@ class ViewTransaction : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        PostToSheets.Singleton.instance.logs.post("Loading edit page - $url", applicationContext)
+        PostToSheets.instance.logs.post("Loading edit page - $url", applicationContext)
         val webView: WebView = findViewById(R.id.editBrowser)
         webView.webViewClient = object : WebViewClient() {
 

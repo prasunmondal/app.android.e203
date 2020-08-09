@@ -2,7 +2,7 @@ package com.example.e203.SheetUtils
 
 import com.prasunmondal.lib.posttogsheets.PostToGSheet
 
-class PostToSheets {
+class PostToSheets private constructor() {
     var logs: PostToGSheet =
         PostToGSheet(
             "https://script.google.com/macros/s/AKfycbyoYcCSDEbXuDuGf0AhQjEi61ECAkl8JUv4ffNofz1yBIKfcT4/exec",
@@ -27,7 +27,11 @@ class PostToSheets {
         return false
     }
 
-    object Singleton {
-        var instance = PostToSheets()
+    private object InstanceHolder {
+        val INSTANCE = PostToSheets()
+    }
+
+    companion object {
+        val instance: PostToSheets by lazy { InstanceHolder.INSTANCE }
     }
 }
