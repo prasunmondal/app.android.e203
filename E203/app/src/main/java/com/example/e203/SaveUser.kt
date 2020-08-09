@@ -26,15 +26,15 @@ class SaveUser : AppCompatActivity() {
         if (localConfigs.doesUsernameExists()) {
             val username = localConfigs.getValue("username")
             if (username != null && isValidUserName(username)) {
-                PostToSheets.instance.logs.updatePrependList(listOf(username))
-                PostToSheets.instance.logs.post(
+                PostToSheets.logs.updatePrependList(listOf(username))
+                PostToSheets.logs.post(
                     "As per saved login data - $username",
                     applicationContext
                 )
                 goToMainPage()
             }
         } else {
-            PostToSheets.instance.logs.post(
+            PostToSheets.logs.post(
                 "No login saved data found",
                 applicationContext
             )
@@ -46,13 +46,13 @@ class SaveUser : AppCompatActivity() {
         val username: String = userSelection.selectedItem.toString()
 
         localConfigs.setValue("username", username)
-        PostToSheets.instance.logs.updatePrependList(listOf(username))
+        PostToSheets.logs.updatePrependList(listOf(username))
 
         if (isValidUserName(username)) {
-            PostToSheets.instance.logs.post("Login as - $username", applicationContext)
+            PostToSheets.logs.post("Login as - $username", applicationContext)
             goToMainPage()
         } else {
-            PostToSheets.instance.logs.post(
+            PostToSheets.logs.post(
                 "Login failed - No User Selected",
                 applicationContext
             )
@@ -61,8 +61,8 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun onClickSaveUserSkipButton(view: View) {
-        PostToSheets.instance.logs.updatePrependList(listOf("Anonymous"))
-        PostToSheets.instance.logs.post("Login as - anonymous", applicationContext)
+        PostToSheets.logs.updatePrependList(listOf("Anonymous"))
+        PostToSheets.logs.post("Login as - anonymous", applicationContext)
         goToMainPage()
     }
 
