@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.PostToSheets
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
@@ -14,6 +15,7 @@ class WelcomeScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome_screen)
+        ErrorHandle().reportUnhandledException(applicationContext)
         initiallize()
 
         PostToSheets.Singleton.instance.logs.post("App Opened", applicationContext)

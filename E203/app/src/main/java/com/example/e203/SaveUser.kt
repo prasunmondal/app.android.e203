@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.PostToSheets
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
@@ -22,41 +23,9 @@ class SaveUser : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_save_user)
-
+        ErrorHandle().reportUnhandledException(applicationContext)
         AppContexts.initialContext = this
         populateSystemInfo()
-
-        Thread.setDefaultUncaughtExceptionHandler { _, paramThrowable -> //Catch your exception
-            // Without System.exit() this will not work.
-            try {
-                object : Thread() {
-                    override fun run() {
-
-                        val sw = StringWriter()
-                        val pw = PrintWriter(sw)
-                        paramThrowable.printStackTrace(pw)
-                        val sStackTrace: String = sw.toString() // stack trace as a string
-
-                        PostToSheets.Singleton.instance.error.post(
-                            listOf(
-                                "device_details",
-                                sStackTrace
-                            ), applicationContext
-                        )
-                        Looper.prepare()
-                        Toast.makeText(
-                            applicationContext,
-                            "Error Occurred! Reporting developer..",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        Looper.loop()
-                    }
-                }.start()
-                Thread.sleep(4000)
-            } catch (e: InterruptedException) {
-            }
-            exitProcess(2)
-        }
 
         if (localConfigs.doesUsernameExists()) {
             val username = localConfigs.getValue("username")

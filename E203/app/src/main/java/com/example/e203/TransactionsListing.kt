@@ -24,6 +24,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.Utility.FileReadUtil
 import com.example.e203.portable_utils.DownloadableFiles
@@ -111,6 +112,8 @@ class TransactionsListing : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_listing)
+        ErrorHandle().reportUnhandledException(applicationContext)
+
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
 
@@ -123,38 +126,6 @@ class TransactionsListing : AppCompatActivity() {
             "Clicked - Open Breakdown View",
             applicationContext
         )
-
-        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
-            // Without System.exit() this will not work.
-            try {
-                object : Thread() {
-                    override fun run() {
-
-                        val sw = StringWriter()
-                        val pw = PrintWriter(sw)
-                        paramThrowable.printStackTrace(pw)
-                        val sStackTrace: String = sw.toString() // stack trace as a string
-
-                        PostToSheets.Singleton.instance.error.post(
-                            listOf(
-                                "device_details",
-                                sStackTrace
-                            ), applicationContext
-                        )
-                        Looper.prepare()
-                        Toast.makeText(
-                            applicationContext,
-                            "Error Occurred! Reporting developer..",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        Looper.loop()
-                    }
-                }.start()
-                Thread.sleep(4000)
-            } catch (e: InterruptedException) {
-            }
-            exitProcess(2)
-        }
 
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
         val sharedBy = TextView(this)

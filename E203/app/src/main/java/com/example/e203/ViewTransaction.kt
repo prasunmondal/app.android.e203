@@ -18,6 +18,7 @@ import android.webkit.WebViewClient
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.HardData
@@ -35,40 +36,9 @@ class ViewTransaction : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_transaction)
+        ErrorHandle().reportUnhandledException(applicationContext)
         setSupportActionBar(toolbar)
         setActionbarTextColor()
-
-        Thread.setDefaultUncaughtExceptionHandler { _, paramThrowable -> //Catch your exception
-            // Without System.exit() this will not work.
-            try {
-                object : Thread() {
-                    override fun run() {
-
-                        val sw = StringWriter()
-                        val pw = PrintWriter(sw)
-                        paramThrowable.printStackTrace(pw)
-                        val sStackTrace: String = sw.toString() // stack trace as a string
-
-                        PostToSheets.Singleton.instance.error.post(
-                            listOf(
-                                "device_details",
-                                sStackTrace
-                            ), applicationContext
-                        )
-                        prepare()
-                        Toast.makeText(
-                            applicationContext,
-                            "Error Occurred! Reporting developer..",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        Looper.loop()
-                    }
-                }.start()
-                Thread.sleep(4000)
-            } catch (e: InterruptedException) {
-            }
-            exitProcess(2)
-        }
 
         PostToSheets.Singleton.instance.logs.post(
             "Viewing Details: item: " + lc.viewTransaction.item
