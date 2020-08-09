@@ -20,8 +20,8 @@ class PostToSheet_E203 {
 //            dateFormat.timeZone = TimeZone.getTimeZone("IST")
 //
 //            PostToSheet().post(context, HardData.Singleton.instance.GSheet_logs_PostScript,
-//                HardData.Singleton.instance.GSheet_User_logs_spreadsheetURL, AppContext.Singleton.instance.uniqueDeviceID,
-//            listOf(sdf.format(Date()), appVersion, username, appContexts.systemInfo, text))
+//                HardData.Singleton.instance.GSheet_User_logs_spreadsheetURL, AppContext.instance.uniqueDeviceID,
+//            listOf(sdf.format(Date()), appVersion, username, AppContext.instance.systemInfo, text))
 //        } catch (e: Exception) {
 //
 //        }

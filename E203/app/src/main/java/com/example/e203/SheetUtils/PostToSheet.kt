@@ -3,18 +3,7 @@ package com.example.e203.SheetUtils
 import com.prasunmondal.lib.posttogsheets.PostToGSheet
 
 class ToSheets private constructor() {
-
-
-    fun skipPost(): Boolean {
-        return false
-    }
-
-    private object InstanceHolder {
-        val INSTANCE = ToSheets()
-    }
-
     companion object {
-        val instance: ToSheets by lazy { InstanceHolder.INSTANCE }
 
         val logs: PostToGSheet =
             PostToGSheet(
@@ -35,5 +24,9 @@ class ToSheets private constructor() {
                 "template",
                 true, null
             )
+    }
+
+    fun skipPost(): Boolean {
+        return false
     }
 }

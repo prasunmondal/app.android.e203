@@ -26,14 +26,13 @@ import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
 import com.example.e203.Utility.FileReadUtil
 import com.example.e203.portable_utils.DownloadableFiles
+import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
-import com.example.e203.sessionData.AppContext.Singleton.instance as appContext
-
 
 class TransactionRecord {
 
@@ -95,9 +94,9 @@ class TransactionsListing : AppCompatActivity() {
     private var current_showDecimal = false
 
     val breakdownSheet = DownloadableFiles(
-        appContext.initialContext,
+        AppContext.instance.initialContext,
         FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
-        appContext.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
+        AppContext.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
         "",
         "calculatingSheet.csv",
         "E203",
@@ -116,7 +115,7 @@ class TransactionsListing : AppCompatActivity() {
             initDisplay()
         setSupportActionBar(toolbar)
         setActionbarTextColor()
-        appContext.initialContext = this
+        AppContext.instance.initialContext = this
         ToSheets.logs.post(
             "Clicked - Open Breakdown View",
             applicationContext
@@ -328,7 +327,7 @@ class TransactionsListing : AppCompatActivity() {
         price1.setPadding(20, 0, 20, 0)
 
         val itemNameField = TextView(this)
-        itemNameField.width = (getScreenWidth(appContext.initialContext) - (15 + 307 + 50))
+        itemNameField.width = (getScreenWidth(AppContext.instance.initialContext) - (15 + 307 + 50))
         itemNameField.textSize = 15F
         itemNameField.setTextColor(resources.getColor(textColor))
         itemNameField.layoutParams = LinearLayout.LayoutParams(
@@ -350,7 +349,7 @@ class TransactionsListing : AppCompatActivity() {
 
         val sharedBy = TextView(this)
         sharedBy.textSize = 12F
-        sharedBy.width = (getScreenWidth(appContext.initialContext) - (200 + 50))
+        sharedBy.width = (getScreenWidth(AppContext.instance.initialContext) - (200 + 50))
         sharedBy.alpha = 0.6F
         sharedBy.setTextColor(resources.getColor(R.color.textColorCreator))
         sharedBy.layoutParams = LinearLayout.LayoutParams(

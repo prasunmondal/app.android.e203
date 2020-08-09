@@ -60,7 +60,7 @@ class AppBrowser : AppCompatActivity() {
         webView.webChromeClient = WebChromeClient()
         loadPage(HardData.Singleton.instance.submitFormURL)
 
-        AppContext.Singleton.instance.initialContext = this
+        AppContext.instance.initialContext = this
 
         supportActionBar!!.setDisplayShowTitleEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)

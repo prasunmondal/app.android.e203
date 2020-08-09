@@ -4,8 +4,12 @@ import android.content.Context
 
 class AppContext {
 
-    object Singleton {
-        val instance = AppContext()
+    private object InstanceHolder {
+        val INSTANCE = AppContext()
+    }
+
+    companion object {
+        val instance: AppContext by lazy { InstanceHolder.INSTANCE }
     }
 
     lateinit var initialContext: Context

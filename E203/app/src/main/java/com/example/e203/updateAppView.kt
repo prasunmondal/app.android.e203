@@ -39,9 +39,9 @@ class updateAppView : AppCompatActivity() {
         ToSheets.logs.post("Download apk url: " + apkUrl, applicationContext)
 
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
-            AppContext.Singleton.instance.initialContext,
+            AppContext.instance.initialContext,
             apkUrl!!,
-            AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+            AppContext.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
                 .toString(), "", "update.apk",
             "E203", "Downloading Update"
         )

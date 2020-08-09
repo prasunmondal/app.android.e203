@@ -8,9 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
+import com.example.e203.sessionData.AppContext
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
-import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
 
 
@@ -20,7 +20,7 @@ class SaveUser : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_save_user)
         ErrorHandle().reportUnhandledException(applicationContext)
-        AppContexts.initialContext = this
+        AppContext.instance.initialContext = this
         populateSystemInfo()
 
         if (localConfigs.doesUsernameExists()) {
@@ -77,11 +77,11 @@ class SaveUser : AppCompatActivity() {
     }
 
     private fun populateSystemInfo() {
-        AppContexts.systemInfo = DeviceInfo.get(Device.MAC_ADDRESS)
-        AppContexts.systemInfo += ", " + DeviceInfo.get(Device.IN_INCH)
-        AppContexts.systemInfo += ", " + DeviceInfo.get(Device.HARDWARE_MODEL)
-        AppContexts.systemInfo += ", " + DeviceInfo.get(Device.NUMBER_OF_PROCESSORS)
-        AppContexts.systemInfo += ", " + DeviceInfo.get(Device.SYSTEM_NAME)
-        AppContexts.systemInfo += ", " + DeviceInfo.get(Device.VERSION)
+        AppContext.instance.systemInfo = DeviceInfo.get(Device.MAC_ADDRESS)
+        AppContext.instance.systemInfo += ", " + DeviceInfo.get(Device.IN_INCH)
+        AppContext.instance.systemInfo += ", " + DeviceInfo.get(Device.HARDWARE_MODEL)
+        AppContext.instance.systemInfo += ", " + DeviceInfo.get(Device.NUMBER_OF_PROCESSORS)
+        AppContext.instance.systemInfo += ", " + DeviceInfo.get(Device.SYSTEM_NAME)
+        AppContext.instance.systemInfo += ", " + DeviceInfo.get(Device.VERSION)
     }
 }
