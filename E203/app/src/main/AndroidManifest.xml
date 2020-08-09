@@ -15,9 +15,9 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:label="E203"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:label="E203"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
@@ -30,13 +30,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".updateAppView"/>
-        <activity android:name=".ViewTransaction"/>
-        <activity android:name=".AppBrowser"/>
-        <activity android:name=".TransactionsListing"/>
+        <activity android:name=".updateAppView" />
+        <activity android:name=".ViewTransaction" />
+        <activity android:name=".AppBrowser" />
+        <activity android:name=".TransactionsListing" />
         <activity android:name=".ShowPaymentOptions" />
-        <activity android:name=".SaveUser"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".SaveUser" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".Utility.Notification" />
 
         <provider

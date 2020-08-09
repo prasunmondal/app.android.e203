@@ -122,6 +122,7 @@ class ViewTransaction : AppCompatActivity() {
         loadPage(lc.viewTransaction.editLink)
     }
 
+    @SuppressLint("SetTextI18n")
     fun onClickEdit(view: View) {
         val webView: WebView = findViewById(R.id.editBrowser)
         val editTransactionButton = findViewById<TextView>(R.id.editTransactionButton)

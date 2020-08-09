@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="bottom|right"
-    android:id="@+id/mainLayout"
     android:foregroundGravity="bottom|right"
     tools:context=".MainActivity">
 
@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        >
+        android:elevation="4dp">
 
         <TextView
             android:id="@+id/title"
@@ -45,8 +44,6 @@
         app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
 
     </WebView>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

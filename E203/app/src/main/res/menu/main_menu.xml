@@ -6,9 +6,9 @@
 
     <item
         android:id="@+id/action_favorite"
+        android:icon="@drawable/defaultusericon"
         android:orderInCategory="300"
         android:title="User"
-        android:icon="@drawable/defaultusericon"
         app:showAsAction="ifRoom"></item>
 
 </menu>
