@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
-import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -12,8 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.PostToSheets
-import java.io.PrintWriter
-import java.io.StringWriter
 import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetaDatas
 
 

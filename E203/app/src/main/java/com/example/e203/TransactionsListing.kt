@@ -9,7 +9,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Environment
-import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -21,7 +20,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.ErrorReporting.ErrorHandle
@@ -31,11 +29,8 @@ import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
-import java.io.PrintWriter
-import java.io.StringWriter
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import kotlin.system.exitProcess
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
 import com.example.e203.sessionData.AppContext.Singleton.instance as appContext
 

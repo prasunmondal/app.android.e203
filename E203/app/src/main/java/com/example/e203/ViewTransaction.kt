@@ -6,8 +6,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Looper
-import android.os.Looper.prepare
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -23,11 +21,8 @@ import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.HardData
 import kotlinx.android.synthetic.main.activity_view_transaction.*
-import java.io.PrintWriter
-import java.io.StringWriter
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import kotlin.system.exitProcess
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as lc
 
 class ViewTransaction : AppCompatActivity() {

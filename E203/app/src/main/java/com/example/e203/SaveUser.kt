@@ -2,7 +2,6 @@ package com.example.e203
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Looper
 import android.view.View
 import android.widget.Spinner
 import android.widget.Toast
@@ -11,9 +10,6 @@ import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.PostToSheets
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
-import java.io.PrintWriter
-import java.io.StringWriter
-import kotlin.system.exitProcess
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfigs
 

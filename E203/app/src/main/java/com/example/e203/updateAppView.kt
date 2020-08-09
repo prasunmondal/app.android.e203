@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -17,8 +16,6 @@ import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.FetchedMetaData
 import kotlinx.android.synthetic.main.activity_update_app_view.*
 import java.io.File
-import java.io.PrintWriter
-import java.io.StringWriter
 
 class updateAppView : AppCompatActivity() {
 
