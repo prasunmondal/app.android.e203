@@ -3,7 +3,6 @@ package com.example.e203.mailUtils
 import android.view.View
 import com.example.e203.BuildConfig
 import com.prasunmondal.mbros_delivery.utils.mailUtils.SendMailTrigger
-import java.lang.Exception
 import com.example.e203.sessionData.LocalConfig.Singleton.instance as localConfig
 
 class Mails_E203 {
@@ -11,7 +10,7 @@ class Mails_E203 {
     fun mail(text: String, deviceID: String, view: View) {
         var isDev = false
 
-        if(isDev)
+        if (isDev)
             return
         try {
             var message = ""

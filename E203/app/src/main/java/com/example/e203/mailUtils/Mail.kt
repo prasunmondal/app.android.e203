@@ -15,7 +15,7 @@ import javax.mail.internet.MimeMultipart
 class Mail() : Authenticator() {
     private var _user = ""
     private var _pass = ""
-    lateinit private var _to: Array<String>
+    private lateinit var _to: Array<String>
     private var _from = ""
     private var _port = "465"
     private var _sport = "465"
@@ -57,10 +57,9 @@ class Mail() : Authenticator() {
             _multipart.addBodyPart(messageBodyPart)
             msg.setHeader("X-Priority", "1")
             // Put parts in message
-            if(isHTML) {
+            if (isHTML) {
                 msg.setContent(body, "text/html; charset=utf-8")
-            }
-            else {
+            } else {
                 msg.setContent(_multipart)
             }
             // send email

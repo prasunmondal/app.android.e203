@@ -5,11 +5,11 @@ import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManage
 
 class FetchedMetaData {
 
-    val APP_DOWNLOAD_LINK= "app_download_link"
-    val APP_DOWNLOAD_VERSION= "app_versCode"
-    val PAYMENT_UPI_PAY_UPIID= "upi_paymentID"
+    val APP_DOWNLOAD_LINK = "app_download_link"
+    val APP_DOWNLOAD_VERSION = "app_versCode"
+    val PAYMENT_UPI_PAY_UPIID = "upi_paymentID"
     val PAYMENT_UPI_PAY_NAME = "upi_paymentReceivePersonName"
-    val PAYMENT_UPI_PAY_DESCRIPTION= "upi_paymentDescription"
+    val PAYMENT_UPI_PAY_DESCRIPTION = "upi_paymentDescription"
 
     val TAG_CURRENT_OUTSTANDING = "currentOutstanding_"
     val TAG_PENDING_BILL = "pendingBill_"
@@ -17,6 +17,7 @@ class FetchedMetaData {
     var TAG_BREAKDOWN_URL = "breakdownCurrentTest"
 
     private var fetchedDataMap: MutableMap<String, String> = mutableMapOf()
+
     object Singleton {
         var instance = FetchedMetaData()
     }
@@ -24,7 +25,8 @@ class FetchedMetaData {
     fun getValue(key: String): String? {
         FileReadUtils.readPairCSVnPopulateMap(
             fetchedDataMap,
-            FileManagers.metadata.localURL)
+            FileManagers.metadata.localURL
+        )
         return fetchedDataMap[key]
     }
 

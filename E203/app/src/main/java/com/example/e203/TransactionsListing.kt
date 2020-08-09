@@ -7,11 +7,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.Environment
 import android.os.Looper
-import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -28,8 +26,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.Utility.FileReadUtil
-import com.example.e203.Utility.PostToSheet_E203
-import com.example.e203.mailUtils.Mails_E203
 import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
@@ -38,7 +34,6 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import java.util.*
 import kotlin.system.exitProcess
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
 import com.example.e203.sessionData.AppContext.Singleton.instance as appContext
@@ -106,8 +101,11 @@ class TransactionsListing : AppCompatActivity() {
     val breakdownSheet = DownloadableFiles(
         appContext.initialContext,
         FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
-        appContext.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv",
-        "E203", "fetching transaction details"
+        appContext.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
+        "",
+        "calculatingSheet.csv",
+        "E203",
+        "fetching transaction details"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,12 +114,15 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
 
-        if(breakdownSheet.doesExist())
+        if (breakdownSheet.doesExist())
             initDisplay()
         setSupportActionBar(toolbar)
         setActionbarTextColor()
         appContext.initialContext = this
-        PostToSheets.Singleton.instance.logs.post("Clicked - Open Breakdown View", applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Clicked - Open Breakdown View",
+            applicationContext
+        )
 
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable -> //Catch your exception
             // Without System.exit() this will not work.
@@ -134,9 +135,18 @@ class TransactionsListing : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        PostToSheets.Singleton.instance.error.post(listOf("device_details", sStackTrace), applicationContext)
+                        PostToSheets.Singleton.instance.error.post(
+                            listOf(
+                                "device_details",
+                                sStackTrace
+                            ), applicationContext
+                        )
                         Looper.prepare()
-                        Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            applicationContext,
+                            "Error Occurred! Reporting developer..",
+                            Toast.LENGTH_LONG
+                        ).show()
                         Looper.loop()
                     }
                 }.start()
@@ -148,23 +158,29 @@ class TransactionsListing : AppCompatActivity() {
 
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
         val sharedBy = TextView(this)
-        if(!breakdownSheet.doesExist())
+        if (!breakdownSheet.doesExist())
             sharedBy.text = label_DownloadingData
 
         sharedBy.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         sharedBy.gravity = Gravity.CENTER
-        sharedBy.setPadding(0,150,0,10)
+        sharedBy.setPadding(0, 150, 0, 10)
         linearLayout.addView(sharedBy)
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
         breakdownSheet.download(this, ::startDisplay)
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - downloading data", applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Breakdown View - downloading data",
+            applicationContext
+        )
     }
 
     private var displayStarted = false
     private fun startDisplay() {
-        if(!displayStarted)
-            PostToSheets.Singleton.instance.logs.post("Breakdown View - data downloaded", applicationContext)
+        if (!displayStarted)
+            PostToSheets.Singleton.instance.logs.post(
+                "Breakdown View - data downloaded",
+                applicationContext
+            )
         displayStarted = true
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
@@ -174,8 +190,11 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     private fun initDisplay() {
-        if(!displayStarted)
-            PostToSheets.Singleton.instance.logs.post("Breakdown View - data downloaded", applicationContext)
+        if (!displayStarted)
+            PostToSheets.Singleton.instance.logs.post(
+                "Breakdown View - data downloaded",
+                applicationContext
+            )
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         TransactionsManager.Singleton.instance.transactions.reverse()
@@ -185,7 +204,7 @@ class TransactionsListing : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun displayCards() {
-        var i=1
+        var i = 1
         val tabType = Tabs.Singleton.instance.activeTab
         transactionSort(tabType)
 
@@ -212,32 +231,32 @@ class TransactionsListing : AppCompatActivity() {
         }
 
         var sum = 0.0
-        for(z:Int in 0 until TransactionsManager.Singleton.instance.transactions.size) {
+        for (z: Int in 0 until TransactionsManager.Singleton.instance.transactions.size) {
             val result = addMyCreditTextBox(
                 i,
                 TransactionsManager.Singleton.instance.transactions[z],
                 showMethod,
                 tabType
             )
-            if (result != null){
+            if (result != null) {
                 i++
                 sum = result.plus(sum)
             }
         }
 
-        if(i==1) {
-                val lLayout = findViewById<LinearLayout>(R.id.cardContainers)
-                val sharedBy = TextView(this)
-                if(displayStarted)
-                    sharedBy.text = "No Transactions Found!"
-                else if(!breakdownSheet.doesExist())
-                    sharedBy.text = label_DownloadingData
-                sharedBy.setTextColor(resources.getColor(R.color.tabs_text_inactive))
-                sharedBy.gravity = Gravity.CENTER
-                sharedBy.setPadding(0, 150, 0, 10)
-                lLayout.addView(sharedBy)
+        if (i == 1) {
+            val lLayout = findViewById<LinearLayout>(R.id.cardContainers)
+            val sharedBy = TextView(this)
+            if (displayStarted)
+                sharedBy.text = "No Transactions Found!"
+            else if (!breakdownSheet.doesExist())
+                sharedBy.text = label_DownloadingData
+            sharedBy.setTextColor(resources.getColor(R.color.tabs_text_inactive))
+            sharedBy.gravity = Gravity.CENTER
+            sharedBy.setPadding(0, 150, 0, 10)
+            lLayout.addView(sharedBy)
         }
-        if(displayStarted) {
+        if (displayStarted) {
             var totalString = ""
             val totalField2 = findViewById<TextView>(R.id.totalView)
             when (tabType) {
@@ -257,7 +276,8 @@ class TransactionsListing : AppCompatActivity() {
             totalField2.text =
                 totalString + "₹ ${round2Decimal(sum.toString())}    |    ${i - 1} items"
             if (tabType == Tabs.Singleton.instance.Tab_MyTransaction && !current_showDecimal)
-                totalField2.text = totalString + "₹ ${roundInt(sum.toString())}    |    ${i - 1} items"
+                totalField2.text =
+                    totalString + "₹ ${roundInt(sum.toString())}    |    ${i - 1} items"
         }
 
 
@@ -289,16 +309,21 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun addMyCreditTextBox(serialNo: Int, transaction: TransactionRecord, showConstraint: (TransactionRecord) -> Boolean, tabType: String): Double? {
-        if(!showConstraint.invoke(transaction))
+    private fun addMyCreditTextBox(
+        serialNo: Int,
+        transaction: TransactionRecord,
+        showConstraint: (TransactionRecord) -> Boolean,
+        tabType: String
+    ): Double? {
+        if (!showConstraint.invoke(transaction))
             return null
 
         var textColor = R.color.cardsColor_debit
 
-        if(tabType == Tabs.Singleton.instance.Tab_MySpent)
+        if (tabType == Tabs.Singleton.instance.Tab_MySpent)
             textColor = R.color.cardsColor_credit
 
-        if(!isDebitTransaction(transaction))
+        if (!isDebitTransaction(transaction))
             textColor = R.color.notInvolvedTextColorRow1
 
         val linearLayout = findViewById<LinearLayout>(R.id.cardContainers)
@@ -318,7 +343,7 @@ class TransactionsListing : AppCompatActivity() {
         linearLayout.addView(cardView)
 
         val serialNoField = TextView(this)
-        serialNoField.textSize=15F
+        serialNoField.textSize = 15F
         serialNoField.setTextColor(resources.getColor(textColor))
         serialNoField.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -327,8 +352,8 @@ class TransactionsListing : AppCompatActivity() {
         serialNoField.setPadding(20, 0, 0, 0)
 
         val price1 = TextView(this)
-        price1.width=407
-        price1.textSize=15F
+        price1.width = 407
+        price1.textSize = 15F
         price1.gravity = END
         price1.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -337,8 +362,8 @@ class TransactionsListing : AppCompatActivity() {
         price1.setPadding(20, 0, 20, 0)
 
         val itemNameField = TextView(this)
-        itemNameField.width=(getScreenWidth(appContext.initialContext) - (15 + 307 + 50))
-        itemNameField.textSize=15F
+        itemNameField.width = (getScreenWidth(appContext.initialContext) - (15 + 307 + 50))
+        itemNameField.textSize = 15F
         itemNameField.setTextColor(resources.getColor(textColor))
         itemNameField.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -348,7 +373,7 @@ class TransactionsListing : AppCompatActivity() {
 
         val price2 = TextView(this)
         price2.textSize = 12F
-        price2.width=300
+        price2.width = 300
         price2.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -383,10 +408,11 @@ class TransactionsListing : AppCompatActivity() {
         itemNameField.text = transaction.item
         showPrices_textNColor(price1, transaction, price1_getText(tabType, transaction))
         showPrices_textNColor(price2, transaction, price2_getText(tabType, transaction))
-        recordOriginDetailsField.text = "+ " + get1word(transaction.name) + " . " + transaction.createTime.split(" ")[0]
-        if(current_cardType == cardType_minimal)
+        recordOriginDetailsField.text =
+            "+ " + get1word(transaction.name) + " . " + transaction.createTime.split(" ")[0]
+        if (current_cardType == cardType_minimal)
             sharedBy.text = ""
-        else if(current_cardType == cardType_relevant)
+        else if (current_cardType == cardType_relevant)
             sharedBy.text = get1word(transaction.sharedBy)
         else
             sharedBy.text = transaction.time + " . " + get1word(transaction.sharedBy)
@@ -414,7 +440,7 @@ class TransactionsListing : AppCompatActivity() {
 
         llv1.addView(llh1)
         llv1.addView(llh2)
-        if(current_cardType == cardType_all)
+        if (current_cardType == cardType_all)
             llv1.addView(llh3)
 
         llv0.setOnClickListener {
@@ -425,13 +451,13 @@ class TransactionsListing : AppCompatActivity() {
         serialNoField.setTextColor(getColor_text1(tabType, transaction))
         itemNameField.setTextColor(getColor_text1(tabType, transaction))
 
-        if(tabType == Tabs.Singleton.instance.Tab_MyTransaction)
+        if (tabType == Tabs.Singleton.instance.Tab_MyTransaction)
             return transaction.userDebit.toDouble() - transaction.userCredit.toDouble()
-        if(tabType == Tabs.Singleton.instance.Tab_MySpent)
+        if (tabType == Tabs.Singleton.instance.Tab_MySpent)
             return transaction.userCredit.toDouble()
-        if(tabType == Tabs.Singleton.instance.Tab_MyExpenses)
+        if (tabType == Tabs.Singleton.instance.Tab_MyExpenses)
             return transaction.userDebit.toDouble()
-        if(tabType == Tabs.Singleton.instance.Tab_showAll)
+        if (tabType == Tabs.Singleton.instance.Tab_showAll)
             return transaction.price.toDouble()
         return 0.0
     }
@@ -439,9 +465,9 @@ class TransactionsListing : AppCompatActivity() {
     private fun get1word(str: String): String {
         val names: MutableList<String> = str.split(", ") as MutableList<String>
         var result = ""
-        for(i:Int in 0 until names.size) {
-            if(i!=0)
-                result+=", "
+        for (i: Int in 0 until names.size) {
+            if (i != 0)
+                result += ", "
             result += names[i].split(" ")[0]
         }
         return result
@@ -450,11 +476,11 @@ class TransactionsListing : AppCompatActivity() {
     private val username = LocalConfig.Singleton.instance.getValue("username")!!
 
     private fun isCreditTransaction(transaction: TransactionRecord): Boolean {
-        return  transaction.name.contains(username)
+        return transaction.name.contains(username)
     }
 
     private fun isDebitTransaction(transaction: TransactionRecord): Boolean {
-        return  transaction.sharedBy.contains(username) || transaction.sharedBy.contains("All")
+        return transaction.sharedBy.contains(username) || transaction.sharedBy.contains("All")
     }
 
     private fun showAll(transaction: TransactionRecord): Boolean {
@@ -462,13 +488,16 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     private fun isMyTransactions(transaction: TransactionRecord): Boolean {
-        return  isCreditTransaction(transaction) || isDebitTransaction(transaction)
+        return isCreditTransaction(transaction) || isDebitTransaction(transaction)
     }
 
     fun tabShowall(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_showAll
         displayCards()
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab,
+            applicationContext
+        )
     }
 
     private fun setTabFormatting(activeTab: String) {
@@ -504,27 +533,36 @@ class TransactionsListing : AppCompatActivity() {
     fun tabMyexpenses(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyExpenses
         displayCards()
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab,
+            applicationContext
+        )
     }
 
     fun tabMyspent(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MySpent
         displayCards()
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab,
+            applicationContext
+        )
     }
 
     fun tabMytransaction(view: View) {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         displayCards()
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab, applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Breakdown View - Tab Change: " + Tabs.Singleton.instance.activeTab,
+            applicationContext
+        )
     }
 
     private fun transactionSort(activeTab: String) {
-        if(!displayStarted)
+        if (!displayStarted)
             return
 
         findViewById<TextView>(R.id.labelSort).text = currentSortOrder
-        when(currentSortOrder) {
+        when (currentSortOrder) {
             sortTag_date_Asc -> {
                 TransactionsManager.Singleton.instance.transactions = mutableListOf()
                 FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
@@ -590,7 +628,7 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     private fun round2Decimal(st: String): String {
-        if(!current_showDecimal) {
+        if (!current_showDecimal) {
             val df = DecimalFormat("#")
             df.roundingMode = RoundingMode.FLOOR
             return df.format(st.toDouble())
@@ -607,7 +645,7 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     private fun getColor_text1(tabType: String, transaction: TransactionRecord): Int {
-        if(!isCreditTransaction(transaction) && !isDebitTransaction(transaction)) {
+        if (!isCreditTransaction(transaction) && !isDebitTransaction(transaction)) {
             return resources.getColor(R.color.notInvolvedTextColorRow1)
         }
         when (tabType) {
@@ -630,7 +668,7 @@ class TransactionsListing : AppCompatActivity() {
     private fun price1_getText(tabType: String, transaction: TransactionRecord): String {
         when (tabType) {
             Tabs.Singleton.instance.Tab_showAll -> {
-                if(isCreditTransaction(transaction))
+                if (isCreditTransaction(transaction))
                     return priceType_CREDIT
                 return priceType_TOTAL
             }
@@ -653,7 +691,7 @@ class TransactionsListing : AppCompatActivity() {
                 return priceType_DEBIT
             }
             Tabs.Singleton.instance.Tab_MyExpenses -> {
-                if(isCreditTransaction(transaction))
+                if (isCreditTransaction(transaction))
                     return priceType_CREDIT
                 return priceType_TOTAL
             }
@@ -661,7 +699,7 @@ class TransactionsListing : AppCompatActivity() {
                 return priceType_DEBIT
             }
             Tabs.Singleton.instance.Tab_MyTransaction -> {
-                if(isCreditTransaction(transaction))
+                if (isCreditTransaction(transaction))
                     return priceType_CREDIT
                 return priceType_TOTAL
             }
@@ -670,7 +708,11 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showPrices_textNColor(textView: TextView, transaction: TransactionRecord, priceType: String) {
+    private fun showPrices_textNColor(
+        textView: TextView,
+        transaction: TransactionRecord,
+        priceType: String
+    ) {
         val pre = "₹ "
         when (priceType) {
             priceType_CREDIT -> {
@@ -679,7 +721,7 @@ class TransactionsListing : AppCompatActivity() {
             }
             priceType_DEBIT -> {
                 textView.text = pre + round2Decimal(transaction.userDebit)
-                if(isDebitTransaction(transaction))
+                if (isDebitTransaction(transaction))
                     textView.setTextColor(resources.getColor(R.color.cardsColor_debit))
                 else {
                     textView.setTextColor(resources.getColor(R.color.notInvolvedTextColorRow1))
@@ -717,7 +759,8 @@ class TransactionsListing : AppCompatActivity() {
 
         findViewById<TextView>(R.id.toolbar_Text1).text = "Transactions"
         try {
-            val user = LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)
+            val user =
+                LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)
             if (user!!.isNotEmpty())
                 findViewById<TextView>(R.id.toolbar_Text2).text = "- " + user
         } catch (e: Exception) {
@@ -732,7 +775,7 @@ class TransactionsListing : AppCompatActivity() {
     }
 
     private fun changeSortOrder() {
-        when(currentSortOrder) {
+        when (currentSortOrder) {
             sortTag_date_Desc -> {
                 currentSortOrder = sortTag_date_Asc
             }
@@ -752,7 +795,10 @@ class TransactionsListing : AppCompatActivity() {
                 currentSortOrder = sortTag_date_Desc
             }
         }
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Change Sort: $currentSortOrder", applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Breakdown View - Change Sort: $currentSortOrder",
+            applicationContext
+        )
         displayCards()
     }
 
@@ -760,12 +806,11 @@ class TransactionsListing : AppCompatActivity() {
         val ll2 = findViewById<LinearLayout>(R.id.linearLayout2)
         val params: ViewGroup.LayoutParams = ll2.layoutParams
 
-        val tview =findViewById<TextView>(R.id.tabMore)
-        if(params.height == 0) {
+        val tview = findViewById<TextView>(R.id.tabMore)
+        if (params.height == 0) {
             params.height = 90
             tview.setTextColor(resources.getColor(R.color.tabs_text_active))
-        }
-        else {
+        } else {
             params.height = 0
             tview.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         }
@@ -784,7 +829,10 @@ class TransactionsListing : AppCompatActivity() {
                 current_cardType = cardType_all
             }
         }
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Change Card View: $current_cardType", applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Breakdown View - Change Card View: $current_cardType",
+            applicationContext
+        )
         applyCardView()
     }
 
@@ -813,14 +861,16 @@ class TransactionsListing : AppCompatActivity() {
 
     private fun changeDecimalValue() {
         current_showDecimal = !current_showDecimal
-        val tview =findViewById<TextView>(R.id.labelDecimalView)
-        if(current_showDecimal) {
+        val tview = findViewById<TextView>(R.id.labelDecimalView)
+        if (current_showDecimal) {
             tview.setTextColor(resources.getColor(R.color.tabs_text_active))
-        }
-        else {
+        } else {
             tview.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         }
-        PostToSheets.Singleton.instance.logs.post("Breakdown View - Decimal Show: " + current_showDecimal, applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Breakdown View - Decimal Show: " + current_showDecimal,
+            applicationContext
+        )
         displayCards()
     }
 }

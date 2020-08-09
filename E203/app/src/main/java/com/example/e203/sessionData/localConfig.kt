@@ -8,7 +8,7 @@ import com.example.e203.appData.FileManagerUtil.Singleton.instance as FileManage
 
 class LocalConfig {
 
-    val USERNAME= "username"
+    val USERNAME = "username"
     lateinit var viewTransaction: TransactionRecord
 
     private var localConfigMap: MutableMap<String, String> = mutableMapOf()
@@ -20,21 +20,25 @@ class LocalConfig {
     fun setValue(key: String, value: String) {
         localConfigMap[key] = value
 
-        FileWriteUtils.writeToInternalFile(FileManagerUtils.localConfigurationStorage,
-            FileWriteUtils.deseriallizeFromMap(localConfigMap))
+        FileWriteUtils.writeToInternalFile(
+            FileManagerUtils.localConfigurationStorage,
+            FileWriteUtils.deseriallizeFromMap(localConfigMap)
+        )
     }
 
-    fun getValue(key: String) : String? {
-        FileReadUtils.readPairCSVnPopulateMap(localConfigMap,
-            FileManagerUtils.localConfigurationStorage)
+    fun getValue(key: String): String? {
+        FileReadUtils.readPairCSVnPopulateMap(
+            localConfigMap,
+            FileManagerUtils.localConfigurationStorage
+        )
 
         return localConfigMap[key]
     }
 
     fun doesUsernameExists(): Boolean {
-        if(FileManagerUtils.doesFileExist(FileManagerUtils.localConfigurationStorage)) {
+        if (FileManagerUtils.doesFileExist(FileManagerUtils.localConfigurationStorage)) {
             val username = getValue(USERNAME)
-            if(username != null && username.isNotEmpty()) {
+            if (username != null && username.isNotEmpty()) {
                 return true
             }
         }

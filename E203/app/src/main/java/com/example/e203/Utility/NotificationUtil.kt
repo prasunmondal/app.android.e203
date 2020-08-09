@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import com.example.e203.R
 
 fun showNotification(This: Context, title: String, message: String) {
-    Notification().showNotification(This, title,message)
+    Notification().showNotification(This, title, message)
 }
 
 class Notification : AppCompatActivity() {
@@ -21,11 +21,11 @@ class Notification : AppCompatActivity() {
     fun showNotification(This: Context, title: String, messageBody: String) {
         var intent = Intent(This, Notification::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity (
+        val pendingIntent = PendingIntent.getActivity(
             This, 0 /* Request code */, intent,
             PendingIntent.FLAG_ONE_SHOT
         )
-        val channelId ="1"
+        val channelId = "1"
         val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder =
             NotificationCompat.Builder(This, channelId)

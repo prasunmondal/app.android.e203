@@ -15,12 +15,16 @@ class FileManagerUtil {
     object Singleton {
         var instance = FileManagerUtil()
     }
+
     var rootFromContext = AppContexts.initialContext.filesDir.absolutePath
 
     var localConfigurationStorage = FilePaths(rootFromContext, "AppData", "AppConfigurationData")
 
     var downloadLink_CalculatingSheet = FilePaths(
-        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "calculatingSheet.csv")
+        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
+        "",
+        "calculatingSheet.csv"
+    )
 
 
 //    var breakdownSheet = DownloadableFiles(
@@ -35,14 +39,18 @@ class FileManagerUtil {
     var metadata = DownloadableFiles(
         AppContexts.initialContext,
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pub?gid=1321322233&single=true&output=csv",
-        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "metadata.csv",
-        "E203", "fetching metadata"
+        AppContexts.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
+        "",
+        "metadata.csv",
+        "E203",
+        "fetching metadata"
     )
 
     var updateAPK = DownloadableFiles(
         AppContext.Singleton.instance.initialContext,
         "",
-        AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), "", "update.apk",
+        AppContext.Singleton.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+            .toString(), "", "update.apk",
         "E203", "downloading update"
     )
 

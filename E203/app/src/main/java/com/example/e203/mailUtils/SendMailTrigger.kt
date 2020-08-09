@@ -1,7 +1,6 @@
 package com.prasunmondal.mbros_delivery.utils.mailUtils
 
 import android.view.View
-import com.google.android.material.snackbar.Snackbar
 
 class SendMailTrigger {
 
@@ -11,7 +10,17 @@ class SendMailTrigger {
 
     // SendMailTrigger().sendMessage("prsn.online@gmail.com", "pgrgewhikkeocgsx" ,arrayOf("prsn.online@gmail.com"), getSubject(), getMailBody(), view, "Sending Request...", "Request Sent.", false)
 
-    fun sendMessage(fromEmail: String, fromEmailKey: String, recipients: Array<String>, subject: String, body: String, view: View, initialMessage: String, finalMessage: String, isHTML: Boolean) {
+    fun sendMessage(
+        fromEmail: String,
+        fromEmailKey: String,
+        recipients: Array<String>,
+        subject: String,
+        body: String,
+        view: View,
+        initialMessage: String,
+        finalMessage: String,
+        isHTML: Boolean
+    ) {
         this.viewStore = view
         this.initialMessage = initialMessage
         this.finalMessage = finalMessage

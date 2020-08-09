@@ -16,7 +16,14 @@ open class DownloadUtil(private val context: Context) {
         private const val MIME_TYPE = "application/vnd.android.package-archive"
     }
 
-    fun enqueueDownload(context: Context, url: String, destination: String, downloadTitle: String, downloadDescription: String, onComplete: () -> Unit?) {
+    fun enqueueDownload(
+        context: Context,
+        url: String,
+        destination: String,
+        downloadTitle: String,
+        downloadDescription: String,
+        onComplete: () -> Unit?
+    ) {
         val uri = Uri.parse("$FILE_BASE_PATH$destination")
 
         val file = File(destination)
@@ -29,7 +36,7 @@ open class DownloadUtil(private val context: Context) {
         request.setTitle(downloadTitle)
         request.setDescription(downloadDescription)
         request.setDestinationUri(uri)
-        if(onComplete != null)
+        if (onComplete != null)
             showInstallOption(onComplete)
         downloadManager.enqueue(request)
     }

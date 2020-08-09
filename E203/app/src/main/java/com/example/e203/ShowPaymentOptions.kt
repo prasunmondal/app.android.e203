@@ -1,25 +1,18 @@
 package com.example.e203
 
-import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.Looper
-import android.provider.Settings
 import android.view.View
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.SheetUtils.PostToSheets
-import com.example.e203.Utility.PostToSheet_E203
-import com.example.e203.mailUtils.Mails_E203
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.util.*
 import com.example.e203.sessionData.FetchedMetaData.Singleton.instance as fetchedMetaDatas
 
 
@@ -40,9 +33,18 @@ class ShowPaymentOptions : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        PostToSheets.Singleton.instance.error.post(listOf("device_details", sStackTrace), applicationContext)
+                        PostToSheets.Singleton.instance.error.post(
+                            listOf(
+                                "device_details",
+                                sStackTrace
+                            ), applicationContext
+                        )
                         Looper.prepare()
-                        Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            applicationContext,
+                            "Error Occurred! Reporting developer..",
+                            Toast.LENGTH_LONG
+                        ).show()
                         Looper.loop()
                     }
                 }.start()

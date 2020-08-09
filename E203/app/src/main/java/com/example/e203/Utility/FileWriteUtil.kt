@@ -13,7 +13,9 @@ class FileWriteUtil {
 
     fun writeToInternalFile(filepath: FilePaths, writeString: String): Boolean {
         val file = File(filepath.rootDir, filepath.childDir)
-        if (!file.exists()) { file.mkdir() }
+        if (!file.exists()) {
+            file.mkdir()
+        }
         try {
             val gpxfile = File(file, filepath.fileName)
             val writer = FileWriter(gpxfile)

@@ -43,7 +43,8 @@ class FileReadUtil {
 
     fun printCSVfile(
 //        map: MutableMap<String, String>,
-                     fileName: FilePaths) {
+        fileName: FilePaths
+    ) {
 
         var user = ""
 //        user = "Prasun Mondal"
@@ -66,13 +67,13 @@ class FileReadUtil {
             var lineToRead = 1
             val maxLines = 215
             var startLine = maxLines
-            while (reader.peek() != null && lineToRead<maxLines) {
+            while (reader.peek() != null && lineToRead < maxLines) {
                 lineToRead++
                 nextLine = reader.readNext()
 
-                if(nextLine[0] == "start") {
+                if (nextLine[0] == "start") {
                     startLine = lineToRead + 2
-                    for(i in 0..nextLine.size-1) {
+                    for (i in 0..nextLine.size - 1) {
                         if (nextLine[i] == "app_name")
                             nameIndex = i
                         if (nextLine[i] == "app_item")
@@ -89,39 +90,39 @@ class FileReadUtil {
                             timeIndex = i
                         if (nextLine[i] == "app_editLink")
                             editLinkIndex = i
-                        if (nextLine[i] == user+"_debit")
+                        if (nextLine[i] == user + "_debit")
                             userDebitIndex = i
-                        if (nextLine[i] == user+"_credit")
+                        if (nextLine[i] == user + "_credit")
                             userCreditIndex = i
                     }
                 }
 
 
-                if(lineToRead >= startLine) {
+                if (lineToRead >= startLine) {
                     print(
                         nextLine[nameIndex] + " - " + nextLine[itemIndex] + " - " + nextLine[sharedByIndex] + " - " + nextLine[qtyIndex] + " - " +
                                 nextLine[priceIndex] + " - " + nextLine[createTimeIndex] + " - " + nextLine[timeIndex] + " - " + nextLine[editLinkIndex]
-                    + " - " + nextLine[userDebitIndex] + " - " + nextLine[userCreditIndex]
+                                + " - " + nextLine[userDebitIndex] + " - " + nextLine[userCreditIndex]
                     )
 
                     val newRecord = TransactionRecord()
                     newRecord.name = nextLine[nameIndex]
                     newRecord.item = nextLine[itemIndex]
                     newRecord.sharedBy = nextLine[sharedByIndex]
-                    newRecord.qty = nextLine[qtyIndex].replace(",","")
-                    newRecord.price = nextLine[priceIndex].replace(",","")
+                    newRecord.qty = nextLine[qtyIndex].replace(",", "")
+                    newRecord.price = nextLine[priceIndex].replace(",", "")
                     newRecord.createTime = nextLine[createTimeIndex]
                     newRecord.time = nextLine[timeIndex]
                     newRecord.editLink = nextLine[editLinkIndex]
-                    newRecord.userDebit = nextLine[userDebitIndex].replace(",","")
-                    newRecord.userCredit = nextLine[userCreditIndex].replace(",","")
+                    newRecord.userDebit = nextLine[userDebitIndex].replace(",", "")
+                    newRecord.userCredit = nextLine[userCreditIndex].replace(",", "")
 
-                    if(newRecord.userDebit.isEmpty())
+                    if (newRecord.userDebit.isEmpty())
                         newRecord.userDebit = "0"
-                    if(newRecord.userCredit.isEmpty())
+                    if (newRecord.userCredit.isEmpty())
                         newRecord.userCredit = "0"
 
-                    if(newRecord.createTime.isNotEmpty())
+                    if (newRecord.createTime.isNotEmpty())
                         TransactionsManager.Singleton.instance.transactions.add(newRecord)
                 }
             }

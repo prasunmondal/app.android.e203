@@ -25,21 +25,23 @@ class PaymentUtil {
     }
 
     fun getOutstandingAmount(currentUser: String): Int? {
-        val outstandingBal = fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_CURRENT_OUTSTANDING, currentUser)
-        if(outstandingBal.isNotEmpty())
+        val outstandingBal =
+            fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_CURRENT_OUTSTANDING, currentUser)
+        if (outstandingBal.isNotEmpty())
             return outstandingBal.toInt()
         return null
     }
 
     fun getPendingBill(currentUser: String): Int? {
-        val payBill = fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_PENDING_BILL, currentUser)
-        if(payBill.isNotEmpty())
+        val payBill =
+            fetchedMetadatas.getValueByLabel(fetchedMetadatas.TAG_PENDING_BILL, currentUser)
+        if (payBill.isNotEmpty())
             return payBill.toInt()
         return null
     }
 
     fun isDisplayButtonEnabled(): Boolean {
-        if(localConfigs.doesUsernameExists() && fm.metadata.doesExist()) {
+        if (localConfigs.doesUsernameExists() && fm.metadata.doesExist()) {
             val currentUser = localConfigs.getValue(localConfigs.USERNAME)!!
             return (localConfigs.doesUsernameExists()
                     && (getOutstandingAmount(currentUser) != null

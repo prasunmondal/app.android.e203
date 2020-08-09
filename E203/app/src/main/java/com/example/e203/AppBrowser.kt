@@ -238,7 +238,7 @@ class AppBrowser : AppCompatActivity() {
 
     @SuppressLint("DefaultLocale")
     fun updateButtonData() {
-        val payBillBtn = findViewById(R.id.pay_bill_btn) as Button
+        val payBillBtn = findViewById<Button>(R.id.pay_bill_btn)
         var showString: String
         if (PaymentUtil.Singleton.instance.isAmountButtonVisible()) {
             val currentUser =
@@ -416,7 +416,7 @@ class AppBrowser : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        val id: Int = item.getItemId()
+        val id: Int = item.itemId
         if (id == R.id.action_favorite) {
             PostToSheets.Singleton.instance.logs.post("Logged Out", applicationContext)
             PostToSheets.Singleton.instance.logs.updatePrependList(listOf(""))
