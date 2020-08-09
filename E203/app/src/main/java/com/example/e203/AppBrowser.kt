@@ -9,10 +9,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
-import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.Looper
-import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -24,18 +22,13 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import com.example.e203.SheetUtils.PostToSheets
 import com.example.e203.Utility.PaymentUtil
-import com.example.e203.Utility.PostToSheet_E203
 import com.example.e203.Utility.showSnackbar
 import com.example.e203.appData.FileManagerUtil
-import com.example.e203.mailUtils.Mails_E203
-import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.HardData
@@ -43,7 +36,6 @@ import com.example.e203.sessionData.LocalConfig
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_app_browser.*
-import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.util.*
@@ -68,10 +60,18 @@ class AppBrowser : AppCompatActivity() {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        PostToSheets.Singleton.instance.error.post(listOf("device_details", sStackTrace), applicationContext)
-                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.appBrowserView))
+                        PostToSheets.Singleton.instance.error.post(
+                            listOf(
+                                "device_details",
+                                sStackTrace
+                            ), applicationContext
+                        )
                         Looper.prepare()
-                        Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            applicationContext,
+                            "Error Occurred! Reporting developer..",
+                            Toast.LENGTH_LONG
+                        ).show()
                         Looper.loop()
                     }
                 }.start()
@@ -95,9 +95,9 @@ class AppBrowser : AppCompatActivity() {
 
         supportActionBar!!.setDisplayShowTitleEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        PostToSheets.Singleton.instance.logs.post("Logged In",generateDeviceId(),applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Logged In", applicationContext)
         disableViewBreakdownButton()
-        PostToSheets.Singleton.instance.logs.post("Downloading metadata",generateDeviceId(),applicationContext)
+        PostToSheets.Singleton.instance.logs.post("Downloading metadata", applicationContext)
         FileManagerUtil.Singleton.instance.metadata.download(this, ::enableViewBreakdownButton)
 
     }
@@ -108,7 +108,10 @@ class AppBrowser : AppCompatActivity() {
     }
 
     private fun showToast() {
-        PostToSheets.Singleton.instance.logs.post("Breakdown view - Login to access this feature.", applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Breakdown view - Login to access this feature.",
+            applicationContext
+        )
         Toast.makeText(this, "Login to access this feature.", Toast.LENGTH_LONG).show()
     }
 
@@ -117,7 +120,7 @@ class AppBrowser : AppCompatActivity() {
         updateButtonData()
         val button = findViewById<FloatingActionButton>(R.id.showBreakdowns)
         button.show()
-        if(!LocalConfig.Singleton.instance.doesUsernameExists()) {
+        if (!LocalConfig.Singleton.instance.doesUsernameExists()) {
             button.setOnClickListener {
                 showToast()
             }
@@ -162,7 +165,10 @@ class AppBrowser : AppCompatActivity() {
     fun onClickPayButton(view: View) {
         PostToSheets.Singleton.instance.logs.post("clicked - Pay Button", applicationContext)
         try {
-            PostToSheets.Singleton.instance.logs.post("Payment Initiated for mentioned amount", applicationContext)
+            PostToSheets.Singleton.instance.logs.post(
+                "Payment Initiated for mentioned amount",
+                applicationContext
+            )
             if (PaymentUtil.Singleton.instance.isPayOptionEnabled()) {
                 goToPaymentOptionsPage()
                 val currentUser =
@@ -185,29 +191,42 @@ class AppBrowser : AppCompatActivity() {
             val sw = StringWriter()
             e.printStackTrace(PrintWriter(sw))
             val sStackTrace: String = sw.toString()
-            PostToSheets.Singleton.instance.logs.post("Error after initiating payment:\n$sStackTrace", applicationContext)
+            PostToSheets.Singleton.instance.logs.post(
+                "Error after initiating payment:\n$sStackTrace",
+                applicationContext
+            )
         }
     }
 
-    private fun promptAndInitiateUpdate(view: View)
-    {
-        var availableVers = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_VERSION)
-        val apkUrl = FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
+    private fun promptAndInitiateUpdate(view: View) {
+        var availableVers =
+            FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_VERSION)
+        val apkUrl =
+            FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
         val currentVers = BuildConfig.VERSION_CODE
-        if(availableVers == null) {
+        if (availableVers == null) {
             availableVers = currentVers.toString()
         }
         if (availableVers.toInt() > currentVers && apkUrl!!.isNotEmpty()) {
-            PostToSheets.Singleton.instance.logs.post("Version check - Update Available", applicationContext)
+            PostToSheets.Singleton.instance.logs.post(
+                "Version check - Update Available",
+                applicationContext
+            )
             view.showSnackbar(
                 R.string.updateAvailable,
                 Snackbar.LENGTH_INDEFINITE, R.string.update
             ) {
-                PostToSheets.Singleton.instance.logs.post("Update apk Download initiated", applicationContext)
+                PostToSheets.Singleton.instance.logs.post(
+                    "Update apk Download initiated",
+                    applicationContext
+                )
                 downloadAndUpdate()
             }
         } else {
-            PostToSheets.Singleton.instance.logs.post("Version check - No Update Available", applicationContext)
+            PostToSheets.Singleton.instance.logs.post(
+                "Version check - No Update Available",
+                applicationContext
+            )
         }
     }
 
@@ -221,12 +240,14 @@ class AppBrowser : AppCompatActivity() {
     fun updateButtonData() {
         val payBillBtn = findViewById(R.id.pay_bill_btn) as Button
         var showString: String
-        if(PaymentUtil.Singleton.instance.isAmountButtonVisible()) {
-            val currentUser = LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)!!.toLowerCase()
+        if (PaymentUtil.Singleton.instance.isAmountButtonVisible()) {
+            val currentUser =
+                LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)!!
+                    .toLowerCase()
             val payBill = PaymentUtil.Singleton.instance.getPendingBill(currentUser)
             val outstandingBal = PaymentUtil.Singleton.instance.getOutstandingAmount(currentUser)
 
-            if (payBill!=null) {
+            if (payBill != null) {
                 if (payBill.toInt() > 0) {
                     showString = "Due: ₹ $payBill"
                     showString += "\n(click to pay)"
@@ -239,7 +260,7 @@ class AppBrowser : AppCompatActivity() {
                         ColorStateList.valueOf(resources.getColor(R.color.infoBtn_YouGet_bkg))
                     payBillBtn.setTextColor(resources.getColor(R.color.infoBtn_YouGet_txt))
                 }
-            } else if (outstandingBal!=null) {
+            } else if (outstandingBal != null) {
                 showString = "Outstanding Bal\n₹ $outstandingBal"
                 if (outstandingBal.toInt() > 0) {
                     payBillBtn.backgroundTintList =
@@ -256,7 +277,10 @@ class AppBrowser : AppCompatActivity() {
         } else {
             showString = "No User Configured..."
         }
-        PostToSheets.Singleton.instance.logs.post("Dashboard button - \"$showString\"", applicationContext)
+        PostToSheets.Singleton.instance.logs.post(
+            "Dashboard button - \"$showString\"",
+            applicationContext
+        )
         payBillBtn.text = showString
     }
 
@@ -282,7 +306,11 @@ class AppBrowser : AppCompatActivity() {
         if (null != chooser.resolveActivity(packageManager)) {
             startActivityForResult(chooser, UPI_PAYMENT)
         } else {
-            Toast.makeText(this@AppBrowser, "No UPI app found, please install one to continue", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@AppBrowser,
+                "No UPI app found, please install one to continue",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
     }
@@ -305,7 +333,10 @@ class AppBrowser : AppCompatActivity() {
                     upiPaymentDataOperation(dataList)
                 }
             } else {
-                Log.d("UPI", "onActivityResult: " + "Return data is null") //when user simply back without payment
+                Log.d(
+                    "UPI",
+                    "onActivityResult: " + "Return data is null"
+                ) //when user simply back without payment
                 val dataList = ArrayList<String>()
                 dataList.add("nothing")
                 upiPaymentDataOperation(dataList)
@@ -324,7 +355,8 @@ class AppBrowser : AppCompatActivity() {
             var approvalRefNo = ""
             val response = str.split("&".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             for (i in response.indices) {
-                val equalStr = response[i].split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val equalStr =
+                    response[i].split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 if (equalStr.size >= 2) {
                     if (equalStr[0].toLowerCase() == "Status".toLowerCase()) {
                         status = equalStr[1].toLowerCase()
@@ -354,12 +386,14 @@ class AppBrowser : AppCompatActivity() {
 
         @Suppress("DEPRECATION")
         fun isConnectionAvailable(context: Context): Boolean {
-            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             if (connectivityManager != null) {
                 val netInfo = connectivityManager.activeNetworkInfo
                 if (netInfo != null && netInfo.isConnected
                     && netInfo.isConnectedOrConnecting
-                    && netInfo.isAvailable) {
+                    && netInfo.isAvailable
+                ) {
                     return true
                 }
             }
@@ -420,27 +454,13 @@ class AppBrowser : AppCompatActivity() {
 
         findViewById<TextView>(R.id.toolbar_Text1).text = "E203"
         try {
-            var user = LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)
+            var user =
+                LocalConfig.Singleton.instance.getValue(LocalConfig.Singleton.instance.USERNAME)
             if (user!!.isNotEmpty())
                 findViewById<TextView>(R.id.toolbar_Text2).text = "- " + user
         } catch (e: Exception) {
             findViewById<TextView>(R.id.toolbar_Text2).text = "Anonymous"
         }
-    }
-
-    @SuppressLint("HardwareIds")
-    fun generateDeviceId(): String {
-        val macAddr: String
-        val wifiMan =
-            this.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val wifiInf = wifiMan.connectionInfo
-        macAddr = wifiInf.macAddress
-        val androidId: String = "" + Settings.Secure.getString(
-            contentResolver,
-            Settings.Secure.ANDROID_ID
-        )
-        val deviceUuid = UUID(androidId.hashCode().toLong(), macAddr.hashCode().toLong())
-        return deviceUuid.toString()
     }
 }
 

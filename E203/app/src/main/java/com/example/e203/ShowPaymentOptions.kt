@@ -41,7 +41,6 @@ class ShowPaymentOptions : AppCompatActivity() {
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
                         PostToSheets.Singleton.instance.error.post(listOf("device_details", sStackTrace), applicationContext)
-                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.upiIDView))
                         Looper.prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
                         Looper.loop()
@@ -69,20 +68,5 @@ class ShowPaymentOptions : AppCompatActivity() {
         clipboard.setPrimaryClip(clip)
 
         Toast.makeText(this@ShowPaymentOptions, "UPI ID Copied...", Toast.LENGTH_SHORT).show()
-    }
-
-    @SuppressLint("HardwareIds")
-    fun generateDeviceId(): String {
-        val macAddr: String
-        val wifiMan =
-            this.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val wifiInf = wifiMan.connectionInfo
-        macAddr = wifiInf.macAddress
-        val androidId: String = "" + Settings.Secure.getString(
-            contentResolver,
-            Settings.Secure.ANDROID_ID
-        )
-        val deviceUuid = UUID(androidId.hashCode().toLong(), macAddr.hashCode().toLong())
-        return deviceUuid.toString()
     }
 }

@@ -42,5 +42,6 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 
-    implementation 'com.github.prasunmondal:Library_android_postToGSheet:1.0.1'
+    implementation 'com.github.prasunmondal:lib.postToGSheet:1.0.1'
+    implementation 'com.github.prasunmondal:lib.android.deviceInfo:0.0.3'
 }

@@ -135,7 +135,6 @@ class TransactionsListing : AppCompatActivity() {
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
                         PostToSheets.Singleton.instance.error.post(listOf("device_details", sStackTrace), applicationContext)
-                        Mails_E203().mail(sStackTrace, generateDeviceId(), findViewById<LinearLayout>(R.id.cardContainers))
                         Looper.prepare()
                         Toast.makeText(applicationContext, "Error Occurred! Reporting developer..", Toast.LENGTH_LONG).show()
                         Looper.loop()
@@ -823,20 +822,5 @@ class TransactionsListing : AppCompatActivity() {
         }
         PostToSheets.Singleton.instance.logs.post("Breakdown View - Decimal Show: " + current_showDecimal, applicationContext)
         displayCards()
-    }
-
-    @SuppressLint("HardwareIds")
-    fun generateDeviceId(): String {
-        val macAddr: String
-        val wifiMan =
-            this.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val wifiInf = wifiMan.connectionInfo
-        macAddr = wifiInf.macAddress
-        val androidId: String = "" + Settings.Secure.getString(
-            contentResolver,
-            Settings.Secure.ANDROID_ID
-        )
-        val deviceUuid = UUID(androidId.hashCode().toLong(), macAddr.hashCode().toLong())
-        return deviceUuid.toString()
     }
 }
