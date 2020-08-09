@@ -3,7 +3,7 @@ package com.example.e203.ErrorReporting
 import android.content.Context
 import android.os.Looper
 import android.widget.Toast
-import com.example.e203.SheetUtils.PostToSheets
+import com.example.e203.SheetUtils.ToSheets
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -20,7 +20,7 @@ class ErrorHandle {
                         paramThrowable.printStackTrace(pw)
                         val sStackTrace: String = sw.toString() // stack trace as a string
 
-                        PostToSheets.error.post(
+                        ToSheets.error.post(
                             listOf(
                                 "device_details",
                                 sStackTrace

@@ -17,7 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.ErrorReporting.ErrorHandle
-import com.example.e203.SheetUtils.PostToSheets
+import com.example.e203.SheetUtils.ToSheets
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.HardData
 import kotlinx.android.synthetic.main.activity_view_transaction.*
@@ -35,7 +35,7 @@ class ViewTransaction : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setActionbarTextColor()
 
-        PostToSheets.logs.post(
+        ToSheets.logs.post(
             "Viewing Details: item: " + lc.viewTransaction.item
                     + " qty: " + lc.viewTransaction.qty
                     + " price: " + lc.viewTransaction.price
@@ -92,11 +92,11 @@ class ViewTransaction : AppCompatActivity() {
         val webView: WebView = findViewById(R.id.editBrowser)
         val editTransactionButton = findViewById<TextView>(R.id.editTransactionButton)
         if (webView.visibility == View.GONE) {
-            PostToSheets.logs.post("Opened Edit Window", applicationContext)
+            ToSheets.logs.post("Opened Edit Window", applicationContext)
             webView.visibility = View.VISIBLE
             editTransactionButton.text = "Close Edit Window"
         } else {
-            PostToSheets.logs.post("Closed Edit Window", applicationContext)
+            ToSheets.logs.post("Closed Edit Window", applicationContext)
             webView.visibility = View.GONE
             editTransactionButton.text = "Edit this Transaction"
         }
@@ -109,7 +109,7 @@ class ViewTransaction : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        PostToSheets.logs.post("Loading edit page - $url", applicationContext)
+        ToSheets.logs.post("Loading edit page - $url", applicationContext)
         val webView: WebView = findViewById(R.id.editBrowser)
         webView.webViewClient = object : WebViewClient() {
 

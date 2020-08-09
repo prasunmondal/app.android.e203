@@ -25,7 +25,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.ErrorReporting.ErrorHandle
-import com.example.e203.SheetUtils.PostToSheets
+import com.example.e203.SheetUtils.ToSheets
 import com.example.e203.Utility.PaymentUtil
 import com.example.e203.Utility.showSnackbar
 import com.example.e203.appData.FileManagerUtil
@@ -64,9 +64,9 @@ class AppBrowser : AppCompatActivity() {
 
         supportActionBar!!.setDisplayShowTitleEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        PostToSheets.logs.post("Logged In", applicationContext)
+        ToSheets.logs.post("Logged In", applicationContext)
         disableViewBreakdownButton()
-        PostToSheets.logs.post("Downloading metadata", applicationContext)
+        ToSheets.logs.post("Downloading metadata", applicationContext)
         FileManagerUtil.Singleton.instance.metadata.download(this, ::enableViewBreakdownButton)
 
     }
@@ -77,7 +77,7 @@ class AppBrowser : AppCompatActivity() {
     }
 
     private fun showToast() {
-        PostToSheets.logs.post(
+        ToSheets.logs.post(
             "Breakdown view - Login to access this feature.",
             applicationContext
         )
@@ -97,7 +97,7 @@ class AppBrowser : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        PostToSheets.logs.post("Loading URL - $url", applicationContext)
+        ToSheets.logs.post("Loading URL - $url", applicationContext)
         val webView: WebView = findViewById(R.id.appBrowserView)
         webView.webViewClient = object : WebViewClient() {
 
@@ -114,27 +114,27 @@ class AppBrowser : AppCompatActivity() {
     }
 
     fun loadAddForm(view: View) {
-        PostToSheets.logs.post("clicked - Load Add Form", applicationContext)
+        ToSheets.logs.post("clicked - Load Add Form", applicationContext)
         loadPage(HardData.Singleton.instance.submitFormURL)
     }
 
     fun loadDetails(view: View) {
-        PostToSheets.logs.post("clicked - View Summary Page", applicationContext)
+        ToSheets.logs.post("clicked - View Summary Page", applicationContext)
         loadPage(HardData.Singleton.instance.detailsFormViewPage)
         Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
     }
 
     fun loadEditPage(view: View) {
-        PostToSheets.logs.post("clicked - View Edit Page", applicationContext)
+        ToSheets.logs.post("clicked - View Edit Page", applicationContext)
         loadPage(HardData.Singleton.instance.editPage)
         Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
     }
 
     @SuppressLint("DefaultLocale")
     fun onClickPayButton(view: View) {
-        PostToSheets.logs.post("clicked - Pay Button", applicationContext)
+        ToSheets.logs.post("clicked - Pay Button", applicationContext)
         try {
-            PostToSheets.logs.post(
+            ToSheets.logs.post(
                 "Payment Initiated for mentioned amount",
                 applicationContext
             )
@@ -153,14 +153,14 @@ class AppBrowser : AppCompatActivity() {
                     FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_UPIID)
                 payUsingUpi(amount, upiId!!, name!!, note!!)
             } else if (PaymentUtil.Singleton.instance.isDisplayButtonEnabled()) {
-                PostToSheets.logs.post("No Payment Due", applicationContext)
+                ToSheets.logs.post("No Payment Due", applicationContext)
                 Toast.makeText(this, "No Payment Due", Toast.LENGTH_SHORT).show()
             }
         } catch (e: java.lang.Exception) {
             val sw = StringWriter()
             e.printStackTrace(PrintWriter(sw))
             val sStackTrace: String = sw.toString()
-            PostToSheets.logs.post(
+            ToSheets.logs.post(
                 "Error after initiating payment:\n$sStackTrace",
                 applicationContext
             )
@@ -177,7 +177,7 @@ class AppBrowser : AppCompatActivity() {
             availableVers = currentVers.toString()
         }
         if (availableVers.toInt() > currentVers && apkUrl!!.isNotEmpty()) {
-            PostToSheets.logs.post(
+            ToSheets.logs.post(
                 "Version check - Update Available",
                 applicationContext
             )
@@ -185,14 +185,14 @@ class AppBrowser : AppCompatActivity() {
                 R.string.updateAvailable,
                 Snackbar.LENGTH_INDEFINITE, R.string.update
             ) {
-                PostToSheets.logs.post(
+                ToSheets.logs.post(
                     "Update apk Download initiated",
                     applicationContext
                 )
                 downloadAndUpdate()
             }
         } else {
-            PostToSheets.logs.post(
+            ToSheets.logs.post(
                 "Version check - No Update Available",
                 applicationContext
             )
@@ -246,7 +246,7 @@ class AppBrowser : AppCompatActivity() {
         } else {
             showString = "No User Configured..."
         }
-        PostToSheets.logs.post(
+        ToSheets.logs.post(
             "Dashboard button - \"$showString\"",
             applicationContext
         )
@@ -387,8 +387,8 @@ class AppBrowser : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         val id: Int = item.itemId
         if (id == R.id.action_favorite) {
-            PostToSheets.logs.post("Logged Out", applicationContext)
-            PostToSheets.logs.updatePrependList(listOf(""))
+            ToSheets.logs.post("Logged Out", applicationContext)
+            ToSheets.logs.updatePrependList(listOf(""))
             goToSaveUserPage()
             return true
         }

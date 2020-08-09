@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.ErrorReporting.ErrorHandle
-import com.example.e203.SheetUtils.PostToSheets
+import com.example.e203.SheetUtils.ToSheets
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
 
@@ -18,7 +18,7 @@ class WelcomeScreen : AppCompatActivity() {
         ErrorHandle().reportUnhandledException(applicationContext)
         initiallize()
 
-        PostToSheets.logs.post("App Opened", applicationContext)
+        ToSheets.logs.post("App Opened", applicationContext)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mVisible = true
@@ -35,7 +35,7 @@ class WelcomeScreen : AppCompatActivity() {
         DeviceInfo.setContext(applicationContext, contentResolver)
 
         // Post to Sheet initiallization
-        PostToSheets.logs.updateTabName(DeviceInfo.get(Device.UNIQUE_ID))
-        PostToSheets.logs.updatePrependList(listOf(""))
+        ToSheets.logs.updateTabName(DeviceInfo.get(Device.UNIQUE_ID))
+        ToSheets.logs.updatePrependList(listOf(""))
     }
 }

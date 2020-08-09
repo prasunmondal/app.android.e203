@@ -7,7 +7,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.ErrorReporting.ErrorHandle
-import com.example.e203.SheetUtils.PostToSheets
+import com.example.e203.SheetUtils.ToSheets
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
 import com.example.e203.sessionData.AppContext.Singleton.instance as AppContexts
@@ -26,15 +26,15 @@ class SaveUser : AppCompatActivity() {
         if (localConfigs.doesUsernameExists()) {
             val username = localConfigs.getValue("username")
             if (username != null && isValidUserName(username)) {
-                PostToSheets.logs.updatePrependList(listOf(username))
-                PostToSheets.logs.post(
+                ToSheets.logs.updatePrependList(listOf(username))
+                ToSheets.logs.post(
                     "As per saved login data - $username",
                     applicationContext
                 )
                 goToMainPage()
             }
         } else {
-            PostToSheets.logs.post(
+            ToSheets.logs.post(
                 "No login saved data found",
                 applicationContext
             )
@@ -46,13 +46,13 @@ class SaveUser : AppCompatActivity() {
         val username: String = userSelection.selectedItem.toString()
 
         localConfigs.setValue("username", username)
-        PostToSheets.logs.updatePrependList(listOf(username))
+        ToSheets.logs.updatePrependList(listOf(username))
 
         if (isValidUserName(username)) {
-            PostToSheets.logs.post("Login as - $username", applicationContext)
+            ToSheets.logs.post("Login as - $username", applicationContext)
             goToMainPage()
         } else {
-            PostToSheets.logs.post(
+            ToSheets.logs.post(
                 "Login failed - No User Selected",
                 applicationContext
             )
@@ -61,8 +61,8 @@ class SaveUser : AppCompatActivity() {
     }
 
     fun onClickSaveUserSkipButton(view: View) {
-        PostToSheets.logs.updatePrependList(listOf("Anonymous"))
-        PostToSheets.logs.post("Login as - anonymous", applicationContext)
+        ToSheets.logs.updatePrependList(listOf("Anonymous"))
+        ToSheets.logs.post("Login as - anonymous", applicationContext)
         goToMainPage()
     }
 
