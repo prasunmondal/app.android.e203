@@ -25,10 +25,10 @@ import androidx.cardview.widget.CardView
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
 import com.example.e203.Utility.FileReadUtil
-import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
+import com.prasunmondal.lib.android.downloadfile.DownloadableFiles
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -94,13 +94,12 @@ class TransactionsListing : AppCompatActivity() {
     private var current_showDecimal = false
 
     val breakdownSheet = DownloadableFiles(
-        AppContext.instance.initialContext,
         FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.TAG_BREAKDOWN_URL)!!,
-        AppContext.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
         "",
         "calculatingSheet.csv",
         "E203",
-        "fetching transaction details"
+        "fetching transaction details", {},
+        AppContext.instance.initialContext
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,7 +131,7 @@ class TransactionsListing : AppCompatActivity() {
         linearLayout.addView(sharedBy)
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
-        breakdownSheet.download(this, ::startDisplay)
+        breakdownSheet.download(::startDisplay)
         ToSheets.logs.post(
             "Breakdown View - downloading data",
             applicationContext

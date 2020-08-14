@@ -1,8 +1,8 @@
 package com.example.e203.appData
 
 import android.os.Environment
-import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.AppContext
+import com.prasunmondal.lib.android.downloadfile.DownloadableFiles
 import java.io.File
 
 class FilePaths(var rootDir: String, var childDir: String, var fileName: String) {
@@ -36,21 +36,20 @@ class FileManagerUtil {
 //    )
 
     var metadata = DownloadableFiles(
-        AppContext.instance.initialContext,
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZQ28x7jpdIOzT2PA6iTCTcyTHM9tVPkv2ezuqd4LFOWu9SJqImGM7ML8ejdQB01SdjfTZnoHogzUt/pub?gid=1321322233&single=true&output=csv",
-        AppContext.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
         "",
         "metadata.csv",
         "E203",
-        "fetching metadata"
+        "fetching metadata",
+        {},
+        AppContext.instance.initialContext
     )
 
     var updateAPK = DownloadableFiles(
-        AppContext.instance.initialContext,
         "",
-        AppContext.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-            .toString(), "", "update.apk",
-        "E203", "downloading update"
+         "", "update.apk",
+        "E203", "downloading update", {},
+        AppContext.instance.initialContext
     )
 
     fun doesFileExist(filename: FilePaths): Boolean {

@@ -67,7 +67,7 @@ class AppBrowser : AppCompatActivity() {
         ToSheets.logs.post("Logged In", applicationContext)
         disableViewBreakdownButton()
         ToSheets.logs.post("Downloading metadata", applicationContext)
-        FileManagerUtil.Singleton.instance.metadata.download(this, ::enableViewBreakdownButton)
+        FileManagerUtil.Singleton.instance.metadata.download(::enableViewBreakdownButton)
 
     }
 

@@ -11,9 +11,9 @@ import androidx.core.content.FileProvider
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
 import com.example.e203.appData.FileManagerUtil
-import com.example.e203.portable_utils.DownloadableFiles
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.FetchedMetaData
+import com.prasunmondal.lib.android.downloadfile.DownloadableFiles
 import kotlinx.android.synthetic.main.activity_update_app_view.*
 import java.io.File
 
@@ -39,16 +39,17 @@ class updateAppView : AppCompatActivity() {
         ToSheets.logs.post("Download apk url: " + apkUrl, applicationContext)
 
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
-            AppContext.instance.initialContext,
             apkUrl!!,
-            AppContext.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-                .toString(), "", "update.apk",
-            "E203", "Downloading Update"
+             "",
+            "update.apk",
+            "E203",
+            "Downloading Update",
+            {}, applicationContext
         )
 
         val FILE_BASE_PATH = "file://"
-        val destination = FileManagerUtil.Singleton.instance.updateAPK.localURL
-        FileManagerUtil.Singleton.instance.updateAPK.download(this, ::installUpdate)
+        val destination = FileManagerUtil.Singleton.instance.updateAPK.getLocalURL()
+        FileManagerUtil.Singleton.instance.updateAPK.download(::installUpdate)
     }
 
     fun installUpdate() {
@@ -65,7 +66,7 @@ class updateAppView : AppCompatActivity() {
         val APP_INSTALL_PATH: String = "\"application/vnd.android.package-archive\""
 
 
-        val destination = FileManagerUtil.Singleton.instance.updateAPK.localURL
+        val destination = FileManagerUtil.Singleton.instance.updateAPK.getLocalURL()
         val uri = Uri.parse("${FILE_BASE_PATH}$destination")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

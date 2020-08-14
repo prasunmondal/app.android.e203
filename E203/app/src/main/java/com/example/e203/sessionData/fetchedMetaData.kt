@@ -25,7 +25,7 @@ class FetchedMetaData {
     fun getValue(key: String): String? {
         FileReadUtils.readPairCSVnPopulateMap(
             fetchedDataMap,
-            FileManagers.metadata.localURL
+            FileManagers.metadata.getLocalURL()
         )
         return fetchedDataMap[key]
     }
