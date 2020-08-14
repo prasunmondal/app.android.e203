@@ -4,14 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
 import com.example.e203.appData.FileManagerUtil
-import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.FetchedMetaData
 import com.prasunmondal.lib.android.downloadfile.DownloadableFiles
 import kotlinx.android.synthetic.main.activity_update_app_view.*
@@ -40,7 +38,7 @@ class updateAppView : AppCompatActivity() {
 
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
             apkUrl!!,
-             "",
+            "",
             "update.apk",
             "E203",
             "Downloading Update",

@@ -20,7 +20,8 @@ class FileManagerUtil {
     var localConfigurationStorage = FilePaths(rootFromContext, "AppData", "AppConfigurationData")
 
     var downloadLink_CalculatingSheet = FilePaths(
-        AppContext.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(),
+        AppContext.instance.initialContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+            .toString(),
         "",
         "calculatingSheet.csv"
     )
@@ -47,7 +48,7 @@ class FileManagerUtil {
 
     var updateAPK = DownloadableFiles(
         "",
-         "", "update.apk",
+        "", "update.apk",
         "E203", "downloading update", {},
         AppContext.instance.initialContext
     )

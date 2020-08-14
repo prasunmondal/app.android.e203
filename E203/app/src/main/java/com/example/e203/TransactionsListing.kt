@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Environment
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan

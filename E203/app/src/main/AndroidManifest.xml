@@ -22,8 +22,8 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".WelcomeScreen"
-            android:label="E203"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="E203"
             android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
