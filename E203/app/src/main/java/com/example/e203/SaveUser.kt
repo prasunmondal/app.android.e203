@@ -26,18 +26,12 @@ class SaveUser : AppCompatActivity() {
         if (localConfigs.doesUsernameExists()) {
             val username = localConfigs.getValue("username")
             if (username != null && isValidUserName(username)) {
-                ToSheets.logs.updatePrependList(listOf(username))
-                ToSheets.logs.post(
-                    "As per saved login data - $username",
-                    applicationContext
-                )
+                ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_NAME, DeviceInfo.get(Device.UNIQUE_ID), username))
+                ToSheets.logs.post(listOf("Login","Saved Data - $username"), applicationContext)
                 goToMainPage()
             }
         } else {
-            ToSheets.logs.post(
-                "No login saved data found",
-                applicationContext
-            )
+            ToSheets.logs.post(listOf("Login","No saved data found"), applicationContext)
         }
     }
 
@@ -46,23 +40,20 @@ class SaveUser : AppCompatActivity() {
         val username: String = userSelection.selectedItem.toString()
 
         localConfigs.setValue("username", username)
-        ToSheets.logs.updatePrependList(listOf(username))
+        ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_NAME, DeviceInfo.get(Device.UNIQUE_ID), username))
 
         if (isValidUserName(username)) {
-            ToSheets.logs.post("Login as - $username", applicationContext)
+            ToSheets.logs.post(listOf("Login","Selection Made - $username"), applicationContext)
             goToMainPage()
         } else {
-            ToSheets.logs.post(
-                "Login failed - No User Selected",
-                applicationContext
-            )
+            ToSheets.logs.post(listOf("Login","Failed - No User Selected"), applicationContext)
             Toast.makeText(this, "Error: Please Enter a Valid Name!", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun onClickSaveUserSkipButton(view: View) {
-        ToSheets.logs.updatePrependList(listOf("Anonymous"))
-        ToSheets.logs.post("Login as - anonymous", applicationContext)
+        ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_NAME, DeviceInfo.get(Device.UNIQUE_ID), "Anonymous"))
+        ToSheets.logs.post(listOf("Login","Anonymous"), applicationContext)
         goToMainPage()
     }
 

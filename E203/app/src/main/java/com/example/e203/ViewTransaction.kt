@@ -36,10 +36,10 @@ class ViewTransaction : AppCompatActivity() {
         setActionbarTextColor()
 
         ToSheets.logs.post(
-            "Viewing Details: item: " + lc.viewTransaction.item
+            listOf("Clicked", "ViewDetails \n" + lc.viewTransaction.item
                     + " qty: " + lc.viewTransaction.qty
                     + " price: " + lc.viewTransaction.price
-                    + " editURL: " + lc.viewTransaction.editLink,
+                    + " editURL: " + lc.viewTransaction.editLink),
             this.applicationContext
         )
 
@@ -92,11 +92,11 @@ class ViewTransaction : AppCompatActivity() {
         val webView: WebView = findViewById(R.id.editBrowser)
         val editTransactionButton = findViewById<TextView>(R.id.editTransactionButton)
         if (webView.visibility == View.GONE) {
-            ToSheets.logs.post("Opened Edit Window", applicationContext)
+            ToSheets.logs.post(listOf("Clicked","Open Edit Window"), applicationContext)
             webView.visibility = View.VISIBLE
             editTransactionButton.text = "Close Edit Window"
         } else {
-            ToSheets.logs.post("Closed Edit Window", applicationContext)
+            ToSheets.logs.post(listOf("Clicked","Closed Edit Window"), applicationContext)
             webView.visibility = View.GONE
             editTransactionButton.text = "Edit this Transaction"
         }
@@ -109,7 +109,7 @@ class ViewTransaction : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        ToSheets.logs.post("Loading edit page - $url", applicationContext)
+        ToSheets.logs.post(listOf("Loading URL",url), applicationContext)
         val webView: WebView = findViewById(R.id.editBrowser)
         webView.webViewClient = object : WebViewClient() {
 

@@ -35,6 +35,8 @@ import com.example.e203.sessionData.HardData
 import com.example.e203.sessionData.LocalConfig
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.prasunmondal.lib.android.deviceinfo.Device
+import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
 import kotlinx.android.synthetic.main.activity_app_browser.*
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -64,11 +66,9 @@ class AppBrowser : AppCompatActivity() {
 
         supportActionBar!!.setDisplayShowTitleEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        ToSheets.logs.post("Logged In", applicationContext)
         disableViewBreakdownButton()
-        ToSheets.logs.post("Downloading metadata", applicationContext)
+        ToSheets.logs.post(listOf("Download", "Metadata"), applicationContext)
         FileManagerUtil.Singleton.instance.metadata.download(::enableViewBreakdownButton)
-
     }
 
     private fun disableViewBreakdownButton() {
@@ -77,10 +77,9 @@ class AppBrowser : AppCompatActivity() {
     }
 
     private fun showToast() {
-        ToSheets.logs.post(
-            "Breakdown view - Login to access this feature.",
-            applicationContext
-        )
+        ToSheets.logs.post(listOf(
+            "Display", "Breakdown View - FAILED - Login to access this feature"),
+            applicationContext)
         Toast.makeText(this, "Login to access this feature.", Toast.LENGTH_LONG).show()
     }
 
@@ -97,7 +96,7 @@ class AppBrowser : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        ToSheets.logs.post("Loading URL - $url", applicationContext)
+        ToSheets.logs.post(listOf("Loading URL", url), applicationContext)
         val webView: WebView = findViewById(R.id.appBrowserView)
         webView.webViewClient = object : WebViewClient() {
 
@@ -114,30 +113,27 @@ class AppBrowser : AppCompatActivity() {
     }
 
     fun loadAddForm(view: View) {
-        ToSheets.logs.post("clicked - Load Add Form", applicationContext)
+        ToSheets.logs.post(listOf("Clicked","Add Expense"), applicationContext)
         loadPage(HardData.Singleton.instance.submitFormURL)
     }
 
     fun loadDetails(view: View) {
-        ToSheets.logs.post("clicked - View Summary Page", applicationContext)
+        ToSheets.logs.post(listOf("Clicked","Summary Page"), applicationContext)
         loadPage(HardData.Singleton.instance.detailsFormViewPage)
         Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
     }
 
     fun loadEditPage(view: View) {
-        ToSheets.logs.post("clicked - View Edit Page", applicationContext)
+        ToSheets.logs.post(listOf("Clicked","Edit Page"), applicationContext)
         loadPage(HardData.Singleton.instance.editPage)
         Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
     }
 
     @SuppressLint("DefaultLocale")
     fun onClickPayButton(view: View) {
-        ToSheets.logs.post("clicked - Pay Button", applicationContext)
+        ToSheets.logs.post(listOf("Clicked","Pay Button"), applicationContext)
         try {
-            ToSheets.logs.post(
-                "Payment Initiated for mentioned amount",
-                applicationContext
-            )
+
             if (PaymentUtil.Singleton.instance.isPayOptionEnabled()) {
                 goToPaymentOptionsPage()
                 val currentUser =
@@ -152,8 +148,11 @@ class AppBrowser : AppCompatActivity() {
                 val upiId =
                     FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_UPIID)
                 payUsingUpi(amount, upiId!!, name!!, note!!)
+                ToSheets.logs.post(
+                    listOf("Payment", "Initiated for Rs $amount"), applicationContext)
             } else if (PaymentUtil.Singleton.instance.isDisplayButtonEnabled()) {
-                ToSheets.logs.post("No Payment Due", applicationContext)
+                ToSheets.logs.post(
+                    listOf("Payment", "No Due"), applicationContext)
                 Toast.makeText(this, "No Payment Due", Toast.LENGTH_SHORT).show()
             }
         } catch (e: java.lang.Exception) {
@@ -177,25 +176,15 @@ class AppBrowser : AppCompatActivity() {
             availableVers = currentVers.toString()
         }
         if (availableVers.toInt() > currentVers && apkUrl!!.isNotEmpty()) {
-            ToSheets.logs.post(
-                "Version check - Update Available",
-                applicationContext
-            )
+            ToSheets.logs.post(listOf("Update App","Update Available"), applicationContext)
             view.showSnackbar(
                 R.string.updateAvailable,
                 Snackbar.LENGTH_INDEFINITE, R.string.update
             ) {
-                ToSheets.logs.post(
-                    "Update apk Download initiated",
-                    applicationContext
-                )
                 downloadAndUpdate()
             }
         } else {
-            ToSheets.logs.post(
-                "Version check - No Update Available",
-                applicationContext
-            )
+            ToSheets.logs.post(listOf("Update App","No Update Available"), applicationContext)
         }
     }
 
@@ -246,10 +235,7 @@ class AppBrowser : AppCompatActivity() {
         } else {
             showString = "No User Configured..."
         }
-        ToSheets.logs.post(
-            "Dashboard button - \"$showString\"",
-            applicationContext
-        )
+        ToSheets.logs.post(listOf("Display - dashboard",showString), applicationContext)
         payBillBtn.text = showString
     }
 
@@ -388,7 +374,8 @@ class AppBrowser : AppCompatActivity() {
         val id: Int = item.itemId
         if (id == R.id.action_favorite) {
             ToSheets.logs.post("Logged Out", applicationContext)
-            ToSheets.logs.updatePrependList(listOf(""))
+            ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_NAME, DeviceInfo.get(
+                Device.UNIQUE_ID),""))
             goToSaveUserPage()
             return true
         }
