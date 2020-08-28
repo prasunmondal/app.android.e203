@@ -6,6 +6,7 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
+import com.example.e203.Utility.LogActions
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
 
@@ -18,7 +19,7 @@ class WelcomeScreen : AppCompatActivity() {
         ErrorHandle().reportUnhandledException(applicationContext)
         initiallize()
 
-        ToSheets.logs.post(listOf("","App Opened"), applicationContext)
+        ToSheets.logs.post(listOf("",LogActions.APP_OPENED.name), applicationContext)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mVisible = true
@@ -34,9 +35,6 @@ class WelcomeScreen : AppCompatActivity() {
         // Get Device_toBeRemoved Info initiallization
         DeviceInfo.setContext(applicationContext, contentResolver)
 
-        // Post to Sheet initiallization
-//        ToSheets.logs.updateTabName(DeviceInfo.get(Device.UNIQUE_ID))
         ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_NAME, DeviceInfo.get(Device.UNIQUE_ID)))
-//        ToSheets.logs.updatePrependList(listOf("E203"))
     }
 }

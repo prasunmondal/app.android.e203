@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
+import com.example.e203.Utility.LogActions
 import com.example.e203.sessionData.AppContext
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
@@ -27,11 +28,11 @@ class SaveUser : AppCompatActivity() {
             val username = localConfigs.getValue("username")
             if (username != null && isValidUserName(username)) {
                 ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_NAME, DeviceInfo.get(Device.UNIQUE_ID), username))
-                ToSheets.logs.post(listOf("Login","Saved Data - $username"), applicationContext)
+                ToSheets.logs.post(listOf(LogActions.LOGIN.name,"Saved Data - $username"), applicationContext)
                 goToMainPage()
             }
         } else {
-            ToSheets.logs.post(listOf("Login","No saved data found"), applicationContext)
+            ToSheets.logs.post(listOf("", LogActions.LOGIN.name,"No saved data found"), applicationContext)
         }
     }
 
@@ -43,17 +44,17 @@ class SaveUser : AppCompatActivity() {
         ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_NAME, DeviceInfo.get(Device.UNIQUE_ID), username))
 
         if (isValidUserName(username)) {
-            ToSheets.logs.post(listOf("Login","Selection Made - $username"), applicationContext)
+            ToSheets.logs.post(listOf(LogActions.LOGIN.name,"Selection Made - $username"), applicationContext)
             goToMainPage()
         } else {
-            ToSheets.logs.post(listOf("Login","Failed - No User Selected"), applicationContext)
+            ToSheets.logs.post(listOf(LogActions.LOGIN.name,"Failed - No User Selected"), applicationContext)
             Toast.makeText(this, "Error: Please Enter a Valid Name!", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun onClickSaveUserSkipButton(view: View) {
         ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_NAME, DeviceInfo.get(Device.UNIQUE_ID), "Anonymous"))
-        ToSheets.logs.post(listOf("Login","Anonymous"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.LOGIN.name,"Anonymous"), applicationContext)
         goToMainPage()
     }
 

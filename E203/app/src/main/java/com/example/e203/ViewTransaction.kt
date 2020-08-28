@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -18,6 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
+import com.example.e203.Utility.LogActions
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.HardData
 import kotlinx.android.synthetic.main.activity_view_transaction.*
@@ -36,7 +38,7 @@ class ViewTransaction : AppCompatActivity() {
         setActionbarTextColor()
 
         ToSheets.logs.post(
-            listOf("Clicked", "ViewDetails \n" + lc.viewTransaction.item
+            listOf(LogActions.CLICKED.name, "Viewing Details:\n" + lc.viewTransaction.item
                     + " qty: " + lc.viewTransaction.qty
                     + " price: " + lc.viewTransaction.price
                     + " editURL: " + lc.viewTransaction.editLink),
@@ -78,7 +80,6 @@ class ViewTransaction : AppCompatActivity() {
         webView.settings.loadWithOverviewMode = true
         webView.webViewClient = WebViewClient()
         webView.webChromeClient = WebChromeClient()
-        loadPage(HardData.Singleton.instance.submitFormURL)
 
         AppContext.instance.initialContext = this
 
@@ -92,11 +93,11 @@ class ViewTransaction : AppCompatActivity() {
         val webView: WebView = findViewById(R.id.editBrowser)
         val editTransactionButton = findViewById<TextView>(R.id.editTransactionButton)
         if (webView.visibility == View.GONE) {
-            ToSheets.logs.post(listOf("Clicked","Open Edit Window"), applicationContext)
+            ToSheets.logs.post(listOf(LogActions.CLICKED.name,"Open Edit Window"), applicationContext)
             webView.visibility = View.VISIBLE
             editTransactionButton.text = "Close Edit Window"
         } else {
-            ToSheets.logs.post(listOf("Clicked","Closed Edit Window"), applicationContext)
+            ToSheets.logs.post(listOf(LogActions.CLICKED.name,"Closed Edit Window"), applicationContext)
             webView.visibility = View.GONE
             editTransactionButton.text = "Edit this Transaction"
         }
@@ -109,7 +110,7 @@ class ViewTransaction : AppCompatActivity() {
     }
 
     private fun loadPage(url: String) {
-        ToSheets.logs.post(listOf("Loading URL",url), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.LOADING_URL.name,url), applicationContext)
         val webView: WebView = findViewById(R.id.editBrowser)
         webView.webViewClient = object : WebViewClient() {
 

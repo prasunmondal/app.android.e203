@@ -24,6 +24,7 @@ import androidx.cardview.widget.CardView
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
 import com.example.e203.Utility.FileReadUtil
+import com.example.e203.Utility.LogActions
 import com.example.e203.sessionData.AppContext
 import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
@@ -106,13 +107,13 @@ class TransactionsListing : AppCompatActivity() {
         setContentView(R.layout.activity_transactions_listing)
         ErrorHandle().reportUnhandledException(applicationContext)
 
-        ToSheets.logs.post(listOf("Clicked", "Open Breakdownview"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.CLICKED.name, "Open Breakview"), applicationContext)
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
 
         if (breakdownSheet.doesExist()) {
             initDisplay()
-            ToSheets.logs.post(listOf("Display", "BV - With cached data"), applicationContext)
+            ToSheets.logs.post(listOf(LogActions.DISPLAY.name, "Breakview:show:: ::With cached data"), applicationContext)
         }
 
         setSupportActionBar(toolbar)
@@ -132,20 +133,20 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
         breakdownSheet.download(::startDisplay)
-        ToSheets.logs.post(listOf("Download", "START - Breakdown view data"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.DOWNLOAD_START.name, "Breakview data"), applicationContext)
     }
 
     private var displayStarted = false
     private fun startDisplay() {
         if (!displayStarted)
-            ToSheets.logs.post(listOf("Download", "COMPLETED - Breakdown view data"), applicationContext)
+            ToSheets.logs.post(listOf(LogActions.DOWNLOAD_COMPLETE.name, "Breakview data"), applicationContext)
         displayStarted = true
         TransactionsManager.Singleton.instance.transactions = mutableListOf()
         FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
         TransactionsManager.Singleton.instance.transactions.reverse()
         enableSorting()
         applyCardView()
-        ToSheets.logs.post(listOf("Display", "BV - With fetched data"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.DISPLAY.name, "Breakview:show:: ::With fetched data"), applicationContext)
     }
 
     private fun initDisplay() {
@@ -449,7 +450,7 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_showAll
         displayCards()
         ToSheets.logs.post(
-            listOf("Clicked","BV_TabChange: " + Tabs.Singleton.instance.activeTab),
+            listOf(LogActions.CLICKED.name,"Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab),
             applicationContext
         )
     }
@@ -488,7 +489,7 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyExpenses
         displayCards()
         ToSheets.logs.post(
-            listOf("Clicked","BV_TabChange: " + Tabs.Singleton.instance.activeTab),
+            listOf(LogActions.CLICKED.name,"Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab),
             applicationContext
         )
     }
@@ -497,7 +498,7 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MySpent
         displayCards()
         ToSheets.logs.post(
-            listOf("Clicked","BV_TabChange: " + Tabs.Singleton.instance.activeTab),
+            listOf(LogActions.CLICKED.name,"Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab),
             applicationContext
         )
     }
@@ -506,7 +507,7 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         displayCards()
         ToSheets.logs.post(
-            listOf("Clicked","BV_TabChange: " + Tabs.Singleton.instance.activeTab),
+            listOf(LogActions.CLICKED.name,"Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab),
             applicationContext
         )
     }
@@ -750,7 +751,7 @@ class TransactionsListing : AppCompatActivity() {
             }
         }
         ToSheets.logs.post(
-            listOf("Clicked", "BV_Config_Sort: $currentSortOrder"), this.applicationContext)
+            listOf(LogActions.CLICKED.name, "Breakview:Sort:: ::$currentSortOrder"), this.applicationContext)
         displayCards()
     }
 
@@ -782,7 +783,7 @@ class TransactionsListing : AppCompatActivity() {
             }
         }
         ToSheets.logs.post(
-            listOf("Clicked", "BV_Config_CardType: $current_cardType"), this.applicationContext)
+            listOf(LogActions.CLICKED.name, "Breakview:cardtype:: ::$current_cardType"), this.applicationContext)
         applyCardView()
     }
 
@@ -818,8 +819,7 @@ class TransactionsListing : AppCompatActivity() {
             tview.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         }
         ToSheets.logs.post(
-            listOf("Clicked", "BV_Config_Decimal: $current_showDecimal"), this.applicationContext
-        )
+            listOf(LogActions.CLICKED.name, "Breakview:decimal:: ::$current_showDecimal"), this.applicationContext)
         displayCards()
     }
 }

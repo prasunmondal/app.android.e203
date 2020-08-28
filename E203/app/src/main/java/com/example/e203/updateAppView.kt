@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
+import com.example.e203.Utility.LogActions
 import com.example.e203.appData.FileManagerUtil
 import com.example.e203.sessionData.FetchedMetaData
 import com.prasunmondal.lib.android.downloadfile.DownloadableFiles
@@ -27,10 +28,10 @@ class updateAppView : AppCompatActivity() {
     }
 
     private fun downloadAndUpdate() {
-        ToSheets.logs.post(listOf("Clicked","Update App"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.CLICKED.name,"Update App"), applicationContext)
         val apkUrl =
             FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
-        ToSheets.logs.post(listOf("Download","UPDATE APK - $apkUrl"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.DOWNLOAD_START.name,"UPDATE APK - $apkUrl"), applicationContext)
 
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
             apkUrl!!,
@@ -50,7 +51,7 @@ class updateAppView : AppCompatActivity() {
         startActivity(i)
         finish()
 
-        ToSheets.logs.post(listOf("APP UPDATE", "Initiated"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.APP_UPDATE.name, "Initiated"), applicationContext)
 
         val FILE_BASE_PATH = "file://"
         val MIME_TYPE = "application/vnd.android.package-archive"
