@@ -1,9 +1,14 @@
 package com.example.e203.ErrorReporting
 
 import android.content.Context
+import android.os.Build
 import android.os.Looper
 import android.widget.Toast
+import com.example.e203.BuildConfig
 import com.example.e203.SheetUtils.ToSheets
+import com.example.e203.sessionData.LocalConfig
+import com.prasunmondal.lib.android.deviceinfo.Device
+import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -22,7 +27,11 @@ class ErrorHandle {
 
                         ToSheets.error.post(
                             listOf(
-                                "device_details",
+                                "E203",
+                                BuildConfig.VERSION_CODE.toString(),
+                                DeviceInfo.get(Device.UNIQUE_ID),
+                                LocalConfig.Singleton.instance.getValue("username")!!,
+                                DeviceInfo.get(Device.CURRENT_DATE_TIME),
                                 sStackTrace
                             ), applicationContext
                         )

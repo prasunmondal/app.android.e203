@@ -35,6 +35,6 @@ class WelcomeScreen : AppCompatActivity() {
         // Get Device_toBeRemoved Info initiallization
         DeviceInfo.setContext(applicationContext, contentResolver)
 
-        ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_NAME, DeviceInfo.get(Device.UNIQUE_ID)))
+        ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_CODE.toString(), DeviceInfo.get(Device.UNIQUE_ID)))
     }
 }
