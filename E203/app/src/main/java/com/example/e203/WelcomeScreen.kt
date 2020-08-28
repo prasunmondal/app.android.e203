@@ -19,7 +19,7 @@ class WelcomeScreen : AppCompatActivity() {
         ErrorHandle().reportUnhandledException(applicationContext)
         initiallize()
 
-        ToSheets.logs.post(listOf("",LogActions.APP_OPENED.name), applicationContext)
+        ToSheets.logs.post(listOf("",LogActions.APP_OPENED.name, DeviceInfo.getAllInfo()), applicationContext)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mVisible = true

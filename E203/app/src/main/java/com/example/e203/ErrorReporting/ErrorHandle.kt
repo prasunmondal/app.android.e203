@@ -31,7 +31,7 @@ class ErrorHandle {
                                 BuildConfig.VERSION_CODE.toString(),
                                 DeviceInfo.get(Device.UNIQUE_ID),
                                 LocalConfig.Singleton.instance.getValue("username")!!,
-                                DeviceInfo.get(Device.CURRENT_DATE_TIME),
+                                DeviceInfo.getAllInfo(),
                                 sStackTrace
                             ), applicationContext
                         )
