@@ -182,7 +182,9 @@ class AppBrowser : AppCompatActivity() {
             availableVers = currentVers.toString()
         }
         if (availableVers.toInt() > currentVers && apkUrl!!.isNotEmpty()) {
-            ToSheets.logs.post(listOf(LogActions.APP_UPDATE.name,"Update Available"), applicationContext)
+            ToSheets.logs.post(listOf(LogActions.APP_UPDATE.name,
+                "Update Available - VERSION_CODE:$availableVers - URL:$apkUrl"
+            ), applicationContext)
             view.showSnackbar(
                 R.string.updateAvailable,
                 Snackbar.LENGTH_INDEFINITE, R.string.update
