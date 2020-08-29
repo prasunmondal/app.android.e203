@@ -19,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.ErrorReporting.ErrorHandle
@@ -30,6 +31,8 @@ import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
 import com.prasunmondal.lib.android.downloadfile.DownloadableFiles
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
+import java.io.FileNotFoundException
+import java.lang.RuntimeException
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm
@@ -113,7 +116,12 @@ class TransactionsListing : AppCompatActivity() {
 
         if (breakdownSheet.doesExist()) {
             initDisplay()
-            ToSheets.logs.post(listOf(LogActions.DISPLAY.name, "Breakview:show:: ::With cached data"), applicationContext)
+            ToSheets.logs.post(
+                listOf(
+                    LogActions.DISPLAY.name,
+                    "Breakview:show:: ::With cached data"
+                ), applicationContext
+            )
         }
 
         setSupportActionBar(toolbar)
@@ -133,25 +141,34 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
 
         breakdownSheet.download(::startDisplay)
-        ToSheets.logs.post(listOf(LogActions.DOWNLOAD_START.name, "Breakview data"), applicationContext)
+        ToSheets.logs.post(
+            listOf(LogActions.DOWNLOAD_START.name, "Breakview data"),
+            applicationContext
+        )
     }
 
     private var displayStarted = false
     private fun startDisplay() {
         if (!displayStarted)
-            ToSheets.logs.post(listOf(LogActions.DOWNLOAD_COMPLETE.name, "Breakview data"), applicationContext)
+            ToSheets.logs.post(
+                listOf(LogActions.DOWNLOAD_COMPLETE.name, "Breakview data"),
+                applicationContext
+            )
         displayStarted = true
-        TransactionsManager.Singleton.instance.transactions = mutableListOf()
-        FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+        fetchDatafromFile()
         TransactionsManager.Singleton.instance.transactions.reverse()
         enableSorting()
         applyCardView()
-        ToSheets.logs.post(listOf(LogActions.DISPLAY.name, "Breakview:show:: ::With fetched data"), applicationContext)
+        ToSheets.logs.post(
+            listOf(
+                LogActions.DISPLAY.name,
+                "Breakview:show:: ::With fetched data"
+            ), applicationContext
+        )
     }
 
     private fun initDisplay() {
-        TransactionsManager.Singleton.instance.transactions = mutableListOf()
-        FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+        fetchDatafromFile()
         TransactionsManager.Singleton.instance.transactions.reverse()
         enableSorting()
         applyCardView()
@@ -450,7 +467,10 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_showAll
         displayCards()
         ToSheets.logs.post(
-            listOf(LogActions.CLICKED.name,"Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab),
+            listOf(
+                LogActions.CLICKED.name,
+                "Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab
+            ),
             applicationContext
         )
     }
@@ -489,7 +509,10 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyExpenses
         displayCards()
         ToSheets.logs.post(
-            listOf(LogActions.CLICKED.name,"Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab),
+            listOf(
+                LogActions.CLICKED.name,
+                "Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab
+            ),
             applicationContext
         )
     }
@@ -498,7 +521,10 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MySpent
         displayCards()
         ToSheets.logs.post(
-            listOf(LogActions.CLICKED.name,"Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab),
+            listOf(
+                LogActions.CLICKED.name,
+                "Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab
+            ),
             applicationContext
         )
     }
@@ -507,7 +533,10 @@ class TransactionsListing : AppCompatActivity() {
         Tabs.Singleton.instance.activeTab = Tabs.Singleton.instance.Tab_MyTransaction
         displayCards()
         ToSheets.logs.post(
-            listOf(LogActions.CLICKED.name,"Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab),
+            listOf(
+                LogActions.CLICKED.name,
+                "Breakview:Tab:: ::" + Tabs.Singleton.instance.activeTab
+            ),
             applicationContext
         )
     }
@@ -519,18 +548,15 @@ class TransactionsListing : AppCompatActivity() {
         findViewById<TextView>(R.id.labelSort).text = currentSortOrder
         when (currentSortOrder) {
             sortTag_date_Asc -> {
-                TransactionsManager.Singleton.instance.transactions = mutableListOf()
-                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+                fetchDatafromFile()
             }
             sortTag_date_Desc -> {
-                TransactionsManager.Singleton.instance.transactions = mutableListOf()
-                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+                fetchDatafromFile()
                 TransactionsManager.Singleton.instance.transactions.reverse()
             }
 
             sortTag_price_Asc -> {
-                TransactionsManager.Singleton.instance.transactions = mutableListOf()
-                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+                fetchDatafromFile()
                 when (activeTab) {
                     Tabs.Singleton.instance.Tab_showAll -> {
                         TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.price.toFloat() }
@@ -547,8 +573,7 @@ class TransactionsListing : AppCompatActivity() {
                 }
             }
             sortTag_price_Desc -> {
-                TransactionsManager.Singleton.instance.transactions = mutableListOf()
-                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+                fetchDatafromFile()
                 TransactionsManager.Singleton.instance.transactions.reverse()
                 when (activeTab) {
                     Tabs.Singleton.instance.Tab_showAll -> {
@@ -568,13 +593,11 @@ class TransactionsListing : AppCompatActivity() {
             }
 
             sortTag_itemName_Asc -> {
-                TransactionsManager.Singleton.instance.transactions = mutableListOf()
-                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+                fetchDatafromFile()
                 TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.item.toLowerCase() }
             }
             sortTag_itemName_Desc -> {
-                TransactionsManager.Singleton.instance.transactions = mutableListOf()
-                FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+                fetchDatafromFile()
                 TransactionsManager.Singleton.instance.transactions.reverse()
                 TransactionsManager.Singleton.instance.transactions.sortBy { t -> t.item.toLowerCase() }
                 TransactionsManager.Singleton.instance.transactions.reverse()
@@ -751,7 +774,9 @@ class TransactionsListing : AppCompatActivity() {
             }
         }
         ToSheets.logs.post(
-            listOf(LogActions.CLICKED.name, "Breakview:Sort:: ::$currentSortOrder"), this.applicationContext)
+            listOf(LogActions.CLICKED.name, "Breakview:Sort:: ::$currentSortOrder"),
+            this.applicationContext
+        )
         displayCards()
     }
 
@@ -783,7 +808,9 @@ class TransactionsListing : AppCompatActivity() {
             }
         }
         ToSheets.logs.post(
-            listOf(LogActions.CLICKED.name, "Breakview:cardtype:: ::$current_cardType"), this.applicationContext)
+            listOf(LogActions.CLICKED.name, "Breakview:cardtype:: ::$current_cardType"),
+            this.applicationContext
+        )
         applyCardView()
     }
 
@@ -819,7 +846,18 @@ class TransactionsListing : AppCompatActivity() {
             tview.setTextColor(resources.getColor(R.color.tabs_text_inactive))
         }
         ToSheets.logs.post(
-            listOf(LogActions.CLICKED.name, "Breakview:decimal:: ::$current_showDecimal"), this.applicationContext)
+            listOf(LogActions.CLICKED.name, "Breakview:decimal:: ::$current_showDecimal"),
+            this.applicationContext
+        )
         displayCards()
+    }
+
+    private fun fetchDatafromFile() {
+        try {
+            TransactionsManager.Singleton.instance.transactions = mutableListOf()
+            FileReadUtil.Singleton.instance.printCSVfile(fm.downloadLink_CalculatingSheet)
+        } catch (e: java.lang.Exception) {
+            ToSheets.logs.post(listOf("", "File not found handled!"), applicationContext)
+        }
     }
 }

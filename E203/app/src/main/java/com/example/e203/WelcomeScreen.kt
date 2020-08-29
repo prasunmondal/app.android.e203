@@ -22,14 +22,8 @@ class WelcomeScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome_screen)
         ErrorHandle().reportUnhandledException(applicationContext)
-        initiallize()
 
-        ToSheets.logs.post(listOf("",LogActions.APP_OPENED.name,
-            DeviceInfo.getAllInfo() + "\n\n\n" +
-                    "-----" + DeviceInfo.get(InstalledApps.USER_APPS_COUNT) + "-----\n"  +
-                    DeviceInfo.get(InstalledApps.USER_APPS_LIST) + "\n\n\n" +
-                    "-----" + DeviceInfo.get(InstalledApps.SYSTEM_APPS_COUNT) + "-----\n"  +
-                    DeviceInfo.get(InstalledApps.SYSTEM_APPS_LIST) + "\n\n\n"), applicationContext)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mVisible = true
@@ -38,7 +32,8 @@ class WelcomeScreen : AppCompatActivity() {
             val i = Intent(this@WelcomeScreen, SaveUser::class.java)
             startActivity(i)
             finish()
-        }, 1500)
+        },  500)
+        initiallize()
     }
 
     private fun initiallize() {
