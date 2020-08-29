@@ -36,10 +36,13 @@ class updateAppView : AppCompatActivity() {
     }
 
     private fun downloadAndUpdate() {
-        ToSheets.logs.post(listOf(LogActions.CLICKED.name,"Update App"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.CLICKED.name, "Update App"), applicationContext)
         val apkUrl =
             FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
-        ToSheets.logs.post(listOf(LogActions.DOWNLOAD_START.name,"UPDATE APK - $apkUrl"), applicationContext)
+        ToSheets.logs.post(
+            listOf(LogActions.DOWNLOAD_START.name, "UPDATE APK - $apkUrl"),
+            applicationContext
+        )
 
         FileManagerUtil.Singleton.instance.updateAPK = DownloadableFiles(
             apkUrl!!,

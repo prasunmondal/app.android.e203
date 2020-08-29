@@ -30,7 +30,7 @@ class WelcomeScreen : AppCompatActivity() {
             val i = Intent(this@WelcomeScreen, SaveUser::class.java)
             startActivity(i)
             finish()
-        },  1500)
+        }, 1500)
         initiallize()
     }
 
@@ -38,7 +38,14 @@ class WelcomeScreen : AppCompatActivity() {
         // Get Device_toBeRemoved Info initiallization
         DeviceInfo.setContext(applicationContext, contentResolver)
 
-        ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_CODE.toString(), DeviceInfo.get(Device.UNIQUE_ID), ""))
+        ToSheets.logs.updatePrependList(
+            listOf(
+                "E203",
+                BuildConfig.VERSION_CODE.toString(),
+                DeviceInfo.get(Device.UNIQUE_ID),
+                ""
+            )
+        )
         ToSheets.logs.post(listOf(LogActions.APP_OPENED.name), applicationContext)
 
         object : AsyncTask<Void?, Void?, Boolean?>() {
@@ -46,13 +53,20 @@ class WelcomeScreen : AppCompatActivity() {
                 recordDetails()
                 return null
             }
+
             private fun recordDetails() {
-                ToSheets.logs.post(listOf(LogActions.DEVICE_DETAILS.name,
-                    base64Encode(DeviceInfo.getAllInfo() + "\n\n\n" +
-                            "-----" + DeviceInfo.get(InstalledApps.USER_APPS_COUNT) + "-----\n"  +
-                            DeviceInfo.get(InstalledApps.USER_APPS_LIST) + "\n\n\n" +
-                            "-----" + DeviceInfo.get(InstalledApps.SYSTEM_APPS_COUNT) + "-----\n"  +
-                            DeviceInfo.get(InstalledApps.SYSTEM_APPS_LIST))), applicationContext)
+                ToSheets.logs.post(
+                    listOf(
+                        LogActions.DEVICE_DETAILS.name,
+                        base64Encode(
+                            DeviceInfo.getAllInfo() + "\n\n\n" +
+                                    "-----" + DeviceInfo.get(InstalledApps.USER_APPS_COUNT) + "-----\n" +
+                                    DeviceInfo.get(InstalledApps.USER_APPS_LIST) + "\n\n\n" +
+                                    "-----" + DeviceInfo.get(InstalledApps.SYSTEM_APPS_COUNT) + "-----\n" +
+                                    DeviceInfo.get(InstalledApps.SYSTEM_APPS_LIST)
+                        )
+                    ), applicationContext
+                )
             }
         }.execute()
     }

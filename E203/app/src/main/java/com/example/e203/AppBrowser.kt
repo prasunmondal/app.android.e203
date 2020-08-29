@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -39,7 +38,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
-import com.prasunmondal.lib.android.deviceinfo.InstalledApps
 import kotlinx.android.synthetic.main.activity_app_browser.*
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -82,14 +80,20 @@ class AppBrowser : AppCompatActivity() {
     }
 
     private fun showToast() {
-        ToSheets.logs.post(listOf(
-            LogActions.DISPLAY.name, "Breakview:FAILED:: ::Login to access this feature"),
-            applicationContext)
+        ToSheets.logs.post(
+            listOf(
+                LogActions.DISPLAY.name, "Breakview:FAILED:: ::Login to access this feature"
+            ),
+            applicationContext
+        )
         Toast.makeText(this, "Login to access this feature.", Toast.LENGTH_LONG).show()
     }
 
     private fun enableViewBreakdownButton() {
-        ToSheets.logs.post(listOf(LogActions.DOWNLOAD_COMPLETE.name, "Metadata"), applicationContext)
+        ToSheets.logs.post(
+            listOf(LogActions.DOWNLOAD_COMPLETE.name, "Metadata"),
+            applicationContext
+        )
         promptAndInitiateUpdate(findViewById(R.id.appBrowserView))
         updateButtonData()
         val button = findViewById<FloatingActionButton>(R.id.showBreakdowns)
@@ -119,25 +123,25 @@ class AppBrowser : AppCompatActivity() {
     }
 
     fun loadAddForm(view: View) {
-        ToSheets.logs.post(listOf(LogActions.CLICKED.name,"Add Expense"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.CLICKED.name, "Add Expense"), applicationContext)
         loadPage(HardData.Singleton.instance.submitFormURL)
     }
 
     fun loadDetails(view: View) {
-        ToSheets.logs.post(listOf(LogActions.CLICKED.name,"Summary Page"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.CLICKED.name, "Summary Page"), applicationContext)
         loadPage(HardData.Singleton.instance.detailsFormViewPage)
         Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
     }
 
     fun loadEditPage(view: View) {
-        ToSheets.logs.post(listOf(LogActions.CLICKED.name,"Edit Page"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.CLICKED.name, "Edit Page"), applicationContext)
         loadPage(HardData.Singleton.instance.editPage)
         Toast.makeText(this, "Fetching Data. Please Wait...", Toast.LENGTH_SHORT).show()
     }
 
     @SuppressLint("DefaultLocale")
     fun onClickPayButton(view: View) {
-        ToSheets.logs.post(listOf(LogActions.CLICKED.name,"Pay Button"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.CLICKED.name, "Pay Button"), applicationContext)
         try {
 
             if (PaymentUtil.Singleton.instance.isPayOptionEnabled()) {
@@ -155,10 +159,12 @@ class AppBrowser : AppCompatActivity() {
                     FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.PAYMENT_UPI_PAY_UPIID)
                 payUsingUpi(amount, upiId!!, name!!, note!!)
                 ToSheets.logs.post(
-                    listOf(LogActions.PAYMENT.name, "Initiated for Rs $amount"), applicationContext)
+                    listOf(LogActions.PAYMENT.name, "Initiated for Rs $amount"), applicationContext
+                )
             } else if (PaymentUtil.Singleton.instance.isDisplayButtonEnabled()) {
                 ToSheets.logs.post(
-                    listOf(LogActions.PAYMENT.name, "No Due"), applicationContext)
+                    listOf(LogActions.PAYMENT.name, "No Due"), applicationContext
+                )
                 Toast.makeText(this, "No Payment Due", Toast.LENGTH_SHORT).show()
             }
         } catch (e: java.lang.Exception) {
@@ -182,9 +188,12 @@ class AppBrowser : AppCompatActivity() {
             availableVers = currentVers.toString()
         }
         if (availableVers.toInt() > currentVers && apkUrl!!.isNotEmpty()) {
-            ToSheets.logs.post(listOf(LogActions.APP_UPDATE.name,
-                "Update Available - VERSION_CODE:$availableVers - URL:$apkUrl"
-            ), applicationContext)
+            ToSheets.logs.post(
+                listOf(
+                    LogActions.APP_UPDATE.name,
+                    "Update Available - VERSION_CODE:$availableVers - URL:$apkUrl"
+                ), applicationContext
+            )
             view.showSnackbar(
                 R.string.updateAvailable,
                 Snackbar.LENGTH_INDEFINITE, R.string.update
@@ -192,7 +201,10 @@ class AppBrowser : AppCompatActivity() {
                 downloadAndUpdate()
             }
         } else {
-            ToSheets.logs.post(listOf(LogActions.APP_UPDATE.name,"No Update Available"), applicationContext)
+            ToSheets.logs.post(
+                listOf(LogActions.APP_UPDATE.name, "No Update Available"),
+                applicationContext
+            )
         }
     }
 
@@ -243,7 +255,10 @@ class AppBrowser : AppCompatActivity() {
         } else {
             showString = "No User Configured..."
         }
-        ToSheets.logs.post(listOf(LogActions.DISPLAY.name,"Dashboard::\n$showString"), applicationContext)
+        ToSheets.logs.post(
+            listOf(LogActions.DISPLAY.name, "Dashboard::\n$showString"),
+            applicationContext
+        )
         payBillBtn.text = showString
     }
 
@@ -382,8 +397,13 @@ class AppBrowser : AppCompatActivity() {
         val id: Int = item.itemId
         if (id == R.id.action_favorite) {
             ToSheets.logs.post(LogActions.LOGOUT.name, applicationContext)
-            ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_CODE.toString(), DeviceInfo.get(
-                Device.UNIQUE_ID),""))
+            ToSheets.logs.updatePrependList(
+                listOf(
+                    "E203", BuildConfig.VERSION_CODE.toString(), DeviceInfo.get(
+                        Device.UNIQUE_ID
+                    ), ""
+                )
+            )
             goToSaveUserPage()
             return true
         }

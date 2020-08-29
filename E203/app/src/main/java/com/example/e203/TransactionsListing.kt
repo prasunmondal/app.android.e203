@@ -19,7 +19,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.e203.ErrorReporting.ErrorHandle
@@ -31,8 +30,6 @@ import com.example.e203.sessionData.FetchedMetaData
 import com.example.e203.sessionData.LocalConfig
 import com.prasunmondal.lib.android.downloadfile.DownloadableFiles
 import kotlinx.android.synthetic.main.activity_transactions_listing.*
-import java.io.FileNotFoundException
-import java.lang.RuntimeException
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import com.example.e203.appData.FileManagerUtil.Singleton.instance as fm

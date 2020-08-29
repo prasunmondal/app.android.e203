@@ -26,7 +26,7 @@ class ShowPaymentOptions : AppCompatActivity() {
         val upi_copy_btn = findViewById<Button>(R.id.upiIDCopy)
         val upiId = fetchedMetaDatas.getValue(fetchedMetaDatas.PAYMENT_UPI_PAY_UPIID)
 
-        ToSheets.logs.post(listOf(LogActions.CLICKED.name,"Open Payment Page"), applicationContext)
+        ToSheets.logs.post(listOf(LogActions.CLICKED.name, "Open Payment Page"), applicationContext)
         upi_view.text = upiId
     }
 

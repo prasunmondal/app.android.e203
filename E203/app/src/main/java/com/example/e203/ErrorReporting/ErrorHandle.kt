@@ -1,7 +1,6 @@
 package com.example.e203.ErrorReporting
 
 import android.content.Context
-import android.os.Build
 import android.os.Looper
 import android.widget.Toast
 import com.example.e203.BuildConfig
