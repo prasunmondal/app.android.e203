@@ -1,9 +1,16 @@
 package com.example.e203
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -20,10 +27,11 @@ class updateAppView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ErrorHandle().reportUnhandledException(applicationContext)
         setContentView(R.layout.activity_update_app_view)
         setSupportActionBar(toolbar)
+        setActionbarTextColor()
 
+        ErrorHandle().reportUnhandledException(applicationContext)
         downloadAndUpdate()
     }
 
@@ -89,5 +97,24 @@ class updateAppView : AppCompatActivity() {
 
     override fun onBackPressed() {
         Toast.makeText(this, "Update is progress.. Please Wait!", Toast.LENGTH_LONG).show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Suppress("DEPRECATION")
+    private fun setActionbarTextColor() {
+        val title = ""
+        val spannableTitle: Spannable = SpannableString("")
+        spannableTitle.setSpan(
+            ForegroundColorSpan(Color.BLACK),
+            0,
+            spannableTitle.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        supportActionBar!!.title = title
+        window.statusBarColor = resources.getColor(R.color.colorPrimaryDark)
+        supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorPrimary)))
+
+        findViewById<TextView>(R.id.toolbar_Text1).text = "E203"
+        findViewById<TextView>(R.id.toolbar_Text2).text = "App Update"
     }
 }
