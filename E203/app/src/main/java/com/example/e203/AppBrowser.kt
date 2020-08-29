@@ -83,7 +83,7 @@ class AppBrowser : AppCompatActivity() {
 
     private fun showToast() {
         ToSheets.logs.post(listOf(
-            "Display", "BREAKVIEW - FAILED - Login to access this feature"),
+            LogActions.DISPLAY.name, "Breakview:FAILED:: ::Login to access this feature"),
             applicationContext)
         Toast.makeText(this, "Login to access this feature.", Toast.LENGTH_LONG).show()
     }
@@ -380,7 +380,7 @@ class AppBrowser : AppCompatActivity() {
         val id: Int = item.itemId
         if (id == R.id.action_favorite) {
             ToSheets.logs.post(LogActions.LOGOUT.name, applicationContext)
-            ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_NAME, DeviceInfo.get(
+            ToSheets.logs.updatePrependList(listOf("E203", BuildConfig.VERSION_CODE.toString(), DeviceInfo.get(
                 Device.UNIQUE_ID),""))
             goToSaveUserPage()
             return true
