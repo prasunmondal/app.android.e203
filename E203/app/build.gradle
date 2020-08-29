@@ -9,7 +9,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.e203"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 5
         versionName "1.0"
@@ -43,6 +43,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 
     implementation 'com.github.prasunmondal:lib.postToGSheet:1.0.1'
-    implementation 'com.github.prasunmondal:lib.android.deviceInfo:1.0.0'
+    implementation 'com.github.prasunmondal:lib.android.deviceInfo:1.0.1'
     implementation 'com.github.prasunmondal:lib.android.downloadableFile:1.0.2'
 }

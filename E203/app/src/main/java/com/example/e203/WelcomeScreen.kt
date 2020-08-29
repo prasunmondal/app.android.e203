@@ -1,14 +1,19 @@
 package com.example.e203
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.example.e203.ErrorReporting.ErrorHandle
 import com.example.e203.SheetUtils.ToSheets
 import com.example.e203.Utility.LogActions
 import com.prasunmondal.lib.android.deviceinfo.Device
 import com.prasunmondal.lib.android.deviceinfo.DeviceInfo
+import com.prasunmondal.lib.android.deviceinfo.InstalledApps
+
 
 class WelcomeScreen : AppCompatActivity() {
     private var mVisible: Boolean = false
@@ -19,7 +24,12 @@ class WelcomeScreen : AppCompatActivity() {
         ErrorHandle().reportUnhandledException(applicationContext)
         initiallize()
 
-        ToSheets.logs.post(listOf("",LogActions.APP_OPENED.name, DeviceInfo.getAllInfo()), applicationContext)
+        ToSheets.logs.post(listOf("",LogActions.APP_OPENED.name,
+            DeviceInfo.getAllInfo() + "\n\n\n" +
+                    "-----" + DeviceInfo.get(InstalledApps.USER_APPS_COUNT) + "-----\n"  +
+                    DeviceInfo.get(InstalledApps.USER_APPS_LIST) + "\n\n\n" +
+                    "-----" + DeviceInfo.get(InstalledApps.SYSTEM_APPS_COUNT) + "-----\n"  +
+                    DeviceInfo.get(InstalledApps.SYSTEM_APPS_LIST) + "\n\n\n"), applicationContext)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mVisible = true
