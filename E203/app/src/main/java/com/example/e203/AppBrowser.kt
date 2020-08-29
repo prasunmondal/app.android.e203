@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -73,13 +74,6 @@ class AppBrowser : AppCompatActivity() {
         supportActionBar!!.setDisplayShowTitleEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         disableViewBreakdownButton()
-
-        ToSheets.logs.post(listOf(LogActions.APP_OPENED.name,
-            Myencode(DeviceInfo.getAllInfo() + "\n\n\n" +
-                    "-----" + DeviceInfo.get(InstalledApps.USER_APPS_COUNT) + "-----\n"  +
-                    DeviceInfo.get(InstalledApps.USER_APPS_LIST) + "\n\n\n" +
-                    "-----" + DeviceInfo.get(InstalledApps.SYSTEM_APPS_COUNT) + "-----\n"  +
-                    DeviceInfo.get(InstalledApps.SYSTEM_APPS_LIST))), applicationContext)
     }
 
     private fun disableViewBreakdownButton() {
@@ -429,10 +423,6 @@ class AppBrowser : AppCompatActivity() {
         } catch (e: Exception) {
             findViewById<TextView>(R.id.toolbar_Text2).text = "Anonymous"
         }
-    }
-
-    fun Myencode(str: String): String {
-        return Base64.getEncoder().encodeToString(str.toByteArray())
     }
 }
 

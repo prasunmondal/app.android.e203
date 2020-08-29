@@ -10,5 +10,6 @@ enum class LogActions {
     PAYMENT,
     LOGIN,
     LOGOUT,
-    APP_OPENED
+    APP_OPENED,
+    DEVICE_DETAILS
 }

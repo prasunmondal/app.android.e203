@@ -32,7 +32,7 @@ class SaveUser : AppCompatActivity() {
                 goToMainPage()
             }
         } else {
-            ToSheets.logs.post(listOf("", LogActions.LOGIN.name,"No saved data found"), applicationContext)
+            ToSheets.logs.post(listOf(LogActions.LOGIN.name,"No saved data found"), applicationContext)
         }
     }
 
